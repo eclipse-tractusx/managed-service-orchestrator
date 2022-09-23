@@ -1,1 +1,1 @@
-# product-autosetup-backend
+# kubeapps-orchestrator-service

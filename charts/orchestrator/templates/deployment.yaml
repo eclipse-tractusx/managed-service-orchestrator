@@ -1,0 +1,162 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "orchestrator.fullname" . }}
+  labels:
+    {{- include "orchestrator.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "orchestrator.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}          
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "orchestrator.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      automountServiceAccountToken: false
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.portContainer }}
+          env:
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: dbuser
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: dbpassword
+            - name: SPRING_JPA_HIBERNATE_DDL-AUTO
+              value: "update"
+            - name: VAULT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: vault-secrets
+                  key: vaultUrl
+            - name: VAULT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: vault-secrets
+                  key: vaultToken
+            - name: VAULT_TIMEOUT
+              value: "30"
+            - name: DAPSWRAPPER_DAPS_TOKEN_URL
+              valueFrom:
+                secretKeyRef:
+                  name: daps-secrets
+                  key: dapsTokenUrl
+            - name: DAPSWRAPPER_DAPS_JSKURL
+              valueFrom:
+                secretKeyRef:
+                  name: daps-secrets
+                  key: dapsJskUrl
+            - name: DAPSWRAPPER_DAPS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: daps-secrets
+                  key: dapsUrl
+            - name: DAPSWRAPPER_KEYCLOAK_USERNAME
+              value: "dapsuser"
+            - name: DAPSWRAPPER_KEYCLOAK_PASSWORD
+              value: "dapsuser"
+            - name: DAPSWRAPPER_KEYCLOAK_RESOURCE
+              value: "orchestratorservice"
+            - name: DAPSWRAPPER_URL
+              value: "http://drs.int.demo.catena-x.net/api/v1/daps"
+            - name: DAPSWRAPPER_KEYCLOAK_AUTH-SERVER-URL
+              value: "https://keycloak.cx.dih-cloud.com"
+            - name: DAPSWRAPPER_KEYCLOAK_REALM
+              value: "orchestrator"
+            - name: DAPSWRAPPER_KEYCLOAK_TOKENURI
+              value: "https://keycloak.cx.dih-cloud.com/realms/orchestrator/protocol/openid-connect/token"
+            - name: KUBEAPP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: kubeapps-secrets
+                  key: kubeappsUrl
+            - name: KUBEAPP_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: kubeapps-secrets
+                  key: kubeappsToken
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://orch-postgresdb-postgresql:5432/orchdb"
+            - name: TARGET_NAMESPACE
+              value: "kubeapps"
+            - name: TARGET_CLUSTER
+              value: "default"
+            - name: DNS_NAME_PROTOCOL
+              value: "https"
+            - name: DNS_NAME
+              value: "tenantname.cx.dih-cloud.com"
+            - name: RETRY_MAXATTEMPTS
+              value: "3"
+            - name: RETRY_BACKOFFDELAY
+              value: "500"
+            - name: PORTAL.EMAIL.ADDRESS
+              value: "sachin.argade@t-systems.com,AJAY.RATURI@t-systems.com,Shivaraj.Patil@t-systems.com"
+            - name: PORTAL_URL
+              value: "http://192.168.0.105/auth"
+            - name: KEYCLOAK_REALM
+              value: "autosetup"
+            - name: KEYCLOAK_AUTH-SERVER-URL
+              value: "https://keycloak.cx.dih-cloud.com"
+            - name: KEYCLOAK_SSL-REQUIRED
+              value: "external"
+              
+            - name: KEYCLOAK_RESOURCES
+              value: "autosetup-service"
+            - name: KEYCLOAK_SSL-REQUIRED
+              value: "external"
+            - name: KEYCLOAK_USE-RESOURCE-ROLE-MAPPINGS
+              value: "true"
+            - name: KEYCLOAK_BEARER-TOKEN
+              value: "true"
+            - name: MAIL_SMTP_HOST
+              value: "mailauth.telekom.de"
+            - name: MAIL_SMTP_PORT
+              value: "587"
+            - name: MAIL_FROM_ADDRESS
+              value: "Auto Setup technical team<tech@telekom.de>"
+            - name: MAIL_REPLYTO_ADDRESS
+              value: "sachin.argade@t-systems.com,ADITYA.GAJBHIYE@t-systems.com"
+            - name: MAIL_SMTP_STARTTLS_ENABLE
+              value: "true"
+            - name: MAIL_SMTP_AUTH
+              value: "true"
+
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
