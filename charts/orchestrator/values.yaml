@@ -72,7 +72,15 @@ readinessProbe:
   successThreshold: 1
   timeoutSeconds: 1
 
-
+postgres:
+  enabled: true
+  auth:
+    username: "dftUser"
+    database: "dftdb"
+    existingSecret: autosetup-psql-secret
+    secretKeys:
+        adminPasswordKey: "postgres-password"
+        userPasswordKey: "password"
 
 
 
