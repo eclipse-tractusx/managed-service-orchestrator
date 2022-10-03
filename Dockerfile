@@ -23,11 +23,14 @@ ARG GID=3000
 WORKDIR /autosetup
 
 # copy over the built artifact from the maven image
-COPY --chown=${UID}:${GID} --from=build target/*.jar ./app.jar
+COPY --chown=1000:3000 --from=build target/*.jar ./app.jar
 
-RUN chown ${UID}:${GID} /autosetup
+#RUN chown ${UID}:${GID} /autosetup
 
-USER ${UID}:${GID}
+#USER ${UID}:${GID}
+
+RUN chown -R 1000:3000 /autosetup
+USER 1000:3000
 
 # set the startup command to run your binary
 CMD ["java", "-jar", "./app.jar"]
