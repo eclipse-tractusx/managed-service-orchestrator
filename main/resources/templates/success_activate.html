@@ -1,0 +1,400 @@
+<!--
+/********************************************************************************
+* Copyright (c) 2022 T-Systems International GmbH
+* Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+*
+* See the NOTICE file(s) distributed with this work for additional
+* information regarding copyright ownership.
+*
+* This program and the accompanying materials are made available under the
+* terms of the Apache License, Version 2.0 which is available at
+* https://www.apache.org/licenses/LICENSE-2.0.
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+* WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+* License for the specific language governing permissions and limitations
+* under the License.
+*
+* SPDX-License-Identifier: Apache-2.0
+********************************************************************************/
+-->
+
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700);
+    </style>
+    <style>
+      /* -------------------------------------
+          GLOBAL RESETS
+      ------------------------------------- */
+      
+      /*All the styling goes here*/
+      
+      img {
+        border: none;
+        -ms-interpolation-mode: bicubic;
+        max-width: 100%; 
+      }
+
+      body {
+        background-color: #f6f6f6;
+        -webkit-font-smoothing: antialiased;
+        font-size: 14px;
+        line-height: 1.4;
+        margin: 0;
+        padding: 0;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%; 
+        font-family: TeleGroteskNextBold, sans-serif;
+      }
+
+      table {
+        border-collapse: collapse;
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+        width: 100%; }
+        table td {
+          font-family: sans-serif;
+          font-size: 14px;
+          vertical-align: top; 
+      }
+
+      /* -------------------------------------
+          BODY & CONTAINER
+      ------------------------------------- */
+
+      .body {
+        background-color: #f6f6f6;
+        width: 100%; 
+      }
+
+      .brand-background {
+        background-color: #1565c0;
+      } 
+
+      /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+      .container {
+        display: block;
+        margin: 0 auto !important;
+        /* makes it centered */
+        max-width: 648px;
+        padding: 10px;
+        width: 648px; 
+      }
+
+      /* This should also be a block element, so that it will fill 100% of the .container */
+      .content {
+        box-sizing: border-box;
+        display: block;
+        margin: 0 auto;
+        max-width: 648px;
+      }
+
+      /* -------------------------------------
+          HEADER, FOOTER, MAIN
+      ------------------------------------- */
+      .main {
+        background: #ffffff;
+        border-radius: 3px;
+        width: 100%; 
+      }
+
+      .wrapper {
+        box-sizing: border-box;
+        padding: 20px; 
+      }
+
+      .content-block {
+        padding-bottom: 10px;
+        padding-top: 10px;
+      }
+
+      .top-header {
+        color: #fff;
+        font-size: 18px;
+        line-height: 24px;
+        font-weight: 700;
+      }
+
+      .footer {
+        clear: both;
+        margin-top: 10px;
+        width: 100%; 
+      }
+      
+      .footer td,
+      .footer p,
+      .footer span,
+      .footer a {
+        color: #ffffff;
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 400;
+        text-decoration: none;
+      }
+
+      .main-content {
+        padding: 48px 24px;
+      }
+
+      .main-content,
+      .main-content p {
+        font-size: 18px;
+        line-height: 24px;
+        color: #1C0E15;
+        font-weight: 400;
+        letter-spacing: 0.25px;
+      }
+
+      .main-content p {
+        margin-bottom: 24px;
+        font-weight: 400;
+      }
+
+      /* -------------------------------------
+          TYPOGRAPHY
+      ------------------------------------- */
+      h1,
+      h2,
+      h3,
+      h4 {
+        color: #1C0E15;
+        font-family: sans-serif;
+        font-weight: 400;
+        line-height: 1.4;
+        margin: 0;
+        margin-bottom: 30px; 
+      }
+
+      h1 {
+        font-size: 24px;
+        line-height: 36px;
+        font-weight: 700;
+        text-align: center;
+        text-transform: capitalize; 
+      }
+
+      p,
+      ul,
+      ol {
+        font-family: sans-serif;
+        font-size: 14px;
+        font-weight: normal;
+        margin: 0;
+        margin-bottom: 15px; 
+      }
+        p li,
+        ul li,
+        ol li {
+          list-style-position: inside;
+          margin-left: 5px; 
+      }
+
+      a {
+        color: #00A2E4;
+        text-decoration: none; 
+      }
+
+      /* -------------------------------------
+          BUTTONS
+      ------------------------------------- */
+      .btn {
+        box-sizing: border-box;
+        width: 100%; 
+      }
+      .btn > tbody > tr > td {
+        padding-bottom: 15px;
+      }
+      .btn table {
+        width: auto; 
+      }
+      .btn table td {
+        background-color: #ffffff;
+        border-radius: 5px;
+        text-align: center; 
+      }
+      .btn a {
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 18px;
+        line-height: 20px;
+        font-weight: 700;
+        margin: 0;
+        padding: 8px 20px;
+        border-radius: 4px;
+        text-decoration: none;
+        text-transform: capitalize; 
+      }
+
+      .btn-primary a {
+        background-color: #1565c0;
+        border-color: #1565c0;
+        color: #ffffff; 
+      }
+
+      .btn-primary a:hover {
+        background-color: #1565c0;
+      }
+
+      /* -------------------------------------
+          OTHER STYLES THAT MIGHT BE USEFUL
+      ------------------------------------- */
+      .last {
+        margin-bottom: 0; 
+      }
+
+      .first {
+        margin-top: 0; 
+      }
+
+      .align-center {
+        text-align: center; 
+      }
+
+      .align-right {
+        text-align: right; 
+      }
+
+      .align-left {
+        text-align: left; 
+      }
+
+      .clear {
+        clear: both; 
+      }
+
+      .mt0 {
+        margin-top: 0; 
+      }
+
+      .mb0 {
+        margin-bottom: 0; 
+      }
+
+      hr {
+        border: 0;
+        border-bottom: 1px solid #f6f6f6;
+        margin: 20px 0; 
+      }
+
+      .footer p {
+        font-size: 12px;
+        line-height: 16px;
+        color: #fff;
+        font-weight: 400;
+      }
+
+      .footer-menu {
+        width: 50%;
+      }
+
+    </style>
+  </head>
+  <body>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
+      <tr>
+        <td>&nbsp;</td>
+        <td class="container">
+          <div class="content">
+
+            <!-- START CENTERED WHITE CONTAINER -->
+            <table role="presentation" class="main">
+              <!--START HEADER-->
+              <tr>
+                <td class="wrapper brand-background top-header" style="height: 84px;">
+                  <table>
+                    <tr>
+                      <td align="left" style="vertical-align: middle; font-size: 0; line-height: 0;">
+                        <svg width="137" height="33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M22.865 16.985v-3.45a.569.569 0 0 0-.293-.515.56.56 0 0 0-.588.03L8.387 22.523c-.717.5-1.65.557-2.423.15a2.366 2.366 0 0 1-1.258-2.092v-4.566a4.742 4.742 0 0 1 2.038-3.883l4.042-2.814a2.334 2.334 0 0 0 1.002-1.942V1.054a.569.569 0 0 0-.294-.52.56.56 0 0 0-.592.034L8.07 2.558a2.354 2.354 0 0 0-1.002 1.94v1.66l-3.47 2.427A8.413 8.413 0 0 0 0 15.457v5.115a7.116 7.116 0 0 0 3.78 6.307 7.015 7.015 0 0 0 7.3-.455l10.783-7.497a2.354 2.354 0 0 0 1.002-1.942Z" fill="#FFA600"/>
+                          <path d="M18.852 6.6 8.06 14.103a2.349 2.349 0 0 0-1.007 1.94v3.451a.573.573 0 0 0 .297.514.565.565 0 0 0 .59-.028l13.595-9.478c.718-.5 1.65-.558 2.423-.15a2.366 2.366 0 0 1 1.258 2.09v4.543a4.741 4.741 0 0 1-2.028 3.883l-3.613 2.513-.415.287a2.344 2.344 0 0 0-1.002 1.94v6.334a.568.568 0 0 0 .294.519.56.56 0 0 0 .593-.034l2.837-1.97a2.349 2.349 0 0 0 1.002-1.941v-1.64l3.46-2.427a8.409 8.409 0 0 0 3.598-6.906v-5.095a7.116 7.116 0 0 0-3.784-6.312 7.015 7.015 0 0 0-7.306.464Z" fill="#B3CB2D"/>
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M41.558 31.665h1.927l.313.806h.622l-1.542-3.882h-.708l-1.542 3.882h.617l.313-.806Zm1.759-.524H41.75l.78-2.067.786 2.067Z" fill="#191715"/>
+                          <path d="M47.007 32.088c-.258.284-.62.449-1.002.456a.787.787 0 0 1-.67-.227.8.8 0 0 1-.221-.676v-2h.52v1.825c0 .486.231.607.593.607a1.01 1.01 0 0 0 .78-.398v-2.033h.525v2.829h-.525v-.383ZM48.756 31.845v-1.757h-.482v-.485h.482v-.733h.525v.772h.569v.485h-.569v1.62c0 .2.092.346.275.346a.404.404 0 0 0 .284-.112l.135.398a.743.743 0 0 1-.55.184.61.61 0 0 1-.512-.19.62.62 0 0 1-.157-.528Z" fill="#191715"/>
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M51.998 29.686a1.426 1.426 0 0 0-1.45 1.373c-.023.396.12.783.395 1.067.276.284.657.437 1.05.423a1.427 1.427 0 0 0 1.396-1.43A1.427 1.427 0 0 0 52 29.687Zm-.115.62a.883.883 0 0 1 .958.753.922.922 0 0 1-.215.701.908.908 0 0 1-.657.318.885.885 0 0 1-.88-.844.886.886 0 0 1 .794-.928Z" fill="#191715"/>
+                          <path d="M57.755 30.573c0-.33-.149-.548-.481-.548a.914.914 0 0 0-.699.408v2.023h-.52v-1.883c0-.33-.14-.548-.482-.548a.92.92 0 0 0-.684.413v2.018h-.525v-2.814h.525v.398c.216-.289.547-.467.906-.486.34-.019.646.204.737.534.214-.326.575-.524.963-.529.516 0 .795.287.795.854v2.043h-.52l-.015-1.883Z" fill="#191715"/>
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M60.685 29.686a1.426 1.426 0 0 0-1.46 1.373c-.024.39.115.774.384 1.058.269.283.643.44 1.032.432a1.426 1.426 0 0 0 1.425-1.41 1.427 1.427 0 0 0-1.381-1.453Zm-.13.62a.883.883 0 0 1 .958.753.921.921 0 0 1-.215.701.908.908 0 0 1-.657.318.884.884 0 0 1-.88-.844.886.886 0 0 1 .793-.928Z" fill="#191715"/>
+                          <path d="M63.113 31.845v-1.757h-.482v-.485h.482v-.733h.52v.772h.569v.485h-.56v1.62c0 .2.097.346.275.346a.404.404 0 0 0 .285-.112l.135.398a.743.743 0 0 1-.55.184.61.61 0 0 1-.516-.188.62.62 0 0 1-.158-.53Z" fill="#191715"/>
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M65.318 28.519c-.192.054-.315.18-.312.317.004.186.233.335.513.335.208 0 .395-.083.474-.21.079-.128.034-.275-.114-.372a.715.715 0 0 0-.561-.07Zm.604 1.123h-.791v2.829h.79v-2.83Z" fill="#191715"/>
+                          <path d="M66.317 29.642h.559l.881 2.222.877-2.222h.564L68.04 32.47h-.563l-1.161-2.83Z" fill="#191715"/>
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M71.15 29.574h-.006.01-.003Zm0 0a1.48 1.48 0 0 0-1.446 1.51 1.48 1.48 0 0 0 1.498 1.46 1.57 1.57 0 0 0 1.127-.422l-.245-.345a1.2 1.2 0 0 1-.83.335.928.928 0 0 1-.963-.878h2.221v-.132a1.4 1.4 0 0 0-.349-1.068 1.378 1.378 0 0 0-1.012-.46Zm.852 1.276h-1.72a.87.87 0 0 1 1.467-.604.847.847 0 0 1 .253.604Z" fill="#191715"/>
+                          <path d="M75.841 29.472v2.999h-.578v-3.882h.598l2.11 2.911V28.59h.583v3.882h-.564l-2.149-3Z" fill="#191715"/>
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M81.958 30.034c-.26-.29-.63-.458-1.02-.46h-.004a1.48 1.48 0 0 0-1.45 1.51 1.48 1.48 0 0 0 1.498 1.46 1.57 1.57 0 0 0 1.127-.422l-.24-.345a1.219 1.219 0 0 1-.834.335.927.927 0 0 1-.964-.878h2.236v-.132a1.4 1.4 0 0 0-.35-1.068Zm-.414.212a.847.847 0 0 1 .252.604h-1.729a.86.86 0 0 1 .872-.844.835.835 0 0 1 .605.24Z" fill="#191715"/>
+                          <path d="M83.347 31.845v-1.757h-.481v-.485h.481v-.733h.526v.772h.568v.485h-.568v1.62c0 .2.091.346.274.346a.404.404 0 0 0 .284-.112l.135.398a.743.743 0 0 1-.549.184.61.61 0 0 1-.513-.19.619.619 0 0 1-.157-.528ZM87.057 30.302l-.694 2.169h-.54l-.886-2.83h.55l.636 2.16.703-2.16h.458l.703 2.16.66-2.16h.55l-.887 2.83h-.54l-.713-2.17Z" fill="#191715"/>
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M91.218 29.637a1.45 1.45 0 0 0-1.468 1.422c-.023.396.12.783.396 1.067.275.283.656.437 1.05.423a1.45 1.45 0 0 0 1.445-1.445 1.45 1.45 0 0 0-1.423-1.467Zm-.133.669a.883.883 0 0 1 .959.753.922.922 0 0 1-.215.701.908.908 0 0 1-.657.318.884.884 0 0 1-.88-.844.886.886 0 0 1 .793-.928Z" fill="#191715"/>
+                          <path d="M93.547 29.642h.52v.446c.218-.294.556-.472.92-.485v.534a.966.966 0 0 0-.183 0 .99.99 0 0 0-.737.412v1.941h-.52v-2.848ZM96.75 31.253l-.428.437v.781h-.52v-3.882h.52v2.47l1.358-1.456h.656l-1.21 1.286 1.224 1.543h-.665l-.934-1.18ZM39.612 16.524c0-4.916 3.642-8.25 8.19-8.25a7.212 7.212 0 0 1 6.345 3.363.249.249 0 0 1-.096.364l-1.928.97a.25.25 0 0 1-.322-.086 4.775 4.775 0 0 0-4.004-2.136c-3.025 0-5.357 2.427-5.357 5.78 0 3.354 2.365 5.795 5.386 5.795a4.727 4.727 0 0 0 4.004-2.13.245.245 0 0 1 .322-.088l1.928.97a.257.257 0 0 1 .096.37 7.212 7.212 0 0 1-6.35 3.353c-4.572 0-8.214-3.359-8.214-8.275Z" fill="#191715"/>
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M59.803 24.799a4.848 4.848 0 0 0 3.715-1.534v1.072c0 .086.069.156.154.156h2.187a.16.16 0 0 0 .159-.155v-7.523c0-3.115-2.24-4.197-4.789-4.197a6.822 6.822 0 0 0-4.726 1.78.17.17 0 0 0-.034.219l.843 1.456a.173.173 0 0 0 .265.039 4.645 4.645 0 0 1 3.247-1.315c1.595 0 2.694.815 2.694 2.16v1.664a.029.029 0 0 1-.027.017.029.029 0 0 1-.026-.017 4.799 4.799 0 0 0-3.662-1.427c-1.884 0-3.999 1.106-3.999 3.766 0 2.567 2.115 3.838 4 3.838Zm3.647-4.349a.64.64 0 0 1 .068.287v.81a.65.65 0 0 1-.106.354 3.362 3.362 0 0 1-2.636 1.175c-1.402 0-2.452-.791-2.452-2.063 0-1.271 1.05-2.087 2.452-2.087 1.095 0 2.11.578 2.674 1.524Z" fill="#191715"/>
+                          <path d="M69.752 21.838v-6.707h-1.735a.17.17 0 0 1-.168-.165v-1.863a.17.17 0 0 1 .168-.17h1.735V9.905a.146.146 0 0 1 .144-.146h2.216a.141.141 0 0 1 .14.146v3.023h2.168a.17.17 0 0 1 .169.17v1.868a.17.17 0 0 1-.169.166h-2.153v6.07c0 .791.38 1.364 1.098 1.364.357.004.706-.1 1.002-.3a.105.105 0 0 1 .164.048l.525 1.679a.092.092 0 0 1-.029.107c-.657.511-1.479.76-2.308.698-1.941 0-2.967-1.052-2.967-2.96Z" fill="#191715"/>
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M87.635 18.927c0-3.645-2.216-6.31-5.665-6.31-3.406 0-5.85 2.733-5.815 6.047 0 3.664 2.572 6.09 6.022 6.09a6.715 6.715 0 0 0 4.591-1.605.122.122 0 0 0 0-.156l-1.007-1.456a.12.12 0 0 0-.178 0 4.888 4.888 0 0 1-3.16 1.18 3.49 3.49 0 0 1-3.657-3.077.102.102 0 0 1 .096-.112h8.576a.203.203 0 0 0 .197-.199v-.402Zm-2.587-1.175h-6.152v.02a.149.149 0 0 1-.115-.053.151.151 0 0 1-.034-.122 3.164 3.164 0 0 1 3.223-2.912c1.688-.091 3.132 1.211 3.228 2.912a.15.15 0 0 1-.15.155Z" fill="#191715"/>
+                          <path d="M97.873 17.267c0-1.796-.906-2.398-2.313-2.398a3.764 3.764 0 0 0-2.89 1.5.23.23 0 0 0-.044.136v7.867a.14.14 0 0 1-.14.14h-2.225a.14.14 0 0 1-.135-.14V13.064a.14.14 0 0 1 .135-.136h2.226a.14.14 0 0 1 .14.136v1.354c.006.01.017.017.028.017a.034.034 0 0 0 .03-.017 5.446 5.446 0 0 1 3.974-1.8c2.476 0 3.715 1.344 3.715 3.717v8.037a.14.14 0 0 1-.14.14h-2.226a.14.14 0 0 1-.135-.14v-7.105ZM115.742 17.626h5.184a.28.28 0 0 1 .28.281v1.602a.28.28 0 0 1-.28.276h-5.184a.28.28 0 0 1-.274-.276v-1.602a.28.28 0 0 1 .274-.281Z" fill="#191715"/>
+                          <path d="m128.635 18.334-4.336 6.11a.15.15 0 0 1-.126.068h-2.943a.16.16 0 0 1-.13-.252l5.713-7.906a.082.082 0 0 0 0-.092l-5.381-7.498a.156.156 0 0 1-.012-.165.153.153 0 0 1 .142-.082h2.944c.049 0 .095.024.125.063l4.004 5.722a.072.072 0 0 0 .12 0l3.965-5.722a.162.162 0 0 1 .13-.063h2.968c.058 0 .112.032.138.085a.155.155 0 0 1-.013.162l-5.381 7.479a.071.071 0 0 0 0 .087l5.723 7.935a.159.159 0 0 1 .012.163.158.158 0 0 1-.137.089h-2.949a.15.15 0 0 1-.125-.068l-4.336-6.11a.076.076 0 0 0-.115-.005Z" fill="#191715"/>
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M106.955 24.789a4.836 4.836 0 0 0 3.704-1.539l-.004 1.092c0 .086.069.156.154.156h2.192c.085 0 .154-.07.154-.156v-7.526c0-3.121-2.235-4.198-4.784-4.198a6.813 6.813 0 0 0-4.717 1.761.18.18 0 0 0-.033.223l.843 1.456a.167.167 0 0 0 .265.04 4.65 4.65 0 0 1 3.247-1.311c1.595 0 2.693.815 2.693 2.16v1.722a4.746 4.746 0 0 0-3.714-1.485c-1.884 0-4.004 1.102-4.004 3.766 0 2.567 2.12 3.839 4.004 3.839Zm3.637-4.348a.625.625 0 0 1 .067.281v.82a.614.614 0 0 1-.11.354 3.363 3.363 0 0 1-2.631 1.18c-1.402 0-2.452-.791-2.452-2.063 0-1.271 1.05-2.087 2.452-2.087a3.113 3.113 0 0 1 2.674 1.515Z" fill="#191715"/>
+                        </svg>
+                      </td>
+                      <td align="right" style="vertical-align: middle">
+
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <!-- END HEADER -->
+              <!-- START:: second header -->
+              <tr>
+                <td class="wrapper" style="background-color: #f8f8f8;padding: 36px 0;">
+                  <table>
+                    <tr>
+                      <td align="center" style="background: #f8f8f8;vertical-align: middle; font-size: 0; line-height: 0;">
+
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M4 12V49.001C4 50.104 4.897 51.001 6 51.001H58C59.103 51.001 60 50.104 60 49.001V12H4ZM32.003 31.396L9.531 15H54.474L32.003 31.396ZM7 48.001V15.629L31.414 33.441C31.445 33.464 31.482 33.474 31.515 33.492C31.547 33.51 31.577 33.526 31.61 33.541C31.737 33.596 31.869 33.634 32.002 33.634H32.003H32.004C32.138 33.634 32.269 33.597 32.396 33.542C32.43 33.528 32.46 33.511 32.492 33.493C32.525 33.474 32.561 33.465 32.592 33.442L57 15.632V48.001H7Z" fill="#6BB324"/>
+                        </svg>
+                          
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center" style="vertical-align: middle">
+                        <h1 style="margin: 10px 0 0">DFT TOOL DETAILS</h1>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <!-- END: Second header -->
+
+              <!-- START MAIN CONTENT AREA -->
+              <tr>
+                <td class="wrapper main-content">
+                  <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td>
+                        <p><strong>Hello ${orgname},</strong></p>
+                        <p>The DFT tool successfully activated for your use.<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                        <p>Please click <a href="${dftFrontEndUrl}">here</a> to start using it.<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                        <p>Note: You need to use your Catena-X login credential to login DFT tool.<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                      </table>
+                        <p>Kind Regards<br/>Catina-X</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <!-- END MAIN CONTENT AREA -->
+            </table>
+            
+
+          </div>
+        </td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </body>
+</html>
