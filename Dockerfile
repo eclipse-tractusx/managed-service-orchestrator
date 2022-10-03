@@ -19,13 +19,15 @@
 #********************************************************************************/
 
 #FROM openjdk:19-jdk-alpine3.16
-FROM maven:latest
+#FROM maven:latest
+FROM maven:3.8.6-eclipse-temurin-19-focal
 
 #RUN apk update && apk add maven && apk add --upgrade maven
 
-#RUN apt-get update -y && apt-get install -y nocache
+RUN apt-get update -y && apt-get install -y nocache
 
 #RUN  && apk add --upgrade openssl
+
 WORKDIR /app
 
 COPY . /app
