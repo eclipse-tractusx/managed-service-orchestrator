@@ -16,6 +16,7 @@ RUN mvn package
 # our final base image
 FROM eclipse-temurin:18.0.1_10-jre
 
+RUN groupadd -g ${gid} ${group} && useradd -u ${uid} -g ${group} -s /bin/sh ${user}
 
 ARG user=appuser
 ARG group=appgroup
