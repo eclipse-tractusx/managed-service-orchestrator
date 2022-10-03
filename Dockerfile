@@ -16,6 +16,8 @@ RUN mvn package
 # our final base image
 FROM eclipse-temurin:18.0.1_10-jre
 
+RUN useradd -u 1000 appuser 
+
 
 
 ARG UID=1000
@@ -27,9 +29,9 @@ WORKDIR /autosetup
 # copy over the built artifact from the maven image
 COPY --chown=1000:3000 --from=build target/*.jar ./app.jar
 
-#RUN chown ${UID}:${GID} /autosetup
+RUN chown ${UID}:${GID} /autosetup
 
-#USER ${UID}:${GID}
+USER ${UID}:${GID}
 
 #RUN chown -R 1000:3000 /autosetup
 #USER 1000:3000
