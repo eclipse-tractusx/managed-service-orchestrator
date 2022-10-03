@@ -18,7 +18,7 @@ FROM eclipse-temurin:18.0.1_10-jre
 
 
 ARG user=appuser
-ARG group=appuser
+ARG group=appgroup
 
 ARG UID=2000
 ARG GID=3000
