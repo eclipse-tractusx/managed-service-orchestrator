@@ -26,8 +26,7 @@
 
 FROM maven:3.8.5-openjdk-18-slim as build
 
-# copy the project files
-COPY ./pom.xml /pom.xml
+
 
 RUN apt-get update -y && apt-get install -y nocache
 
@@ -39,15 +38,10 @@ COPY . /app
 
 RUN mvn clean install -Dmaven.test.skip=true 
 
-#WORKDIR target
+WORKDIR /target
 
 #RUN mv kubeapps-wrapper-0.0.1.jar orchestrator-service.jar 
 
-COPY --chown=${UID}:${GID} --from=build target/*.jar ./app.jar
-
-RUN chown ${UID}:${GID} /dft
-
-USER ${UID}:${GID}
 
 ENTRYPOINT ["java","-jar","auto-setup-0.0.1.jar"]
 
