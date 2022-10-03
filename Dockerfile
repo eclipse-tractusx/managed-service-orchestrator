@@ -16,6 +16,8 @@ RUN mvn package
 # our final base image
 FROM eclipse-temurin:18.0.1_10-jre
 
+
+
 ARG UID=1000
 ARG GID=3000
 
@@ -29,8 +31,8 @@ COPY --chown=1000:3000 --from=build target/*.jar ./app.jar
 
 #USER ${UID}:${GID}
 
-RUN chown -R 1000:3000 /autosetup
-USER 1000:3000
+#RUN chown -R 1000:3000 /autosetup
+#USER 1000:3000
 
 # set the startup command to run your binary
 CMD ["java", "-jar", "./app.jar"]
