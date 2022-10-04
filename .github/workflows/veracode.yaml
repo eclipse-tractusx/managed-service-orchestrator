@@ -32,7 +32,7 @@ jobs:
       - name: Run Veracode Upload And Scan
         uses: veracode/veracode-uploadandscan-action@0.2.1
         with:
-          appname: "product-autosetup-backend"
+          appname: "DFT AutoSetup"
           createprofile: false
           filepath: "./target/dft-*.jar"
           vid: "${{ secrets.ORG_VERACODE_API_ID }}"
