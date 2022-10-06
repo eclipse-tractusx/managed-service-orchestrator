@@ -34,6 +34,6 @@ jobs:
         with:
           appname: "DFT AutoSetup"
           createprofile: false
-          filepath: "./target/dft-*.jar"
+          filepath: "./target/*.jar"
           vid: "${{ secrets.ORG_VERACODE_API_ID }}"
           vkey: "${{ secrets.ORG_VERACODE_API_KEY }}"
