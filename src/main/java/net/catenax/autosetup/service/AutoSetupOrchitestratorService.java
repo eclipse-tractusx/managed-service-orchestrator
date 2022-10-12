@@ -27,10 +27,10 @@ import static net.catenax.autosetup.constant.TriggerStatusEnum.INPROGRESS;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -45,11 +45,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.catenax.autosetup.constant.AppActions;
-import net.catenax.autosetup.constant.ToolType;
 import net.catenax.autosetup.constant.TriggerStatusEnum;
-import net.catenax.autosetup.entity.AppServiceCatalog;
+import net.catenax.autosetup.entity.AppServiceCatalogAndCustomerMapping;
 import net.catenax.autosetup.entity.AutoSetupTriggerEntry;
 import net.catenax.autosetup.exception.NoDataFoundException;
+import net.catenax.autosetup.exception.ServiceException;
 import net.catenax.autosetup.exception.ValidationException;
 import net.catenax.autosetup.kubeapps.proxy.KubeAppManageProxy;
 import net.catenax.autosetup.manager.AutoSetupTriggerManager;
@@ -62,7 +62,6 @@ import net.catenax.autosetup.model.AutoSetupRequest;
 import net.catenax.autosetup.model.Customer;
 import net.catenax.autosetup.model.DFTUpdateRequest;
 import net.catenax.autosetup.model.SelectedTools;
-import net.catenax.autosetup.repository.AppServiceCatalogRepository;
 import net.catenax.autosetup.repository.AutoSetupTriggerEntryRepository;
 
 @Service
@@ -90,7 +89,7 @@ public class AutoSetupOrchitestratorService {
 	private AutoSetupTriggerEntryRepository autoSetupTriggerEntryRepository;
 
 	@Autowired
-	private AppServiceCatalogRepository appServiceCatalogRepository;
+	private AppDetailsService appDetailsService;
 
 	@Autowired
 	private EmailManager emailManager;
@@ -101,6 +100,11 @@ public class AutoSetupOrchitestratorService {
 	@Value("${portal.email.address}")
 	private String portalEmail;
 
+	
+	@Value("${manual.update}")
+	private boolean manualUpdate;
+	
+	
 	public String getAllInstallPackages() {
 		return kubeAppManageProxy.getAllInstallPackages();
 	}
@@ -109,8 +113,7 @@ public class AutoSetupOrchitestratorService {
 
 	public String createPackage(AutoSetupRequest autoSetupRequest) {
 
-		List<SelectedTools> toolsToBeInstall = verifyIsServiceGetToolInfo(
-				autoSetupRequest.getProperties().getServiceId());
+		List<AppServiceCatalogAndCustomerMapping> appCatalogDetails = verifyIsServiceValid(autoSetupRequest);
 
 		String uuID = UUID.randomUUID().toString();
 
@@ -138,7 +141,7 @@ public class AutoSetupOrchitestratorService {
 				kubeAppManageProxy.createNamespace(targetCluster, targetNamespace);
 			}
 
-			proceessTrigger(autoSetupRequest, CREATE, trigger, inputConfiguration, toolsToBeInstall);
+			proceessTrigger(autoSetupRequest, CREATE, trigger, inputConfiguration, appCatalogDetails);
 		};
 
 		new Thread(runnable).start();
@@ -148,8 +151,7 @@ public class AutoSetupOrchitestratorService {
 
 	public String updatePackage(AutoSetupRequest autoSetupRequest, String triggerId) {
 
-		List<SelectedTools> toolsToBeInstall = verifyIsServiceGetToolInfo(
-				autoSetupRequest.getProperties().getServiceId());
+		List<AppServiceCatalogAndCustomerMapping> appCatalogDetails = verifyIsServiceValid(autoSetupRequest);
 
 		AutoSetupTriggerEntry trigger = autoSetupTriggerEntryRepository.findAllByTriggerId(triggerId);
 
@@ -198,7 +200,7 @@ public class AutoSetupOrchitestratorService {
 				AutoSetupTriggerEntry updatedtrigger = autoSetupTriggerManager
 						.updateTriggerAutoSetupRequest(autoSetupRequest, trigger, UPDATE);
 
-				proceessTrigger(autoSetupRequest, CREATE, updatedtrigger, inputConfiguration, toolsToBeInstall);
+				proceessTrigger(autoSetupRequest, CREATE, updatedtrigger, inputConfiguration, appCatalogDetails);
 
 			};
 
@@ -211,14 +213,24 @@ public class AutoSetupOrchitestratorService {
 		return triggerId;
 	}
 
-	private List<SelectedTools> verifyIsServiceGetToolInfo(String serviceId) {
+	private List<AppServiceCatalogAndCustomerMapping> verifyIsServiceValid(AutoSetupRequest autoSetupRequest) {
 
-		AppServiceCatalog appCatalog = Optional
-				.ofNullable(appServiceCatalogRepository.findTop1ByRefServiceId(serviceId))
-				.orElseThrow(() -> new ValidationException(
-						"The service Id " + serviceId + " is not supported for auto-setup"));
+		// In future if want to support multiple service as installation we can make
+		// changes here
+		String serviceId = autoSetupRequest.getProperties().getServiceId();
+		List<String> ids = Arrays.asList(serviceId);
+
+		List<AppServiceCatalogAndCustomerMapping> findAllById = appDetailsService.findByServiceIds(ids);
+		if (findAllById.isEmpty())
+			throw new ValidationException("The service Id " + serviceId + " is not supported for auto-setup");
+
+		return findAllById;
+	}
+
+	private List<SelectedTools> getToolInfo(AppServiceCatalogAndCustomerMapping appCatalog) {
+
 		try {
-			String jsonStr = appCatalog.getServiceTools();
+			String jsonStr = appCatalog.getServiceCatalog().getServiceTools();
 
 			if (jsonStr != null && !jsonStr.isEmpty()) {
 				return mapper.readValue(jsonStr, new TypeReference<List<SelectedTools>>() {
@@ -254,7 +266,7 @@ public class AutoSetupOrchitestratorService {
 	}
 
 	private void proceessTrigger(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
-			Map<String, String> inputConfiguration, List<SelectedTools> toolsToBeInstall) {
+			Map<String, String> inputConfiguration, List<AppServiceCatalogAndCustomerMapping> appCatalogListDetails) {
 
 		try {
 
@@ -262,41 +274,29 @@ public class AutoSetupOrchitestratorService {
 
 			trigger.setTriggerType(action.name());
 
-			List<SelectedTools> edcToollist = toolsToBeInstall.stream()
-					.filter(e -> ToolType.EDC.equals(e.getTool())).toList();
+			for (AppServiceCatalogAndCustomerMapping appCatalogDetails : appCatalogListDetails) {
 
-			edcToollist.forEach(tool -> {
-				Map<String, String> edcOutput = edcConnectorWorkFlow.getWorkFlow(autoSetupRequest.getCustomer(), tool,
-						action, inputConfiguration, trigger);
-				inputConfiguration.putAll(edcOutput);
-			});
+				List<SelectedTools> selectedTools = getToolInfo(appCatalogDetails);
 
-			List<SelectedTools> dftToollist = toolsToBeInstall.stream()
-					.filter(e -> ToolType.DFT.equals(e.getTool())).toList();
+				for (SelectedTools selectedTool : selectedTools) {
 
-			for (SelectedTools tool : dftToollist) {
+					switch (selectedTool.getTool()) {
 
-				Map<String, String> map = dftWorkFlow.getWorkFlow(autoSetupRequest.getCustomer(), tool, action,
-						inputConfiguration, trigger);
+					case DFT_WITH_EDC:
 
-				// Send an email
-				Map<String, Object> emailContent = new HashMap<>();
+						executeDFTWithEDC(autoSetupRequest, action, trigger, inputConfiguration, customer,
+								selectedTool);
 
-				emailContent.put("helloto", "Team");
-				emailContent.put("orgname", customer.getOrganizationName());
-				emailContent.put(DFT_FRONTEND_URL, map.get(DFT_FRONTEND_URL));
-				emailContent.put(DFT_BACKEND_URL, map.get(DFT_BACKEND_URL));
-				emailContent.put("toemail", portalEmail);
+						break;
+					case EDC:
 
-				// End of email sending code
-				emailManager.sendEmail(emailContent, "DFT Application Deployed Successfully", "success.html");
-				log.info("Email sent successfully");
+						executeEDC(autoSetupRequest, action, trigger, inputConfiguration, selectedTool);
 
-				String json = autoSetupTriggerMapper.fromMaptoStr(extractResultMap(map));
-
-				trigger.setAutosetupResult(json);
-
-				trigger.setStatus(TriggerStatusEnum.MANUAL_UPDATE_PENDING.name());
+						break;
+					default:
+						throw new ServiceException(selectedTool.getTool() + " is not supported for auto setup");
+					}
+				}
 
 				log.info("All Packages created/updated successfully!!!!");
 			}
@@ -307,7 +307,6 @@ public class AutoSetupOrchitestratorService {
 			trigger.setAutosetupResult("");
 			trigger.setStatus(TriggerStatusEnum.FAILED.name());
 			trigger.setRemark(e.getMessage());
-
 		}
 
 		LocalDateTime now = LocalDateTime.now();
@@ -316,36 +315,134 @@ public class AutoSetupOrchitestratorService {
 		autoSetupTriggerManager.saveTriggerUpdate(trigger);
 	}
 
+	private void executeEDC(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
+			Map<String, String> inputConfiguration, SelectedTools selectedTool) {
+
+		String label = selectedTool.getLabel();
+		selectedTool.setLabel("edc-" + label);
+		
+		Map<String, String> edcOutput = edcConnectorWorkFlow.getWorkFlow(autoSetupRequest.getCustomer(), selectedTool,
+				action, inputConfiguration, trigger);
+		inputConfiguration.putAll(edcOutput);
+
+		String json = autoSetupTriggerMapper.fromMaptoStr(extractEDCResultMap(edcOutput));
+
+		trigger.setAutosetupResult(json);
+
+		trigger.setStatus(TriggerStatusEnum.SUCCESS.name());
+		
+		Customer customer =autoSetupRequest.getCustomer();
+		// Send an email
+		Map<String, Object> emailContent = new HashMap<>();
+		emailContent.put("orgname", customer.getOrganizationName());
+		emailContent.putAll(edcOutput);
+		emailContent.put("toemail", customer.getEmail());
+		emailContent.put("ccemail", portalEmail);
+
+		emailManager.sendEmail(emailContent, "EDC Application Activited Successfully", "edc_success_activate.html");
+		log.info("Email sent successfully");
+	}
+
+	private void executeDFTWithEDC(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
+			Map<String, String> inputConfiguration, Customer customer, SelectedTools selectedTool) {
+
+		String label = selectedTool.getLabel();
+		selectedTool.setLabel("edc-" + label);
+
+		Map<String, String> edcOutput = edcConnectorWorkFlow.getWorkFlow(autoSetupRequest.getCustomer(), selectedTool,
+				action, inputConfiguration, trigger);
+		inputConfiguration.putAll(edcOutput);
+
+		selectedTool.setLabel("dft-" + label);
+		Map<String, String> map = dftWorkFlow.getWorkFlow(autoSetupRequest.getCustomer(), selectedTool, action,
+				inputConfiguration, trigger);
+
+		if (manualUpdate) {
+			// Send an email
+			Map<String, Object> emailContent = new HashMap<>();
+
+			emailContent.put("helloto", "Team");
+			emailContent.put("orgname", customer.getOrganizationName());
+			emailContent.put(DFT_FRONTEND_URL, map.get(DFT_FRONTEND_URL));
+			emailContent.put(DFT_BACKEND_URL, map.get(DFT_BACKEND_URL));
+			emailContent.put("toemail", portalEmail);
+
+			// End of email sending code
+			emailManager.sendEmail(emailContent, "DFT Application Deployed Successfully", "success.html");
+			log.info("Email sent successfully");
+			trigger.setStatus(TriggerStatusEnum.MANUAL_UPDATE_PENDING.name());
+			
+		} else {
+			
+			trigger.setStatus(TriggerStatusEnum.SUCCESS.name());
+			// Send an email
+			Map<String, Object> emailContent = new HashMap<>();
+			emailContent.put("orgname", customer.getOrganizationName());
+			emailContent.put("dftFrontEndUrl", map.get("dftFrontEndUrl"));
+			emailContent.put("toemail", customer.getEmail());
+			emailContent.put("ccemail", portalEmail);
+
+			emailManager.sendEmail(emailContent, "DFT Application Activited Successfully", "success_activate.html");
+			log.info("Email sent successfully");
+			// End of email sending code
+
+		}
+
+		String json = autoSetupTriggerMapper.fromMaptoStr(extractResultMap(map));
+
+		trigger.setAutosetupResult(json);
+
+	}
+
 	private void processDeleteTrigger(AutoSetupTriggerEntry trigger, Map<String, String> inputConfiguration) {
 
 		if (trigger != null && trigger.getAutosetupRequest() != null) {
 			AutoSetupRequest autoSetupRequest = autoSetupRequestMapper.fromStr(trigger.getAutosetupRequest());
-			
-			List<SelectedTools> toolsToBeInstall = verifyIsServiceGetToolInfo(
-					autoSetupRequest.getProperties().getServiceId());
 
-			if (toolsToBeInstall != null) {
-				List<SelectedTools> edcToollist = toolsToBeInstall.stream()
-						.filter(e -> ToolType.EDC.equals(e.getTool())).toList();
+			List<AppServiceCatalogAndCustomerMapping> appCatalogListDetails = verifyIsServiceValid(autoSetupRequest);
 
-				edcToollist.forEach(tool -> {
-					edcConnectorWorkFlow.deletePackageWorkFlow(tool, inputConfiguration, trigger);
-				});
+			// In future if want to support multiple service as installation we can do
+			// easily
+			for (AppServiceCatalogAndCustomerMapping appCatalogDetails : appCatalogListDetails) {
 
-				List<SelectedTools> dftToollist = toolsToBeInstall.stream()
-						.filter(e -> ToolType.DFT.equals(e.getTool())).toList();
+				if (appCatalogDetails != null) {
+					List<SelectedTools> selectedTools = getToolInfo(appCatalogDetails);
 
-				dftToollist.forEach(tool -> {
-					dftWorkFlow.deletePackageWorkFlow(tool, inputConfiguration, trigger);
-				});
+					for (SelectedTools selectedTool : selectedTools) {
 
-				trigger.setStatus(TriggerStatusEnum.SUCCESS.name());
+						String label = "";
+						switch (selectedTool.getTool()) {
 
-				autoSetupTriggerManager.saveTriggerUpdate(trigger);
+						case DFT_WITH_EDC:
 
-				log.info("All Packages deleted successfully!!!!");
-			} else
-				log.info("For Packages deletion autoSetupRequest.getSelectedTools is null");
+							label = selectedTool.getLabel();
+							selectedTool.setLabel("edc-" + label);
+							edcConnectorWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
+							selectedTool.setLabel("dft-" + label);
+							dftWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
+
+							break;
+						case EDC:
+
+							label = selectedTool.getLabel();
+							selectedTool.setLabel("edc-" + label);
+							edcConnectorWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
+
+							break;
+						default:
+							throw new ServiceException(selectedTool.getTool() + " is not supported for auto setup");
+						}
+					}
+
+					trigger.setStatus(TriggerStatusEnum.SUCCESS.name());
+
+					autoSetupTriggerManager.saveTriggerUpdate(trigger);
+
+					log.info("All Packages deleted successfully!!!!");
+				} else
+					log.info("For Packages deletion autoSetupRequest.getSelectedTools is null");
+			}
+
 		} else
 			log.info("For Packages deletion the Autosetup Request is null");
 	}
@@ -359,9 +456,8 @@ public class AutoSetupOrchitestratorService {
 
 			AutoSetupRequest autosetupRequest = autoSetupRequestMapper.fromStr(trigger.getAutosetupRequest());
 
-			List<SelectedTools> toolsToBeInstall = verifyIsServiceGetToolInfo(
-					autosetupRequest.getProperties().getServiceId());
-			
+			List<AppServiceCatalogAndCustomerMapping> appCatalogDetails = verifyIsServiceValid(autosetupRequest);
+
 			Map<String, String> inputConfiguration = inputConfigurationManager
 					.prepareInputConfiguration(autosetupRequest, triggerId);
 
@@ -373,7 +469,7 @@ public class AutoSetupOrchitestratorService {
 					autoSetupTriggerManager.saveTriggerUpdate(trigger);
 
 					Map<String, String> output = manualDFTPackageUpdateManager.manualPackageUpdate(autosetupRequest,
-							dftUpdateRequest, inputConfiguration, trigger, toolsToBeInstall);
+							dftUpdateRequest, inputConfiguration, trigger, appCatalogDetails);
 
 					String json = autoSetupTriggerMapper.fromMaptoStr(extractResultMap(output));
 
@@ -413,6 +509,16 @@ public class AutoSetupOrchitestratorService {
 		dft.put(DFT_BACKEND_URL, outputMap.get(DFT_BACKEND_URL));
 		processResult.add(dft);
 
+		Map<String, String> edc = extractEDCResultMap(outputMap).get(0);
+		processResult.add(edc);
+
+		return processResult;
+	}
+
+	private List<Map<String, String>> extractEDCResultMap(Map<String, String> outputMap) {
+
+		List<Map<String, String>> processResult = new ArrayList<>();
+
 		Map<String, String> edc = new ConcurrentHashMap<>();
 		edc.put("name", "EDC");
 		edc.put("controlPlaneEndpoint", outputMap.get("controlPlaneEndpoint"));
@@ -424,8 +530,6 @@ public class AutoSetupOrchitestratorService {
 
 		return processResult;
 	}
-
-
 
 	private boolean checkNamespaceisExist(String targetNamespace) {
 

@@ -45,13 +45,11 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
 
 	@ExceptionHandler(ServiceException.class)
 	public ResponseEntity<String> handleServiceException(ServiceException ex, WebRequest request) {
-
 		return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> handlePSQLException(Exception ex, WebRequest request) {
-
 		return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 

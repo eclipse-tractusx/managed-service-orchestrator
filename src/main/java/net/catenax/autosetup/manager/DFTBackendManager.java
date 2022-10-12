@@ -25,6 +25,7 @@ import static net.catenax.autosetup.constant.AppNameConstant.DFT_BACKEND;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.retry.support.RetrySynchronizationManager;
@@ -51,14 +52,16 @@ public class DFTBackendManager {
 
 	private final PortalIntegrationManager portalIntegrationManager;
 
+	@Value("${manual.update}")
+	private boolean manualUpdate;
+
 	@Retryable(value = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
 	public Map<String, String> managePackage(Customer customerDetails, AppActions action, SelectedTools tool,
 			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
 
 		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
-				.id(UUID.randomUUID().toString()).step(DFT_BACKEND.name())
-				.build();
+				.id(UUID.randomUUID().toString()).step(DFT_BACKEND.name()).build();
 		try {
 			String dnsName = inputData.get("dnsName");
 			String dnsNameURLProtocol = inputData.get("dnsNameURLProtocol");
@@ -69,17 +72,20 @@ public class DFTBackendManager {
 			String dftfrontend = dnsNameURLProtocol + "://" + dnsName;
 
 			String generateRandomPassword = PasswordGenerator.generateRandomPassword(50);
-			
+
 			inputData.put("dftBackEndUrl", backendurl);
 			inputData.put("dftBackEndApiKey", generateRandomPassword);
 			inputData.put("dftBackEndApiKeyHeader", "API_KEY");
 			inputData.put("dftFrontEndUrl", dftfrontend);
-
-			//Map<String, String> portalDetails = portalIntegrationManager.postServiceInstanceResultAndGetTenantSpecs(inputData);
-			//inputData.putAll(portalDetails);
+			
+			if (!manualUpdate) {
+				Map<String, String> portalDetails = portalIntegrationManager
+						.postServiceInstanceResultAndGetTenantSpecs(inputData);
+				inputData.putAll(portalDetails);
+			}
 
 			String packageName = tool.getLabel();
-			
+
 			String dftDb = "jdbc:postgresql://" + packageName + "-postgresdb-postgresql:5432/postgres";
 			inputData.put("dftdatabaseurl", dftDb);
 

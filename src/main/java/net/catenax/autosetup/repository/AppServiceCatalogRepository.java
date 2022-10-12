@@ -6,6 +6,4 @@ import net.catenax.autosetup.entity.AppServiceCatalog;
 
 public interface AppServiceCatalogRepository extends JpaRepository<AppServiceCatalog, String> {
 
-	public AppServiceCatalog findTop1ByRefServiceId(String serviceId);
-
 }

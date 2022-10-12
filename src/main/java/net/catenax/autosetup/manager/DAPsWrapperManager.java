@@ -57,20 +57,29 @@ public class DAPsWrapperManager {
 
 	@Value("${dapswrapper.url}")
 	private URI dapsRegistrationUrl;
+	
+	
+	
 	@Value("${dapswrapper.daps.url}")
 	private String dapsurl;
+	
 	@Value("${dapswrapper.daps.jskurl}")
 	private String dapsjsksurl;
-	@Value("${dapswrapper.keycloak.resource}")
-	private String client;
-	@Value("${dapswrapper.keycloak.username}")
-	private String username;
-	@Value("${dapswrapper.keycloak.password}")
-	private String password;
-	@Value("${dapswrapper.keycloak.tokenuri}")
-	private URI tokenURI;
+	
 	@Value("${dapswrapper.daps.token.url}")
 	private String dapstokenurl;
+	
+	
+	
+	@Value("${dapswrapper.keycloak.clientId}")
+	private String clientId;
+	
+	@Value("${dapswrapper.keycloak.clientSecret}")
+	private String clientSecret;
+	
+	@Value("${dapswrapper.keycloak.tokenURI}")
+	private URI tokenURI;
+	
 
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
 	private final DAPsWrapperProxy dapsWrapperProxy;
@@ -115,6 +124,7 @@ public class DAPsWrapperManager {
 
 			log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName) + "-DAPS package created");
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
+			
 		} catch (Exception ex) {
 
 			log.error("DAPsWrapperManager failed retry attempt: : {}",
@@ -139,10 +149,9 @@ public class DAPsWrapperManager {
 	@SneakyThrows
 	public String getKeycloakToken() {
 		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-		body.add("grant_type", OAuth2Constants.PASSWORD);
-		body.add("client_id", client);
-		body.add("username", username);
-		body.add("password", password);
+		body.add(OAuth2Constants.GRANT_TYPE, OAuth2Constants.CLIENT_CREDENTIALS);
+		body.add(OAuth2Constants.CLIENT_ID, clientId);
+		body.add(OAuth2Constants.CLIENT_SECRET, clientSecret);
 		var resultBody = dapsWrapperProxy.readAuthToken(tokenURI, body);
 
 		if (resultBody != null) {

@@ -22,6 +22,6 @@ package net.catenax.autosetup.constant;
 
 public enum ToolType {
 
-	DFT, EDC
+	DFT_WITH_EDC, DFT, EDC
 
 }

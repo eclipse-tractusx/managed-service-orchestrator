@@ -29,10 +29,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServiceInstanceResultResponse {
+public class TechnicalUserInfo {
 
-	private TechnicalUserInfo technicalUserInfo;
-
-	private ClientInfo clientInfo;
-
+	private String technicalUserId;
+	
+	private String technicalUserSecret;
+	
+	private String technicalClientId;
 }

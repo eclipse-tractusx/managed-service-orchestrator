@@ -27,20 +27,25 @@ import org.springframework.stereotype.Service;
 
 import net.catenax.autosetup.entity.AppDetails;
 import net.catenax.autosetup.entity.AppServiceCatalog;
+import net.catenax.autosetup.entity.AppServiceCatalogAndCustomerMapping;
 import net.catenax.autosetup.exception.NoDataFoundException;
 import net.catenax.autosetup.mapper.AppDetailsMapper;
 import net.catenax.autosetup.model.AppDetailsRequest;
 import net.catenax.autosetup.repository.AppRepository;
 import net.catenax.autosetup.repository.AppServiceCatalogRepository;
+import net.catenax.autosetup.repository.AppServiceCatalogRepositoryMapping;
 
 @Service
 public class AppDetailsService {
 
 	@Autowired
 	private AppRepository appRepository;
-	
+
 	@Autowired
 	private AppServiceCatalogRepository appServiceCatalogRepository;
+
+	@Autowired
+	private AppServiceCatalogRepositoryMapping appServiceCatalogRepositoryMapping;
 
 	@Autowired
 	private AppDetailsMapper appDetailsMapper;
@@ -62,6 +67,34 @@ public class AppDetailsService {
 
 	public AppServiceCatalog createCatalogService(AppServiceCatalog appServiceCatalog) {
 		return appServiceCatalogRepository.save(appServiceCatalog);
+	}
+
+	public AppServiceCatalog getCatalogService(String appServiceCatalogId) {
+		return appServiceCatalogRepository.findById(appServiceCatalogId)
+				.orElseThrow(() -> new NoDataFoundException("No data found for " + appServiceCatalogId));
+	}
+
+	public List<AppServiceCatalog> getAllCatalogService() {
+		return appServiceCatalogRepository.findAll();
+	}
+
+	public AppServiceCatalogAndCustomerMapping createCatalogServiceMapping(
+			AppServiceCatalogAndCustomerMapping appServiceCatalogAndCustomerMapping) {
+		appServiceCatalogAndCustomerMapping
+				.setServiceCatalog(getCatalogService(appServiceCatalogAndCustomerMapping.getCanonicalId()));
+		return appServiceCatalogRepositoryMapping.save(appServiceCatalogAndCustomerMapping);
+	}
+
+	public AppServiceCatalogAndCustomerMapping getCatalogServiceMapping(String appServiceId) {
+		return appServiceCatalogRepositoryMapping.findTop1ByServiceId(appServiceId);
+	}
+	
+	public List<AppServiceCatalogAndCustomerMapping> findByServiceIds(List<String> appServiceIds) {
+		return appServiceCatalogRepositoryMapping.findAllByServiceIdIn(appServiceIds);
+	}
+
+	public List<AppServiceCatalogAndCustomerMapping> getAllCatalogServiceMapping() {
+		return appServiceCatalogRepositoryMapping.findAll();
 	}
 
 }

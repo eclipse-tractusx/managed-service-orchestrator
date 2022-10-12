@@ -18,21 +18,18 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.portal.model;
+CREATE TABLE app_service_catalog_tbl (
+	canonical_service_id varchar(255) NOT NULL,
+	"name" varchar(255) NULL,
+	service_tools varchar(255) NULL,
+	workflow varchar(255) NULL,
+	CONSTRAINT app_service_catalog_tbl_pkey PRIMARY KEY (canonical_service_id)
+);
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+INSERT INTO app_service_catalog_tbl
+(canonical_service_id, "name", service_tools, workflow)
+VALUES('DFT-WITH-EDC', 'DFT-WITH-EDC', '[{"tool": "DFT_WITH_EDC","label": "dftwthedc"}]', 'EDC_DFT');
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class ServiceInstanceResultResponse {
-
-	private TechnicalUserInfo technicalUserInfo;
-
-	private ClientInfo clientInfo;
-
-}
+INSERT INTO app_service_catalog_tbl
+(canonical_service_id, "name", service_tools, workflow)
+VALUES('EDC', 'EDC', '[{"tool": "EDC","label": "edc"}]', 'EDC');

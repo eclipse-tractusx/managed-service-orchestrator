@@ -37,6 +37,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import net.catenax.autosetup.entity.AppDetails;
 import net.catenax.autosetup.entity.AppServiceCatalog;
+import net.catenax.autosetup.entity.AppServiceCatalogAndCustomerMapping;
 import net.catenax.autosetup.model.AppDetailsRequest;
 import net.catenax.autosetup.service.AppDetailsService;
 
@@ -72,13 +73,54 @@ public class AppDetailsController {
 	public List<AppDetails> getAllAppInfo() {
 		return appDetailsService.getAppDetails();
 	}
-	
+
 	@Operation(summary = "This will create catalog service in auto setup database for auto setup", description = "This will create catalog service in auto setup database for auto setup")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "OK", content = @Content(array = @ArraySchema(schema = @Schema(implementation = AppServiceCatalog.class)))) })
-	@PostMapping("/internal/create-catalog-service")
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = AppServiceCatalog.class))) })
+	@PostMapping("/internal/catalog-service")
 	public AppServiceCatalog createCatalogService(@RequestBody AppServiceCatalog appServiceCatalog) {
 		return appDetailsService.createCatalogService(appServiceCatalog);
+	}
+
+	@Operation(summary = "This will get catalog service in auto setup database for auto setup", description = "This will get catalog service in auto setup database for auto setup")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = AppServiceCatalog.class))) })
+	@GetMapping("/internal/catalog-service/{id}")
+	public AppServiceCatalog getCatalogService(@PathVariable("id") String id) {
+		return appDetailsService.getCatalogService(id);
+	}
+
+	@Operation(summary = "This will get all catalog service in auto setup database for auto setup", description = "This will get all catalog service in auto setup database for auto setup")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(array = @ArraySchema(schema = @Schema(implementation = AppServiceCatalog.class)))) })
+	@GetMapping("/internal/catalog-service")
+	public List<AppServiceCatalog> getAllCatalogService() {
+		return appDetailsService.getAllCatalogService();
+	}
+
+	@Operation(summary = "This will create catalog service mapping with customer in auto setup database for auto setup", description = "This will create catalog service mapping with customer in auto setup database for auto setup")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = AppServiceCatalogAndCustomerMapping.class))) })
+	@PostMapping("/internal/catalog-service-mapping")
+	public AppServiceCatalogAndCustomerMapping createCatalogServiceMapping(
+			@RequestBody AppServiceCatalogAndCustomerMapping appServiceCatalogAndCustomerMapping) {
+		return appDetailsService.createCatalogServiceMapping(appServiceCatalogAndCustomerMapping);
+	}
+
+	@Operation(summary = "This will get catalog service mapping with customer in auto setup database for auto setup", description = "This will get catalog service mapping with customer in auto setup database for auto setup")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = AppServiceCatalogAndCustomerMapping.class))) })
+	@GetMapping("/internal/catalog-service-mapping/{id}")
+	public AppServiceCatalogAndCustomerMapping getCatalogServiceMapping(@PathVariable("id") String id) {
+		return appDetailsService.getCatalogServiceMapping(id);
+	}
+
+	@Operation(summary = "This will get catalog service mapping with customer in auto setup database for auto setup", description = "This will get catalog service mapping with customer in auto setup database for auto setup")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(array = @ArraySchema(schema = @Schema(implementation = AppServiceCatalogAndCustomerMapping.class)))) })
+	@GetMapping("/internal/catalog-service-mapping")
+	public List<AppServiceCatalogAndCustomerMapping> getAllCatalogServiceMapping() {
+		return appDetailsService.getAllCatalogServiceMapping();
 	}
 
 }

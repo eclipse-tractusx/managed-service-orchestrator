@@ -29,6 +29,6 @@ public class ServiceInstanceResultRequest {
 	
 	 private String requestId;
 	 
-	 private String appUrl;
+	 private String offerUrl;
 
 }

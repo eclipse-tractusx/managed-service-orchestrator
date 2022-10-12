@@ -53,6 +53,13 @@ public interface KubeAppManageProxy {
 			@PathVariable("packageVersion") String packageVersion, @PathVariable("clusterName") String clusterName,
 			@PathVariable("namespace") String namespace, @PathVariable("identifier") String identifier,
 			@RequestBody CreateInstalledPackageRequest createInstalledPackageRequest);
+	
+	@GetMapping(path = "/apis/core/packages/v1alpha1/installedpackages/plugin/{packageName}/{packageVersion}/c/{clusterName}/ns/{namespace}/{identifier}")
+	String getInstallPackageDetails(@PathVariable("packageName") String packageName,
+			@PathVariable("packageVersion") String packageVersion, @PathVariable("clusterName") String clusterName,
+			@PathVariable("namespace") String namespace, @PathVariable("identifier") String identifier,
+			@RequestBody CreateInstalledPackageRequest createInstalledPackageRequest);
+
 
 	@DeleteMapping(path = "/apis/core/packages/v1alpha1/installedpackages/plugin/{packageName}/{packageVersion}/c/{clusterName}/ns/{namespace}/{identifier}")
 	String deletePackage(@PathVariable("packageName") String packageName,

@@ -18,7 +18,17 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.portal.model;
+package net.catenax.autosetup.entity;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,10 +39,24 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServiceInstanceResultResponse {
-
-	private TechnicalUserInfo technicalUserInfo;
-
-	private ClientInfo clientInfo;
+@Entity
+@IdClass(value = AppServiceCatalogAndCustomerMappingId.class)
+@Table(name = "app_service_catalog_mapping_tbl")
+public class AppServiceCatalogAndCustomerMapping {
+	
+	@Id
+	@Column(name = "customer")
+	private String customer;
+	
+	@Id
+	@Column(name = "service_id")
+	private String serviceId;
+	
+	@OneToOne(targetEntity = AppServiceCatalog.class, cascade = CascadeType.ALL)
+	@JoinColumn(name = "canonical_service_id", referencedColumnName = "canonical_service_id")
+	private AppServiceCatalog serviceCatalog;
+	
+	@Transient
+	private String canonicalId;
 
 }

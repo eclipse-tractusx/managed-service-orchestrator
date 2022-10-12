@@ -20,25 +20,28 @@
 
 package net.catenax.autosetup.portal.proxy;
 
+import java.net.URI;
+import java.util.Map;
+
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import net.catenax.autosetup.model.KeycloakTokenResponse;
 import net.catenax.autosetup.portal.model.ServiceInstanceResultRequest;
 import net.catenax.autosetup.portal.model.ServiceInstanceResultResponse;
 
-@FeignClient(name = "PortalIntegrationProxy", url = "${portal.url}", configuration = PortalIntegrationConfiguration.class)
+@FeignClient(name = "PortalIntegrationProxy", url = "placeholder", configuration = PortalIntegrationConfiguration.class)
 public interface PortalIntegrationProxy {
 
-	@PostMapping(path = "/token")
-	KeycloakTokenResponse readAuthToken(@RequestParam("grant_type") String grant_type,
-			@RequestParam("client_id") String client_id, @RequestParam("client_secret") String client_secret,
-			@RequestParam("scope") String scope);
+	@PostMapping
+	KeycloakTokenResponse readAuthToken(URI url, @RequestBody MultiValueMap<String, Object> body);
 
-	@PostMapping(path = "/portal")
-	public ServiceInstanceResultResponse postServiceInstanceResultAndGetTenantSpecs(
+	@PostMapping("/api/Services/autoSetup")
+	public ServiceInstanceResultResponse postServiceInstanceResultAndGetTenantSpecs(URI url,
+			@RequestHeader Map<String, String> header,
 			@RequestBody ServiceInstanceResultRequest serviceInstanceResultRequest);
 
 }

@@ -29,9 +29,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.catenax.autosetup.constant.ToolType;
+import net.catenax.autosetup.entity.AppServiceCatalogAndCustomerMapping;
 import net.catenax.autosetup.entity.AutoSetupTriggerEntry;
 import net.catenax.autosetup.exception.ServiceException;
 import net.catenax.autosetup.mapper.AutoSetupTriggerMapper;
@@ -54,8 +57,11 @@ public class ManualDFTPackageUpdateManager {
 	@Value("${portal.email.address}")
 	private String portalEmail;
 
+	ObjectMapper mapper = new ObjectMapper();
+
 	public Map<String, String> manualPackageUpdate(AutoSetupRequest autosetupRequest, DFTUpdateRequest dftUpdateRequest,
-			Map<String, String> inputConfiguration, AutoSetupTriggerEntry trigger, List<SelectedTools> toolsToBeInstall) {
+			Map<String, String> inputConfiguration, AutoSetupTriggerEntry trigger,
+			List<AppServiceCatalogAndCustomerMapping> appCatalogDetails) {
 
 		Map<String, String> map = null;
 		try {
@@ -75,13 +81,16 @@ public class ManualDFTPackageUpdateManager {
 					.fromJsonStrToMap(trigger.getAutosetupResult());
 
 			autosetupResult.forEach(inputConfiguration::putAll);
-			
-			List<SelectedTools> dftToollist = toolsToBeInstall.stream()
-					.filter(e -> ToolType.DFT.equals(e.getTool())).toList();
 
-			for (SelectedTools element : dftToollist) {
+			for (AppServiceCatalogAndCustomerMapping appServiceCatalog : appCatalogDetails) {
 
-				dftWorkFlow.deletePackageWorkFlow(element, inputConfiguration, trigger);
+				List<SelectedTools> selectedTools = getToolInfo(appServiceCatalog);
+
+				for (SelectedTools selectedTool : selectedTools) {
+				String label = selectedTool.getLabel();
+				selectedTool.setLabel("dft-" + label);
+
+				dftWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
 
 				// Sleep thread to wait for existing package deletetion
 				log.info("Waiting after deleting DFT packages");
@@ -90,7 +99,7 @@ public class ManualDFTPackageUpdateManager {
 
 				Customer customer = autosetupRequest.getCustomer();
 
-				map = dftWorkFlow.getWorkFlow(customer, element, CREATE, inputConfiguration, trigger);
+				map = dftWorkFlow.getWorkFlow(customer, selectedTool, CREATE, inputConfiguration, trigger);
 
 				// Send an email
 				Map<String, Object> emailContent = new HashMap<>();
@@ -104,6 +113,7 @@ public class ManualDFTPackageUpdateManager {
 				// End of email sending code
 
 				log.info("DFT Manual package update successfully!!!!");
+				}
 			}
 
 		} catch (Exception e) {
@@ -113,4 +123,18 @@ public class ManualDFTPackageUpdateManager {
 		return map;
 	}
 
+	private List<SelectedTools> getToolInfo(AppServiceCatalogAndCustomerMapping appCatalog) {
+
+		try {
+			String jsonStr = appCatalog.getServiceCatalog().getServiceTools();
+
+			if (jsonStr != null && !jsonStr.isEmpty()) {
+				return mapper.readValue(jsonStr, new TypeReference<List<SelectedTools>>() {
+				});
+			}
+		} catch (Exception e) {
+			log.error("Error in parsing selected tools list");
+		}
+		return List.of();
+	}
 }
