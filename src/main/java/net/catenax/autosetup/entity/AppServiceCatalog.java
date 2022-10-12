@@ -42,7 +42,7 @@ public class AppServiceCatalog {
 	@Column(name = "canonical_service_id")
 	private String canonicalServiceId;
 	
-	@Column(name = "name")
+	@Column(name = "ct_name")
 	private String name;
 	
 	@Column(name = "workflow")
