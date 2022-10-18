@@ -67,7 +67,7 @@ public class EmailConfig {
     @Bean
     public Properties properties() {
         Properties props = new Properties();
-        props.put("mail.smtp.user", "Data_Intelligence_Hub_Login");
+        props.put("mail.smtp.user", username);
         props.put("mail.smtp.host", host);
         props.put("mail.smtp.port", port);
         props.put("mail.smtp.starttls.enable", startTlsEnable);
