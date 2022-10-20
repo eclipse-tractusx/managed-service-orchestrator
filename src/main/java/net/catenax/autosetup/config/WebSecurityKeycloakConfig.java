@@ -61,14 +61,14 @@ public class WebSecurityKeycloakConfig extends KeycloakWebSecurityConfigurerAdap
 		super.configure(http);
 
         CryptoIntegration.init(this.getClass().getClassLoader());
-		http.csrf().disable().cors()
-		.and().headers().frameOptions().sameOrigin()
-		.and().authorizeRequests().antMatchers(PUBLIC_URL).permitAll()
+        
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and().authorizeRequests().antMatchers(PUBLIC_URL).permitAll()
 //		.antMatchers(
 //				"/internal",
 //				"/internal/*").hasAnyRole("admin")
-		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and().authorizeRequests().anyRequest().authenticated();
+        .and().authorizeRequests().anyRequest().authenticated().and()
+        .csrf().disable().cors();
 
 	}
 	
