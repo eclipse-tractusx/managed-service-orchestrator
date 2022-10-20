@@ -113,7 +113,7 @@ public class DAPsWrapperManager {
 			body.add("clientName", targetNamespace + "-" + packageName);
 			body.add("referringConnector", referringConnector);
 			body.add("file", new FileSystemResource(file.toFile()));
-			Map<String, String> header = new HashMap<String, String>();
+			Map<String, String> header = new HashMap<>();
 			header.put("Authorization", "Bearer " + getKeycloakToken());
 
 			dapsWrapperProxy.registerClient(dapsRegistrationUrl, header, body);
@@ -138,6 +138,7 @@ public class DAPsWrapperManager {
 				Files.deleteIfExists(file);
 			} catch (IOException e) {
 				
+				log.error("Error in deleting cerificate file");			
 			}
 			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
 		}
