@@ -1,6 +1,6 @@
 /********************************************************************************
  * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+ * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,12 +18,12 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.service;
+package org.eclipse.tractusx.autosetup.service;
 
-import static net.catenax.autosetup.constant.AppActions.CREATE;
-import static net.catenax.autosetup.constant.AppActions.DELETE;
-import static net.catenax.autosetup.constant.AppActions.UPDATE;
-import static net.catenax.autosetup.constant.TriggerStatusEnum.INPROGRESS;
+import static org.eclipse.tractusx.autosetup.constant.AppActions.CREATE;
+import static org.eclipse.tractusx.autosetup.constant.AppActions.DELETE;
+import static org.eclipse.tractusx.autosetup.constant.AppActions.UPDATE;
+import static org.eclipse.tractusx.autosetup.constant.TriggerStatusEnum.INPROGRESS;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -44,26 +44,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import net.catenax.autosetup.constant.AppActions;
-import net.catenax.autosetup.constant.ToolType;
-import net.catenax.autosetup.constant.TriggerStatusEnum;
-import net.catenax.autosetup.entity.AppServiceCatalog;
-import net.catenax.autosetup.entity.AutoSetupTriggerEntry;
-import net.catenax.autosetup.exception.NoDataFoundException;
-import net.catenax.autosetup.exception.ValidationException;
-import net.catenax.autosetup.kubeapps.proxy.KubeAppManageProxy;
-import net.catenax.autosetup.manager.AutoSetupTriggerManager;
-import net.catenax.autosetup.manager.EmailManager;
-import net.catenax.autosetup.manager.InputConfigurationManager;
-import net.catenax.autosetup.manager.ManualDFTPackageUpdateManager;
-import net.catenax.autosetup.mapper.AutoSetupRequestMapper;
-import net.catenax.autosetup.mapper.AutoSetupTriggerMapper;
-import net.catenax.autosetup.model.AutoSetupRequest;
-import net.catenax.autosetup.model.Customer;
-import net.catenax.autosetup.model.DFTUpdateRequest;
-import net.catenax.autosetup.model.SelectedTools;
-import net.catenax.autosetup.repository.AppServiceCatalogRepository;
-import net.catenax.autosetup.repository.AutoSetupTriggerEntryRepository;
+import org.eclipse.tractusx.autosetup.constant.AppActions;
+import org.eclipse.tractusx.autosetup.constant.ToolType;
+import org.eclipse.tractusx.autosetup.constant.TriggerStatusEnum;
+import org.eclipse.tractusx.autosetup.entity.AppServiceCatalog;
+import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
+import org.eclipse.tractusx.autosetup.exception.NoDataFoundException;
+import org.eclipse.tractusx.autosetup.exception.ValidationException;
+import org.eclipse.tractusx.autosetup.kubeapps.proxy.KubeAppManageProxy;
+import org.eclipse.tractusx.autosetup.manager.AutoSetupTriggerManager;
+import org.eclipse.tractusx.autosetup.manager.EmailManager;
+import org.eclipse.tractusx.autosetup.manager.InputConfigurationManager;
+import org.eclipse.tractusx.autosetup.manager.ManualDFTPackageUpdateManager;
+import org.eclipse.tractusx.autosetup.mapper.AutoSetupRequestMapper;
+import org.eclipse.tractusx.autosetup.mapper.AutoSetupTriggerMapper;
+import org.eclipse.tractusx.autosetup.model.AutoSetupRequest;
+import org.eclipse.tractusx.autosetup.model.Customer;
+import org.eclipse.tractusx.autosetup.model.DFTUpdateRequest;
+import org.eclipse.tractusx.autosetup.model.SelectedTools;
+import org.eclipse.tractusx.autosetup.repository.AppServiceCatalogRepository;
+import org.eclipse.tractusx.autosetup.repository.AutoSetupTriggerEntryRepository;
 
 @Service
 @Slf4j

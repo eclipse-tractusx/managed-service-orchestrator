@@ -1,6 +1,6 @@
 /********************************************************************************
  * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+ * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,25 +18,25 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.service;
+package org.eclipse.tractusx.autosetup.service;
 
-import static net.catenax.autosetup.constant.AppNameConstant.DFT_BACKEND;
-import static net.catenax.autosetup.constant.AppNameConstant.DFT_FRONTEND;
-import static net.catenax.autosetup.constant.AppNameConstant.POSTGRES_DB;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DFT_BACKEND;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DFT_FRONTEND;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.POSTGRES_DB;
 
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import net.catenax.autosetup.constant.AppActions;
-import net.catenax.autosetup.entity.AutoSetupTriggerEntry;
-import net.catenax.autosetup.manager.AppDeleteManager;
-import net.catenax.autosetup.manager.DFTBackendManager;
-import net.catenax.autosetup.manager.DFTFrontendManager;
-import net.catenax.autosetup.manager.PostgresDBManager;
-import net.catenax.autosetup.model.Customer;
-import net.catenax.autosetup.model.SelectedTools;
+import org.eclipse.tractusx.autosetup.constant.AppActions;
+import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
+import org.eclipse.tractusx.autosetup.manager.AppDeleteManager;
+import org.eclipse.tractusx.autosetup.manager.DFTBackendManager;
+import org.eclipse.tractusx.autosetup.manager.DFTFrontendManager;
+import org.eclipse.tractusx.autosetup.manager.PostgresDBManager;
+import org.eclipse.tractusx.autosetup.model.Customer;
+import org.eclipse.tractusx.autosetup.model.SelectedTools;
 
 @Component
 @RequiredArgsConstructor

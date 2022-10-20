@@ -1,6 +1,6 @@
 /********************************************************************************
  * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+ * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,9 +18,9 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.manager;
+package org.eclipse.tractusx.autosetup.manager;
 
-import static net.catenax.autosetup.constant.AppNameConstant.DFT_FRONTEND;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DFT_FRONTEND;
 
 import java.util.Map;
 import java.util.UUID;
@@ -32,13 +32,13 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.catenax.autosetup.constant.AppActions;
-import net.catenax.autosetup.constant.TriggerStatusEnum;
-import net.catenax.autosetup.entity.AutoSetupTriggerDetails;
-import net.catenax.autosetup.entity.AutoSetupTriggerEntry;
-import net.catenax.autosetup.exception.ServiceException;
-import net.catenax.autosetup.model.Customer;
-import net.catenax.autosetup.model.SelectedTools;
+import org.eclipse.tractusx.autosetup.constant.AppActions;
+import org.eclipse.tractusx.autosetup.constant.TriggerStatusEnum;
+import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerDetails;
+import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
+import org.eclipse.tractusx.autosetup.exception.ServiceException;
+import org.eclipse.tractusx.autosetup.model.Customer;
+import org.eclipse.tractusx.autosetup.model.SelectedTools;
 
 @Service
 @RequiredArgsConstructor

@@ -1,6 +1,6 @@
 /********************************************************************************
  * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+ * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,20 +18,20 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.service;
+package org.eclipse.tractusx.autosetup.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import net.catenax.autosetup.entity.AppDetails;
-import net.catenax.autosetup.entity.AppServiceCatalog;
-import net.catenax.autosetup.exception.NoDataFoundException;
-import net.catenax.autosetup.mapper.AppDetailsMapper;
-import net.catenax.autosetup.model.AppDetailsRequest;
-import net.catenax.autosetup.repository.AppRepository;
-import net.catenax.autosetup.repository.AppServiceCatalogRepository;
+import org.eclipse.tractusx.autosetup.entity.AppDetails;
+import org.eclipse.tractusx.autosetup.entity.AppServiceCatalog;
+import org.eclipse.tractusx.autosetup.exception.NoDataFoundException;
+import org.eclipse.tractusx.autosetup.mapper.AppDetailsMapper;
+import org.eclipse.tractusx.autosetup.model.AppDetailsRequest;
+import org.eclipse.tractusx.autosetup.repository.AppRepository;
+import org.eclipse.tractusx.autosetup.repository.AppServiceCatalogRepository;
 
 @Service
 public class AppDetailsService {

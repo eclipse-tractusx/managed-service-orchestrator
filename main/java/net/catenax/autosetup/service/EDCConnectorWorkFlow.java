@@ -1,6 +1,6 @@
 /********************************************************************************
  * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+ * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,28 +18,28 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.service;
+package org.eclipse.tractusx.autosetup.service;
 
-import static net.catenax.autosetup.constant.AppNameConstant.EDC_CONTROLPLANE;
-import static net.catenax.autosetup.constant.AppNameConstant.EDC_DATAPLANE;
-import static net.catenax.autosetup.constant.AppNameConstant.POSTGRES_DB;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.EDC_CONTROLPLANE;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.EDC_DATAPLANE;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.POSTGRES_DB;
 
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import net.catenax.autosetup.constant.AppActions;
-import net.catenax.autosetup.entity.AutoSetupTriggerEntry;
-import net.catenax.autosetup.manager.AppDeleteManager;
-import net.catenax.autosetup.manager.CertificateManager;
-import net.catenax.autosetup.manager.DAPsWrapperManager;
-import net.catenax.autosetup.manager.EDCControlplaneManager;
-import net.catenax.autosetup.manager.EDCDataplaneManager;
-import net.catenax.autosetup.manager.PostgresDBManager;
-import net.catenax.autosetup.manager.VaultManager;
-import net.catenax.autosetup.model.Customer;
-import net.catenax.autosetup.model.SelectedTools;
+import org.eclipse.tractusx.autosetup.constant.AppActions;
+import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
+import org.eclipse.tractusx.autosetup.manager.AppDeleteManager;
+import org.eclipse.tractusx.autosetup.manager.CertificateManager;
+import org.eclipse.tractusx.autosetup.manager.DAPsWrapperManager;
+import org.eclipse.tractusx.autosetup.manager.EDCControlplaneManager;
+import org.eclipse.tractusx.autosetup.manager.EDCDataplaneManager;
+import org.eclipse.tractusx.autosetup.manager.PostgresDBManager;
+import org.eclipse.tractusx.autosetup.manager.VaultManager;
+import org.eclipse.tractusx.autosetup.model.Customer;
+import org.eclipse.tractusx.autosetup.model.SelectedTools;
 
 @Component
 @RequiredArgsConstructor

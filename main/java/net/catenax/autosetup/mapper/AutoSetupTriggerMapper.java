@@ -1,6 +1,6 @@
 /********************************************************************************
  * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+ * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.mapper;
+package org.eclipse.tractusx.autosetup.mapper;
 
 import java.util.List;
 import java.util.Map;
@@ -30,9 +30,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import net.catenax.autosetup.entity.AutoSetupTriggerEntry;
-import net.catenax.autosetup.model.AutoSetupResponse;
-import net.catenax.autosetup.model.AutoSetupTriggerResponse;
+import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
+import org.eclipse.tractusx.autosetup.model.AutoSetupResponse;
+import org.eclipse.tractusx.autosetup.model.AutoSetupTriggerResponse;
 
 @Mapper(componentModel = "spring")
 @Slf4j

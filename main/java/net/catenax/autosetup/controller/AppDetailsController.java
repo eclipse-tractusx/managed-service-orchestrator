@@ -1,6 +1,6 @@
 /********************************************************************************
  * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+ * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.controller;
+package org.eclipse.tractusx.autosetup.controller;
 
 import java.util.List;
 
@@ -35,10 +35,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import net.catenax.autosetup.entity.AppDetails;
-import net.catenax.autosetup.entity.AppServiceCatalog;
-import net.catenax.autosetup.model.AppDetailsRequest;
-import net.catenax.autosetup.service.AppDetailsService;
+import org.eclipse.tractusx.autosetup.entity.AppDetails;
+import org.eclipse.tractusx.autosetup.entity.AppServiceCatalog;
+import org.eclipse.tractusx.autosetup.model.AppDetailsRequest;
+import org.eclipse.tractusx.autosetup.service.AppDetailsService;
 
 @RestController
 public class AppDetailsController {

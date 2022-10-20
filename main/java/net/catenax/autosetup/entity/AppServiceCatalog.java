@@ -1,4 +1,4 @@
-package net.catenax.autosetup.entity;
+package org.eclipse.tractusx.autosetup.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,8 +1,8 @@
-package net.catenax.autosetup.repository;
+package org.eclipse.tractusx.autosetup.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import net.catenax.autosetup.entity.AppServiceCatalog;
+import org.eclipse.tractusx.autosetup.entity.AppServiceCatalog;
 
 public interface AppServiceCatalogRepository extends JpaRepository<AppServiceCatalog, String> {
 

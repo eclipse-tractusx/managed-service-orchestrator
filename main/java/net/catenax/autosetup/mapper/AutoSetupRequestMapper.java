@@ -1,6 +1,6 @@
 /********************************************************************************
  * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+ * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.mapper;
+package org.eclipse.tractusx.autosetup.mapper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.Mapper;
@@ -26,7 +26,7 @@ import org.mapstruct.Mapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.SneakyThrows;
-import net.catenax.autosetup.model.AutoSetupRequest;
+import org.eclipse.tractusx.autosetup.model.AutoSetupRequest;
 
 @Mapper(componentModel = "spring")
 public interface AutoSetupRequestMapper {

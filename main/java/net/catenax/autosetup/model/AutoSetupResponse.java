@@ -1,6 +1,6 @@
 /********************************************************************************
  * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+ * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.model;
+package org.eclipse.tractusx.autosetup.model;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.Data;
-import net.catenax.autosetup.constant.TriggerStatusEnum;
+import org.eclipse.tractusx.autosetup.constant.TriggerStatusEnum;
 
 @Data
 @JsonInclude(Include.NON_NULL)

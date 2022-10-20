@@ -1,4 +1,4 @@
-package net.catenax.autosetup.manager;
+package org.eclipse.tractusx.autosetup.manager;
 
 import java.util.Map;
 import java.util.UUID;
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.catenax.autosetup.constant.AppNameConstant;
-import net.catenax.autosetup.entity.AutoSetupTriggerDetails;
-import net.catenax.autosetup.entity.AutoSetupTriggerEntry;
-import net.catenax.autosetup.exception.ServiceException;
-import net.catenax.autosetup.model.SelectedTools;
+import org.eclipse.tractusx.autosetup.constant.AppNameConstant;
+import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerDetails;
+import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
+import org.eclipse.tractusx.autosetup.exception.ServiceException;
+import org.eclipse.tractusx.autosetup.model.SelectedTools;
 
 @Slf4j
 @Service

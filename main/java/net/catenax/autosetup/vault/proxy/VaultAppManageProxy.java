@@ -1,6 +1,6 @@
 /********************************************************************************
  * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+ * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.vault.proxy;
+package org.eclipse.tractusx.autosetup.vault.proxy;
 
 import java.net.URI;
 
@@ -26,7 +26,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import net.catenax.autosetup.model.VaultSecreteRequest;
+import org.eclipse.tractusx.autosetup.model.VaultSecreteRequest;
 
 @FeignClient(name = "VaultAppManageProxy", url = "placeholder", configuration = VaultConfiguration.class)
 public interface VaultAppManageProxy {

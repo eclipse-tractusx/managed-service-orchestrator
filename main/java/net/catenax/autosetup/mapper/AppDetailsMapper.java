@@ -1,6 +1,6 @@
 /********************************************************************************
  * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+ * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,12 +18,12 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.mapper;
+package org.eclipse.tractusx.autosetup.mapper;
 
 import org.mapstruct.Mapper;
 
-import net.catenax.autosetup.entity.AppDetails;
-import net.catenax.autosetup.model.AppDetailsRequest;
+import org.eclipse.tractusx.autosetup.entity.AppDetails;
+import org.eclipse.tractusx.autosetup.model.AppDetailsRequest;
 
 @Mapper(componentModel = "spring")
 public interface AppDetailsMapper {

@@ -1,6 +1,6 @@
 /********************************************************************************
  * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+ * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,11 +18,11 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.manager;
+package org.eclipse.tractusx.autosetup.manager;
 
-import static net.catenax.autosetup.constant.TriggerStatusEnum.FAILED;
-import static net.catenax.autosetup.constant.TriggerStatusEnum.INPROGRESS;
-import static net.catenax.autosetup.constant.TriggerStatusEnum.SUCCESS;
+import static org.eclipse.tractusx.autosetup.constant.TriggerStatusEnum.FAILED;
+import static org.eclipse.tractusx.autosetup.constant.TriggerStatusEnum.INPROGRESS;
+import static org.eclipse.tractusx.autosetup.constant.TriggerStatusEnum.SUCCESS;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,18 +33,18 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import net.catenax.autosetup.constant.AppActions;
-import net.catenax.autosetup.entity.AutoSetupTriggerDetails;
-import net.catenax.autosetup.entity.AutoSetupTriggerEntry;
-import net.catenax.autosetup.exception.NoDataFoundException;
-import net.catenax.autosetup.mapper.AutoSetupRequestMapper;
-import net.catenax.autosetup.mapper.AutoSetupTriggerMapper;
-import net.catenax.autosetup.model.AutoSetupRequest;
-import net.catenax.autosetup.model.AutoSetupResponse;
-import net.catenax.autosetup.model.AutoSetupTriggerResponse;
-import net.catenax.autosetup.model.Customer;
-import net.catenax.autosetup.model.CustomerProperties;
-import net.catenax.autosetup.repository.AutoSetupTriggerEntryRepository;
+import org.eclipse.tractusx.autosetup.constant.AppActions;
+import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerDetails;
+import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
+import org.eclipse.tractusx.autosetup.exception.NoDataFoundException;
+import org.eclipse.tractusx.autosetup.mapper.AutoSetupRequestMapper;
+import org.eclipse.tractusx.autosetup.mapper.AutoSetupTriggerMapper;
+import org.eclipse.tractusx.autosetup.model.AutoSetupRequest;
+import org.eclipse.tractusx.autosetup.model.AutoSetupResponse;
+import org.eclipse.tractusx.autosetup.model.AutoSetupTriggerResponse;
+import org.eclipse.tractusx.autosetup.model.Customer;
+import org.eclipse.tractusx.autosetup.model.CustomerProperties;
+import org.eclipse.tractusx.autosetup.repository.AutoSetupTriggerEntryRepository;
 
 @Service
 @RequiredArgsConstructor

@@ -1,6 +1,6 @@
 /********************************************************************************
  * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+ * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,17 +18,17 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.mapper;
+package org.eclipse.tractusx.autosetup.mapper;
 
 import org.mapstruct.Mapper;
 
-import net.catenax.autosetup.kubeapp.model.AvailablePackageRef;
-import net.catenax.autosetup.kubeapp.model.Context;
-import net.catenax.autosetup.kubeapp.model.CreateInstalledPackageRequest;
-import net.catenax.autosetup.kubeapp.model.Plugin;
-import net.catenax.autosetup.kubeapp.model.ReconciliationOptions;
-import net.catenax.autosetup.kubeapp.model.VersionNumber;
-import net.catenax.autosetup.wrapper.model.CreatePackageRequest;
+import org.eclipse.tractusx.autosetup.kubeapp.model.AvailablePackageRef;
+import org.eclipse.tractusx.autosetup.kubeapp.model.Context;
+import org.eclipse.tractusx.autosetup.kubeapp.model.CreateInstalledPackageRequest;
+import org.eclipse.tractusx.autosetup.kubeapp.model.Plugin;
+import org.eclipse.tractusx.autosetup.kubeapp.model.ReconciliationOptions;
+import org.eclipse.tractusx.autosetup.kubeapp.model.VersionNumber;
+import org.eclipse.tractusx.autosetup.wrapper.model.CreatePackageRequest;
 
 @Mapper(componentModel = "spring")
 public interface CreatePackageMapper {

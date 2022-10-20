@@ -1,6 +1,6 @@
 /********************************************************************************
  * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+ * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,9 +18,9 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.manager;
+package org.eclipse.tractusx.autosetup.manager;
 
-import static net.catenax.autosetup.constant.AppActions.CREATE;
+import static org.eclipse.tractusx.autosetup.constant.AppActions.CREATE;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,15 +31,15 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.catenax.autosetup.constant.ToolType;
-import net.catenax.autosetup.entity.AutoSetupTriggerEntry;
-import net.catenax.autosetup.exception.ServiceException;
-import net.catenax.autosetup.mapper.AutoSetupTriggerMapper;
-import net.catenax.autosetup.model.AutoSetupRequest;
-import net.catenax.autosetup.model.Customer;
-import net.catenax.autosetup.model.DFTUpdateRequest;
-import net.catenax.autosetup.model.SelectedTools;
-import net.catenax.autosetup.service.DFTAppWorkFlow;
+import org.eclipse.tractusx.autosetup.constant.ToolType;
+import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
+import org.eclipse.tractusx.autosetup.exception.ServiceException;
+import org.eclipse.tractusx.autosetup.mapper.AutoSetupTriggerMapper;
+import org.eclipse.tractusx.autosetup.model.AutoSetupRequest;
+import org.eclipse.tractusx.autosetup.model.Customer;
+import org.eclipse.tractusx.autosetup.model.DFTUpdateRequest;
+import org.eclipse.tractusx.autosetup.model.SelectedTools;
+import org.eclipse.tractusx.autosetup.service.DFTAppWorkFlow;
 
 @Service
 @Slf4j

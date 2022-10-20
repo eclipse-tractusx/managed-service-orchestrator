@@ -9,7 +9,7 @@
 		<version>2.7.2</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.autosetup</groupId>
+	<groupId>org.eclipse.tractusx</groupId>
 	<artifactId>auto-setup</artifactId>
 	<version>0.0.1</version>
 	<name>auto-setup</name>

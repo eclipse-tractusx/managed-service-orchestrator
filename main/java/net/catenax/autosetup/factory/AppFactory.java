@@ -1,6 +1,6 @@
 /********************************************************************************
  * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+ * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.factory;
+package org.eclipse.tractusx.autosetup.factory;
 
 import java.util.Map;
 
@@ -26,11 +26,11 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import net.catenax.autosetup.constant.AppNameConstant;
-import net.catenax.autosetup.entity.AppDetails;
-import net.catenax.autosetup.factory.builder.AppConfigurationBuilder;
-import net.catenax.autosetup.repository.AppRepository;
-import net.catenax.autosetup.wrapper.model.CreatePackageRequest;
+import org.eclipse.tractusx.autosetup.constant.AppNameConstant;
+import org.eclipse.tractusx.autosetup.entity.AppDetails;
+import org.eclipse.tractusx.autosetup.factory.builder.AppConfigurationBuilder;
+import org.eclipse.tractusx.autosetup.repository.AppRepository;
+import org.eclipse.tractusx.autosetup.wrapper.model.CreatePackageRequest;
 
 @Component
 @RequiredArgsConstructor
