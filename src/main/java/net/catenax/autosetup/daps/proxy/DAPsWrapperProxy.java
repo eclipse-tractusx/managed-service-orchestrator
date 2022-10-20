@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import net.catenax.autosetup.model.KeycloakTokenResponse;
 
-@FeignClient(name = "DAPsWrapperProxy", url = "placeholder", configuration = DAPsWrapperProxyConfiguration.class)
+@FeignClient(name = "DAPsWrapperProxy", url = "placeholder")
 public interface DAPsWrapperProxy {
 
 	@PostMapping

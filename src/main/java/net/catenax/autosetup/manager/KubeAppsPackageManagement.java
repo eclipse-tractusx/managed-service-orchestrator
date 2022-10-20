@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.catenax.autosetup.constant.AppNameConstant;
 import net.catenax.autosetup.factory.AppFactory;
-import net.catenax.autosetup.kubeapp.model.CreateInstalledPackageRequest;
+import net.catenax.autosetup.kubeapps.model.CreateInstalledPackageRequest;
 import net.catenax.autosetup.kubeapps.proxy.KubeAppManageProxy;
 import net.catenax.autosetup.mapper.CreatePackageMapper;
 import net.catenax.autosetup.wrapper.model.CreatePackageRequest;

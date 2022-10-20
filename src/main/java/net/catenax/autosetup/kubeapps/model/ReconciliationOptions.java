@@ -18,8 +18,16 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.daps.proxy;
+package net.catenax.autosetup.kubeapps.model;
 
-public class DAPsWrapperProxyConfiguration {
+import lombok.Builder;
+import lombok.Data;
 
+@Data
+@Builder
+public class ReconciliationOptions {
+
+	private String serviceAccountName;
+	private String interval;
+	private boolean suspend;
 }

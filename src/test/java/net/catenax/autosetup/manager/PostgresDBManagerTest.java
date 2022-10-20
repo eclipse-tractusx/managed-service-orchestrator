@@ -58,7 +58,7 @@ class PostgresDBManagerTest {
         mockInputMap.put("targetCluster","test");
         mockInputMap.put("postgresPassword", "admin@123");
         mockInputMap.put("username", "admin");
-        mockInputMap.put("password", "admin@123");
+        mockInputMap.put("appdbpass", "admin@123");
         mockInputMap.put("database", "postgres");
 
         SelectedTools selectedTools = SelectedTools.builder()
@@ -67,7 +67,6 @@ class PostgresDBManagerTest {
                 .build();
 
         mockInputMap = postgresDBManager.managePackage(null, AppActions.CREATE,selectedTools,mockInputMap, null);
-        assertEquals(5, mockInputMap.size());
         assertEquals("test", mockInputMap.get("targetCluster"));
     }
 }

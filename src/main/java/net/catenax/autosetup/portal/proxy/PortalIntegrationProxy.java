@@ -33,7 +33,7 @@ import net.catenax.autosetup.model.KeycloakTokenResponse;
 import net.catenax.autosetup.portal.model.ServiceInstanceResultRequest;
 import net.catenax.autosetup.portal.model.ServiceInstanceResultResponse;
 
-@FeignClient(name = "PortalIntegrationProxy", url = "placeholder", configuration = PortalIntegrationConfiguration.class)
+@FeignClient(name = "PortalIntegrationProxy", url = "placeholder")
 public interface PortalIntegrationProxy {
 
 	@PostMapping

@@ -127,7 +127,7 @@ public class DAPsWrapperManager {
 			try {
 				Files.deleteIfExists(file);
 			} catch (IOException e) {
-			}
+				log.error("Error in file certificate file delete");			}
 			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
 		}
 

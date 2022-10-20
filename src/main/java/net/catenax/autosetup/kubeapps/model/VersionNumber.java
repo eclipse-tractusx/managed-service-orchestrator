@@ -18,16 +18,15 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.kubeapp.model;
+package net.catenax.autosetup.kubeapps.model;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class AvailablePackageRef {
+public class VersionNumber {
 
-	private Context context;
-	private String identifier;
-	private Plugin plugin;
+	private String version;
+
 }

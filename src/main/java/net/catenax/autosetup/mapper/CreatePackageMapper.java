@@ -22,12 +22,12 @@ package net.catenax.autosetup.mapper;
 
 import org.mapstruct.Mapper;
 
-import net.catenax.autosetup.kubeapp.model.AvailablePackageRef;
-import net.catenax.autosetup.kubeapp.model.Context;
-import net.catenax.autosetup.kubeapp.model.CreateInstalledPackageRequest;
-import net.catenax.autosetup.kubeapp.model.Plugin;
-import net.catenax.autosetup.kubeapp.model.ReconciliationOptions;
-import net.catenax.autosetup.kubeapp.model.VersionNumber;
+import net.catenax.autosetup.kubeapps.model.AvailablePackageRef;
+import net.catenax.autosetup.kubeapps.model.Context;
+import net.catenax.autosetup.kubeapps.model.CreateInstalledPackageRequest;
+import net.catenax.autosetup.kubeapps.model.Plugin;
+import net.catenax.autosetup.kubeapps.model.ReconciliationOptions;
+import net.catenax.autosetup.kubeapps.model.VersionNumber;
 import net.catenax.autosetup.wrapper.model.CreatePackageRequest;
 
 @Mapper(componentModel = "spring")
@@ -69,8 +69,7 @@ public interface CreatePackageMapper {
 				.suspend(false).build();
 		
 		
-		CreateInstalledPackageRequest createInstalledPackageRequest = 
-				CreateInstalledPackageRequest.builder()
+		return CreateInstalledPackageRequest.builder()
 				.availablePackageRef(availRef)
 				.name(packageName+"-"+appName.toLowerCase())
 				.targetContext(targetContext)
@@ -79,7 +78,6 @@ public interface CreatePackageMapper {
 				.reconciliationOptions(reconciliationOptions)
 				.build();
 		
-		return createInstalledPackageRequest;
 	}
 	
 
@@ -112,15 +110,13 @@ public interface CreatePackageMapper {
 				.serviceAccountName(packageName+"-"+appName.toLowerCase())
 				.suspend(false).build();
 		
-		CreateInstalledPackageRequest createInstalledPackageRequest = 
-				CreateInstalledPackageRequest.builder()
+		return CreateInstalledPackageRequest.builder()
 				.availablePackageRef(availRef)
 				.pkgVersionReference(pkgVersionReference)
 				.values(createPackageRequest.getValues())
 				.reconciliationOptions(reconciliationOptions)
 				.build();
 		
-		return createInstalledPackageRequest;
 	}
 	
 	

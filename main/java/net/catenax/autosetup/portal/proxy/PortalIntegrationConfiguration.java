@@ -20,6 +20,6 @@
 
 package net.catenax.autosetup.portal.proxy;
 
-public class PortalIntegrationConfiguration {
+public interface PortalIntegrationConfiguration {
 
 }

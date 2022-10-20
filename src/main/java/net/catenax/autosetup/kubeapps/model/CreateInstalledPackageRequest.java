@@ -18,8 +18,22 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.autosetup.portal.proxy;
+package net.catenax.autosetup.kubeapps.model;
 
-public class PortalIntegrationConfiguration {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CreateInstalledPackageRequest {
+
+	private AvailablePackageRef availablePackageRef;
+	private Context targetContext;
+	private String name;
+	private String values;
+	private VersionNumber pkgVersionReference;
+	private ReconciliationOptions reconciliationOptions;
 }
