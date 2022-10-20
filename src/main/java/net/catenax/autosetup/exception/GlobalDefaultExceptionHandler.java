@@ -33,7 +33,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import lombok.extern.slf4j.Slf4j;
+import net.catenax.autosetup.utility.LogUtil;
+
 @ControllerAdvice
+@Slf4j
 public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
 	public static final String DEFAULT_ERROR_VIEW = "error";
@@ -66,6 +70,7 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
 		ex.getBindingResult().getAllErrors().forEach(error -> {
 			String fieldName = ((FieldError) error).getField();
 			String errorMessage = error.getDefaultMessage();
+			log.error(LogUtil.encode(fieldName+ " -> "+errorMessage));
 			errors.put(fieldName, errorMessage);
 		});
 		

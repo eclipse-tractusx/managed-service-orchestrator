@@ -79,7 +79,7 @@ public class PortalIntegrationManager {
 		String dftFrontendURL = inputData.get("dftFrontEndUrl");
 		String subscriptionId = inputData.get("subscriptionId");
 
-		Map<String, String> header = new HashMap<String, String>();
+		Map<String, String> header = new HashMap<>();
 		header.put("Authorization", "Bearer " + getKeycloakToken());
 
 		ServiceInstanceResultRequest serviceInstanceResultRequest = ServiceInstanceResultRequest.builder()

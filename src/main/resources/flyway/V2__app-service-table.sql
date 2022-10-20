@@ -20,16 +20,16 @@
 
 CREATE TABLE app_service_catalog_tbl (
 	canonical_service_id varchar(255) NOT NULL,
-	"name" varchar(255) NULL,
+	ct_name varchar(255) NULL,
 	service_tools varchar(255) NULL,
 	workflow varchar(255) NULL,
 	CONSTRAINT app_service_catalog_tbl_pkey PRIMARY KEY (canonical_service_id)
 );
 
 INSERT INTO app_service_catalog_tbl
-(canonical_service_id, "name", service_tools, workflow)
+(canonical_service_id, ct_name, service_tools, workflow)
 VALUES('DFT-WITH-EDC', 'DFT-WITH-EDC', '[{"tool": "DFT_WITH_EDC","label": "dftwthedc"}]', 'EDC_DFT');
 
 INSERT INTO app_service_catalog_tbl
-(canonical_service_id, "name", service_tools, workflow)
+(canonical_service_id, ct_name, service_tools, workflow)
 VALUES('EDC', 'EDC', '[{"tool": "EDC","label": "edc"}]', 'EDC');

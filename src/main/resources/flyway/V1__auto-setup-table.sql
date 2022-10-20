@@ -76,6 +76,8 @@ digital-twins.authentication.clientId=$\{digital-twins.authentication.clientId\}
 	
 digital-twins.authentication.clientSecret=$\{digital-twins.authentication.clientSecret\}
 
+digital-twins.authentication.grantType=client_credentials
+
 edc.enabled=true
 
 edc.hostname=$\{controlPlaneDataEndpoint\}
@@ -111,7 +113,14 @@ keycloak.resource=$\{dftbackendkeycloakclientid\}
 keycloak.use-resource-role-mappings=true
 
 keycloak.bearer-only=true
-', NULL, 'orch-repo/dftbackend', '1.3.6', 'helm.packages', 'v1alpha1', '{"ingresses":[{"enabled": true, "hostname":"$\{dnsName\}",  "annotations": {}, "className": "nginx", "endpoints":["default"], "tls":{"enabled":true, "secretName":"dftbackend"}, "certManager":{"clusterIssuer":"letsencrypt-prod"}}], "configuration": {"properties": "$\{yamlValues\}"}}', 'PROPERTY');
+
+partner.pool.hostname=${dftprotalpool}
+
+portal.backend.hostname=$\{dftprotalbackend\}
+
+clientId=$\{dftportalclientid\}
+
+clientSecret=$\{dftportalclientSecret\}', NULL, 'orch-repo/dftbackend', '1.3.8', 'helm.packages', 'v1alpha1', '{"ingresses":[{"enabled": true, "hostname":"$\{dnsName\}",  "annotations": {}, "className": "nginx", "endpoints":["default"], "tls":{"enabled":true, "secretName":"dftbackend"}, "certManager":{"clusterIssuer":"letsencrypt-prod"}}], "configuration": {"properties": "$\{yamlValues\}"}}', 'PROPERTY');
 INSERT INTO app_tbl
 (app_name, context_cluster, context_namespace, expected_input_data, output_data, package_identifier, package_version, plugin_name, plugin_version, required_yaml_configuration, yaml_value_field_type)
 VALUES('DFT_FRONTEND', 'default', 'kubeapps', 'REACT_APP_API_URL=$\{dftBackEndUrl\}
@@ -124,7 +133,7 @@ REACT_APP_CLIENT_ID=$\{dftfrontendkeycloakclientid\}
 
 REACT_APP_DEFAULT_COMPANY_BPN=$\{bpnNumber\}
 
-REACT_APP_FILESIZE=268435456', NULL, 'orch-repo/dftfrontend', '1.2.9', 'helm.packages', 'v1alpha1', '{"ingresses":[{"enabled": true, "hostname":"$\{dnsName\}",  "annotations": {}, "className": "nginx", "endpoints":["default"], "tls":{"enabled":true, "secretName":"dftfrontend"}, "certManager":{"clusterIssuer":"letsencrypt-prod"}}], "configuration": {"properties": "$\{yamlValues\}"}}', 'PROPERTY');
+REACT_APP_FILESIZE=268435456', NULL, 'orch-repo/dftfrontend', '1.3.0', 'helm.packages', 'v1alpha1', '{"ingresses":[{"enabled": true, "hostname":"$\{dnsName\}",  "annotations": {}, "className": "nginx", "endpoints":["default"], "tls":{"enabled":true, "secretName":"dftfrontend"}, "certManager":{"clusterIssuer":"letsencrypt-prod"}}], "configuration": {"properties": "$\{yamlValues\}"}}', 'PROPERTY');
 INSERT INTO app_tbl
 (app_name, context_cluster, context_namespace, expected_input_data, output_data, package_identifier, package_version, plugin_name, plugin_version, required_yaml_configuration, yaml_value_field_type)
 VALUES('EDC_CONTROLPLANE', 'default', 'kubeapps', 'edc.receiver.http.endpoint=$\{dftAddress\}
@@ -145,7 +154,7 @@ VALUES('EDC_CONTROLPLANE', 'default', 'kubeapps', 'edc.receiver.http.endpoint=$\
 	
     edc.ids.catalog.id=urn:catalog:default
 	
-    ids.webhook.address=$\{controlPlaneEndpoint\}/api/v1/ids
+    ids.webhook.address=$\{controlPlaneEndpoint\}
 	
     edc.api.control.auth.apikey.key=$\{edcApiKey\}
 	
@@ -246,7 +255,7 @@ INSERT INTO app_tbl
 VALUES('POSTGRES_DB', 'default', 'kubeapps', '{"postgresPassword":"$\{postgresPassword\}",
 "username":"$\{username\}",
 "password":"$\{password\}",
-"database":"$\{database\}"}', NULL, 'bitnami/postgresql', '11.8.1', 'helm.packages', 'v1alpha1', '{"persistence":{"size" :"1Gi"}, "global": {"postgresql" : {"auth" :$\{yamlValues\}}}}', 'JSON');
+"database":"$\{database\}"}', NULL, 'bitnami/postgresql', '11.8.1', 'helm.packages', 'v1alpha1', '{"primary":{"persistence":{"size" :"1Gi"}},"persistence":{"size" :"1Gi"}, "global": {"postgresql" : {"auth" :$\{yamlValues\}}}}', 'JSON');
 
 
 update app_tbl set expected_input_data= replace(replace(expected_input_data,'\{','{'),'\}','}'), required_yaml_configuration=replace(replace(required_yaml_configuration,'\{','{'),'\}','}');

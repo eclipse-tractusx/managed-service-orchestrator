@@ -54,6 +54,18 @@ public class DFTBackendManager {
 
 	@Value("${manual.update}")
 	private boolean manualUpdate;
+	
+	@Value("${dft.portal.pool}")
+	private String dftprotalpool;
+	
+	@Value("${dft.protal.backend}")
+	private String dftprotalbackend;
+	
+	@Value("${dft.portal.clientid}")
+	private String dftportalclientid;
+	
+	@Value("${dft.portal.clientSecret}")
+	private String dftportalclientSecret;
 
 	@Retryable(value = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
@@ -77,6 +89,11 @@ public class DFTBackendManager {
 			inputData.put("dftBackEndApiKey", generateRandomPassword);
 			inputData.put("dftBackEndApiKeyHeader", "API_KEY");
 			inputData.put("dftFrontEndUrl", dftfrontend);
+			
+			inputData.put("dftprotalpool", dftprotalpool);
+			inputData.put("dftprotalbackend", dftprotalbackend);
+			inputData.put("dftportalclientid", dftportalclientid);
+			inputData.put("dftportalclientSecret", dftportalclientSecret);
 			
 			if (!manualUpdate) {
 				Map<String, String> portalDetails = portalIntegrationManager
