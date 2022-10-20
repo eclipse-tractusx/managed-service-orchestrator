@@ -127,7 +127,6 @@ public class DAPsWrapperManager {
 			try {
 				Files.deleteIfExists(file);
 			} catch (IOException e) {
-				e.printStackTrace();
 			}
 			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
 		}

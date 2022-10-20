@@ -186,7 +186,7 @@ public class AutoSetupOrchitestratorService {
 						log.info("Waiting after deleteing all package for recreate");
 						Thread.sleep(15000);
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						
 						Thread.currentThread().interrupt();
 					}
 

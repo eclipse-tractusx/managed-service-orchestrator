@@ -46,7 +46,7 @@ public class OpenSSLClientManager {
 			process = new ProcessBuilder(strList).start();
 		} catch (IOException e) {
 			Thread.currentThread().interrupt();
-			e.printStackTrace();
+			
 		}
 		if(process != null) {
 			try(BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
@@ -63,7 +63,7 @@ public class OpenSSLClientManager {
 
 			} catch (InterruptedException | IOException e) {
 				Thread.currentThread().interrupt();
-				e.printStackTrace();
+				
 			}
 		}
 		return output.toString();
