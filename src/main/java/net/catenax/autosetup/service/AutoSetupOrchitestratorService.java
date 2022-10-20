@@ -69,6 +69,9 @@ import net.catenax.autosetup.repository.AutoSetupTriggerEntryRepository;
 @RequiredArgsConstructor
 public class AutoSetupOrchitestratorService {
 
+	private static final String EMAIL_SENT_SUCCESSFULLY = "Email sent successfully";
+	private static final String TOEMAIL = "toemail";
+	private static final String ORGNAME = "orgname";
 	public static final String TARGET_NAMESPACE = "targetNamespace";
 	public static final String DFT_FRONTEND_URL = "dftFrontEndUrl";
 	public static final String DFT_BACKEND_URL = "dftBackEndUrl";
@@ -100,11 +103,9 @@ public class AutoSetupOrchitestratorService {
 	@Value("${portal.email.address}")
 	private String portalEmail;
 
-	
 	@Value("${manual.update}")
 	private boolean manualUpdate;
-	
-	
+
 	public String getAllInstallPackages() {
 		return kubeAppManageProxy.getAllInstallPackages();
 	}
@@ -320,7 +321,7 @@ public class AutoSetupOrchitestratorService {
 
 		String label = selectedTool.getLabel();
 		selectedTool.setLabel("edc-" + label);
-		
+
 		Map<String, String> edcOutput = edcConnectorWorkFlow.getWorkFlow(autoSetupRequest.getCustomer(), selectedTool,
 				action, inputConfiguration, trigger);
 		inputConfiguration.putAll(edcOutput);
@@ -330,17 +331,17 @@ public class AutoSetupOrchitestratorService {
 		trigger.setAutosetupResult(json);
 
 		trigger.setStatus(TriggerStatusEnum.SUCCESS.name());
-		
-		Customer customer =autoSetupRequest.getCustomer();
+
+		Customer customer = autoSetupRequest.getCustomer();
 		// Send an email
 		Map<String, Object> emailContent = new HashMap<>();
-		emailContent.put("orgname", customer.getOrganizationName());
+		emailContent.put(ORGNAME, customer.getOrganizationName());
 		emailContent.putAll(edcOutput);
-		emailContent.put("toemail", customer.getEmail());
+		emailContent.put(TOEMAIL, customer.getEmail());
 		emailContent.put("ccemail", portalEmail);
 
 		emailManager.sendEmail(emailContent, "EDC Application Activited Successfully", "edc_success_activate.html");
-		log.info("Email sent successfully");
+		log.info(EMAIL_SENT_SUCCESSFULLY);
 	}
 
 	private void executeDFTWithEDC(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
@@ -362,28 +363,28 @@ public class AutoSetupOrchitestratorService {
 			Map<String, Object> emailContent = new HashMap<>();
 
 			emailContent.put("helloto", "Team");
-			emailContent.put("orgname", customer.getOrganizationName());
+			emailContent.put(ORGNAME, customer.getOrganizationName());
 			emailContent.put(DFT_FRONTEND_URL, map.get(DFT_FRONTEND_URL));
 			emailContent.put(DFT_BACKEND_URL, map.get(DFT_BACKEND_URL));
-			emailContent.put("toemail", portalEmail);
+			emailContent.put(TOEMAIL, portalEmail);
 
 			// End of email sending code
 			emailManager.sendEmail(emailContent, "DFT Application Deployed Successfully", "success.html");
-			log.info("Email sent successfully");
+			log.info(EMAIL_SENT_SUCCESSFULLY);
 			trigger.setStatus(TriggerStatusEnum.MANUAL_UPDATE_PENDING.name());
-			
+
 		} else {
-			
+
 			trigger.setStatus(TriggerStatusEnum.SUCCESS.name());
 			// Send an email
 			Map<String, Object> emailContent = new HashMap<>();
-			emailContent.put("orgname", customer.getOrganizationName());
-			emailContent.put("dftFrontEndUrl", map.get("dftFrontEndUrl"));
-			emailContent.put("toemail", customer.getEmail());
+			emailContent.put(ORGNAME, customer.getOrganizationName());
+			emailContent.put(DFT_FRONTEND_URL, map.get(DFT_FRONTEND_URL));
+			emailContent.put(TOEMAIL, customer.getEmail());
 			emailContent.put("ccemail", portalEmail);
 
 			emailManager.sendEmail(emailContent, "DFT Application Activited Successfully", "success_activate.html");
-			log.info("Email sent successfully");
+			log.info(EMAIL_SENT_SUCCESSFULLY);
 			// End of email sending code
 
 		}
@@ -406,45 +407,51 @@ public class AutoSetupOrchitestratorService {
 			for (AppServiceCatalogAndCustomerMapping appCatalogDetails : appCatalogListDetails) {
 
 				if (appCatalogDetails != null) {
-					List<SelectedTools> selectedTools = getToolInfo(appCatalogDetails);
-
-					for (SelectedTools selectedTool : selectedTools) {
-
-						String label = "";
-						switch (selectedTool.getTool()) {
-
-						case DFT_WITH_EDC:
-
-							label = selectedTool.getLabel();
-							selectedTool.setLabel("edc-" + label);
-							edcConnectorWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
-							selectedTool.setLabel("dft-" + label);
-							dftWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
-
-							break;
-						case EDC:
-
-							label = selectedTool.getLabel();
-							selectedTool.setLabel("edc-" + label);
-							edcConnectorWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
-
-							break;
-						default:
-							throw new ServiceException(selectedTool.getTool() + " is not supported for auto setup");
-						}
-					}
-
-					trigger.setStatus(TriggerStatusEnum.SUCCESS.name());
-
-					autoSetupTriggerManager.saveTriggerUpdate(trigger);
-
-					log.info("All Packages deleted successfully!!!!");
+					executeInstallTool(trigger, inputConfiguration, appCatalogDetails);
 				} else
 					log.info("For Packages deletion autoSetupRequest.getSelectedTools is null");
 			}
 
 		} else
 			log.info("For Packages deletion the Autosetup Request is null");
+	}
+
+	private void executeInstallTool(AutoSetupTriggerEntry trigger, Map<String, String> inputConfiguration,
+			AppServiceCatalogAndCustomerMapping appCatalogDetails) {
+
+		List<SelectedTools> selectedTools = getToolInfo(appCatalogDetails);
+
+		for (SelectedTools selectedTool : selectedTools) {
+
+			String label = "";
+			switch (selectedTool.getTool()) {
+
+			case DFT_WITH_EDC:
+
+				label = selectedTool.getLabel();
+				selectedTool.setLabel("edc-" + label);
+				edcConnectorWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
+				selectedTool.setLabel("dft-" + label);
+				dftWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
+
+				break;
+			case EDC:
+
+				label = selectedTool.getLabel();
+				selectedTool.setLabel("edc-" + label);
+				edcConnectorWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
+
+				break;
+			default:
+				throw new ServiceException(selectedTool.getTool() + " is not supported for auto setup");
+			}
+		}
+
+		trigger.setStatus(TriggerStatusEnum.SUCCESS.name());
+
+		autoSetupTriggerManager.saveTriggerUpdate(trigger);
+
+		log.info("All Packages deleted successfully!!!!");
 	}
 
 	@SneakyThrows

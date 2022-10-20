@@ -114,7 +114,7 @@ keycloak.use-resource-role-mappings=true
 
 keycloak.bearer-only=true
 
-partner.pool.hostname=${dftprotalpool}
+partner.pool.hostname=$\{dftprotalpool\}
 
 portal.backend.hostname=$\{dftprotalbackend\}
 

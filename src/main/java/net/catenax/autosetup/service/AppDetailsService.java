@@ -30,10 +30,14 @@ import net.catenax.autosetup.entity.AppServiceCatalog;
 import net.catenax.autosetup.entity.AppServiceCatalogAndCustomerMapping;
 import net.catenax.autosetup.exception.NoDataFoundException;
 import net.catenax.autosetup.mapper.AppDetailsMapper;
+import net.catenax.autosetup.mapper.AppServiceCatalogMapper;
+import net.catenax.autosetup.mapper.AppServiceCatalogMappingMapper;
 import net.catenax.autosetup.model.AppDetailsRequest;
+import net.catenax.autosetup.model.AppServiceCatalogAndCustomerMappingPojo;
+import net.catenax.autosetup.model.AppServiceCatalogPojo;
 import net.catenax.autosetup.repository.AppRepository;
+import net.catenax.autosetup.repository.AppServiceCatalogAndCustomerMappingRepository;
 import net.catenax.autosetup.repository.AppServiceCatalogRepository;
-import net.catenax.autosetup.repository.AppServiceCatalogRepositoryMapping;
 
 @Service
 public class AppDetailsService {
@@ -45,10 +49,16 @@ public class AppDetailsService {
 	private AppServiceCatalogRepository appServiceCatalogRepository;
 
 	@Autowired
-	private AppServiceCatalogRepositoryMapping appServiceCatalogRepositoryMapping;
+	private AppServiceCatalogAndCustomerMappingRepository appServiceCatalogMappingRepository;
 
 	@Autowired
 	private AppDetailsMapper appDetailsMapper;
+
+	@Autowired
+	private AppServiceCatalogMappingMapper appServiceCatalogAndCustomerMappingMapper;
+
+	@Autowired
+	private AppServiceCatalogMapper appServiceCatalogMapper;
 
 	public AppDetails createOrUpdateAppInfo(AppDetailsRequest appDetailsRequest) {
 		AppDetails appDetails = appDetailsMapper.from(appDetailsRequest);
@@ -65,7 +75,8 @@ public class AppDetailsService {
 		return appRepository.findAll();
 	}
 
-	public AppServiceCatalog createCatalogService(AppServiceCatalog appServiceCatalog) {
+	public AppServiceCatalog createCatalogService(AppServiceCatalogPojo appServiceCatalogPojo) {
+		AppServiceCatalog appServiceCatalog = appServiceCatalogMapper.from(appServiceCatalogPojo);
 		return appServiceCatalogRepository.save(appServiceCatalog);
 	}
 
@@ -79,22 +90,25 @@ public class AppDetailsService {
 	}
 
 	public AppServiceCatalogAndCustomerMapping createCatalogServiceMapping(
-			AppServiceCatalogAndCustomerMapping appServiceCatalogAndCustomerMapping) {
+			AppServiceCatalogAndCustomerMappingPojo appServiceCatalogAndCustomerMappingPojo) {
+
+		AppServiceCatalogAndCustomerMapping appServiceCatalogAndCustomerMapping = appServiceCatalogAndCustomerMappingMapper
+				.from(appServiceCatalogAndCustomerMappingPojo);
 		appServiceCatalogAndCustomerMapping
 				.setServiceCatalog(getCatalogService(appServiceCatalogAndCustomerMapping.getCanonicalId()));
-		return appServiceCatalogRepositoryMapping.save(appServiceCatalogAndCustomerMapping);
+		return appServiceCatalogMappingRepository.save(appServiceCatalogAndCustomerMapping);
 	}
 
 	public AppServiceCatalogAndCustomerMapping getCatalogServiceMapping(String appServiceId) {
-		return appServiceCatalogRepositoryMapping.findTop1ByServiceId(appServiceId);
+		return appServiceCatalogMappingRepository.findTop1ByServiceId(appServiceId);
 	}
-	
+
 	public List<AppServiceCatalogAndCustomerMapping> findByServiceIds(List<String> appServiceIds) {
-		return appServiceCatalogRepositoryMapping.findAllByServiceIdIn(appServiceIds);
+		return appServiceCatalogMappingRepository.findAllByServiceIdIn(appServiceIds);
 	}
 
 	public List<AppServiceCatalogAndCustomerMapping> getAllCatalogServiceMapping() {
-		return appServiceCatalogRepositoryMapping.findAll();
+		return appServiceCatalogMappingRepository.findAll();
 	}
 
 }

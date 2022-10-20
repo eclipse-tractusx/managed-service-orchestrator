@@ -28,6 +28,12 @@
 			<groupId>org.eclipse.persistence</groupId>
 			<artifactId>eclipselink</artifactId>
 			<version>2.7.10</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.persistence</groupId>
+					<artifactId>commonj.sdo</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
@@ -107,9 +113,14 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-text</artifactId>
-			<version>1.9</version>
+			<version>1.10.0</version>
 		</dependency>
-
+		
+		<dependency>
+	      <groupId>com.fasterxml.jackson.core</groupId>
+	      <artifactId>jackson-databind</artifactId>
+	      <version>2.14.0-rc1</version>
+	    </dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -180,6 +191,11 @@
 			<optional>true</optional>
 		</dependency>
 
+		<dependency>
+		    <groupId>com.h2database</groupId>
+		    <artifactId>h2</artifactId>
+		    <scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

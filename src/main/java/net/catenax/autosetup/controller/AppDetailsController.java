@@ -39,6 +39,8 @@ import net.catenax.autosetup.entity.AppDetails;
 import net.catenax.autosetup.entity.AppServiceCatalog;
 import net.catenax.autosetup.entity.AppServiceCatalogAndCustomerMapping;
 import net.catenax.autosetup.model.AppDetailsRequest;
+import net.catenax.autosetup.model.AppServiceCatalogAndCustomerMappingPojo;
+import net.catenax.autosetup.model.AppServiceCatalogPojo;
 import net.catenax.autosetup.service.AppDetailsService;
 
 @RestController
@@ -78,7 +80,7 @@ public class AppDetailsController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = AppServiceCatalog.class))) })
 	@PostMapping("/internal/catalog-service")
-	public AppServiceCatalog createCatalogService(@RequestBody AppServiceCatalog appServiceCatalog) {
+	public AppServiceCatalog createCatalogService(@RequestBody AppServiceCatalogPojo appServiceCatalog) {
 		return appDetailsService.createCatalogService(appServiceCatalog);
 	}
 
@@ -103,7 +105,7 @@ public class AppDetailsController {
 			@ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = AppServiceCatalogAndCustomerMapping.class))) })
 	@PostMapping("/internal/catalog-service-mapping")
 	public AppServiceCatalogAndCustomerMapping createCatalogServiceMapping(
-			@RequestBody AppServiceCatalogAndCustomerMapping appServiceCatalogAndCustomerMapping) {
+			@RequestBody AppServiceCatalogAndCustomerMappingPojo appServiceCatalogAndCustomerMapping) {
 		return appDetailsService.createCatalogServiceMapping(appServiceCatalogAndCustomerMapping);
 	}
 

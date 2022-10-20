@@ -47,6 +47,8 @@ public class PostgresDBManager {
 
 	private final KubeAppsPackageManagement appManagement;
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
+	
+	private final String passforDB="admin@123";
 
 	@Retryable(value = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
@@ -60,9 +62,9 @@ public class PostgresDBManager {
 				.build();
 		try {
 
-			inputData.put("postgresPassword", "admin@123");
+			inputData.put("postgresPassword", passforDB);
 			inputData.put("username", "admin");
-			inputData.put("password", "admin@123");
+			inputData.put("password", passforDB);
 			inputData.put("database", "postgres");
 
 			if (AppActions.CREATE.equals(action))

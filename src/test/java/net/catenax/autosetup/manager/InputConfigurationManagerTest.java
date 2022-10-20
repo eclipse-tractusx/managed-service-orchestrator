@@ -19,23 +19,24 @@
  ********************************************************************************/
 package net.catenax.autosetup.manager;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import net.catenax.autosetup.entity.AutoSetupTriggerEntry;
-import net.catenax.autosetup.model.AutoSetupRequest;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Map;
+import java.util.UUID;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import java.util.Map;
-import java.util.UUID;
-import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringRunner.class)
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import net.catenax.autosetup.entity.AutoSetupTriggerEntry;
+import net.catenax.autosetup.model.AutoSetupRequest;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)

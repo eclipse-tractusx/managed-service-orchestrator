@@ -27,20 +27,17 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import net.catenax.autosetup.constant.AppActions;
 import net.catenax.autosetup.constant.ToolType;
 import net.catenax.autosetup.model.SelectedTools;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
@@ -68,7 +65,6 @@ class EDCDataplaneManagerTest {
         mockInputMap.put("targetCluster","test");
         mockInputMap.put("dnsName", "test");
         mockInputMap.put("dnsNameURLProtocol","https");
-        String s = replyTo;
         SelectedTools selectedTools = SelectedTools.builder()
                 .tool(ToolType.DFT)
                 .label("DFT")

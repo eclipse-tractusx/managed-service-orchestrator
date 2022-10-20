@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import net.catenax.autosetup.entity.AppServiceCatalogAndCustomerMapping;
 
-public interface AppServiceCatalogRepositoryMapping extends JpaRepository<AppServiceCatalogAndCustomerMapping, String> {
+public interface AppServiceCatalogAndCustomerMappingRepository extends JpaRepository<AppServiceCatalogAndCustomerMapping, String> {
 	
 	public AppServiceCatalogAndCustomerMapping findTop1ByServiceId(String serviceId);
 	

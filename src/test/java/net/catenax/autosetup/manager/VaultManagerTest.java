@@ -20,28 +20,26 @@
 
 package net.catenax.autosetup.manager;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.HashMap;
 import java.util.Map;
-import net.catenax.autosetup.constant.ToolType;
-import net.catenax.autosetup.entity.AutoSetupTriggerEntry;
-import net.catenax.autosetup.model.Customer;
-import net.catenax.autosetup.model.SelectedTools;
-import net.catenax.autosetup.vault.proxy.VaultAppManageProxy;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
+import net.catenax.autosetup.constant.ToolType;
+import net.catenax.autosetup.entity.AutoSetupTriggerEntry;
+import net.catenax.autosetup.model.Customer;
+import net.catenax.autosetup.model.SelectedTools;
+import net.catenax.autosetup.vault.proxy.VaultAppManageProxy;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)

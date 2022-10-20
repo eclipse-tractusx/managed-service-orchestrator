@@ -19,27 +19,24 @@
  ********************************************************************************/
 package net.catenax.autosetup.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import net.catenax.autosetup.kubeapps.proxy.KubeAppManageProxy;
-import net.catenax.autosetup.manager.AutoSetupTriggerManager;
-import net.catenax.autosetup.mapper.AutoSetupRequestMapper;
-import net.catenax.autosetup.model.AutoSetupRequest;
-import net.catenax.autosetup.repository.AutoSetupTriggerEntryRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-@RunWith(SpringRunner.class)
+import net.catenax.autosetup.kubeapps.proxy.KubeAppManageProxy;
+import net.catenax.autosetup.mapper.AutoSetupRequestMapper;
+import net.catenax.autosetup.model.AutoSetupRequest;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
@@ -50,11 +47,6 @@ class AutoSetupOrchitestratorServiceTest {
     @Autowired
     private AutoSetupOrchitestratorService autoSetupOrchitestratorService;
 
-    @Autowired
-    private AutoSetupTriggerManager autoSetupTriggerManager;
-
-    @Autowired
-    private AutoSetupTriggerEntryRepository autoSetupTriggerEntryRepository;
 
     @MockBean
     private AutoSetupRequestMapper customerDetailsMapper;
