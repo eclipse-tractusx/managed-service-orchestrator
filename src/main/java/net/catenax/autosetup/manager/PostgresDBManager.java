@@ -48,8 +48,6 @@ public class PostgresDBManager {
 	private final KubeAppsPackageManagement appManagement;
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
 	
-	private final String passforDB="admin@123";
-
 	@Retryable(value = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
 	public Map<String, String> managePackage(Customer customerDetails, AppActions action, SelectedTools tool,
@@ -62,9 +60,9 @@ public class PostgresDBManager {
 				.build();
 		try {
 
-			inputData.put("postgresPassword", passforDB);
+			inputData.put("postgresPassword", "admin@123");
 			inputData.put("username", "admin");
-			inputData.put("password", passforDB);
+			inputData.put("appdbpass", "admin@123");
 			inputData.put("database", "postgres");
 
 			if (AppActions.CREATE.equals(action))
