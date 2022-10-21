@@ -15,7 +15,7 @@
 	<name>auto-setup</name>
 	<description>auto-setup</description>
 	<properties>
-		<java.version>18</java.version>
+		<java.version>17</java.version>
 		<spring-cloud.version>2021.0.3</spring-cloud.version>
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<org.mapstruct.processor.version>1.4.2.Final
