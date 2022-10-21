@@ -66,7 +66,7 @@ public class AppDetailsService {
 
 	public AppDetails getAppDetails(String appName) {
 
-		return appRepository.findById(appName)
+		return appRepository.findByAppName(appName)
 				.orElseThrow(() -> new NoDataFoundException("No data found for " + appName));
 	}
 
@@ -80,7 +80,7 @@ public class AppDetailsService {
 	}
 
 	public AppServiceCatalog getCatalogService(String appServiceCatalogId) {
-		return appServiceCatalogRepository.findById(appServiceCatalogId)
+		return appServiceCatalogRepository.findByCanonicalServiceId(appServiceCatalogId)
 				.orElseThrow(() -> new NoDataFoundException("No data found for " + appServiceCatalogId));
 	}
 

@@ -20,9 +20,13 @@
 
 package org.eclipse.tractusx.autosetup.repository;
 
+import java.util.Optional;
+
 import org.eclipse.tractusx.autosetup.entity.AppDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AppRepository extends JpaRepository<AppDetails, String> {
+
+	Optional<AppDetails> findByAppName(String appName);
 
 }
