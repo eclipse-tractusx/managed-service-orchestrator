@@ -24,9 +24,11 @@ import java.util.Optional;
 
 import org.eclipse.tractusx.autosetup.entity.AppDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 public interface AppRepository extends JpaRepository<AppDetails, String> {
 
+	@Query(value = "SELECT * FROM app_tbl a WHERE a.app_name = ?1", nativeQuery = true)
 	Optional<AppDetails> findByAppName(String appName);
 
 }
