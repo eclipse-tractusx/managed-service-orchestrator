@@ -46,8 +46,6 @@ RUN chown ${UID}:${GID} /autosetup
 
 USER ${UID}:${GID}
 
-RUN adduser -DH autosetup && addgroup autosetup autosetup
-USER autosetup
 
 # set the startup command to run your binary
 CMD ["java", "-jar", "./app.jar"]
