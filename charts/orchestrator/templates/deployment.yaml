@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "orchestrator.fullname" . }}
+  name: {{ include "autosetup.fullname" . }}
   labels:
-    {{- include "orchestrator.labels" . | nindent 4 }}
+    {{- include "autosetup.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "orchestrator.selectorLabels" . | nindent 6 }}
+      {{- include "autosetup.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}          
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "orchestrator.selectorLabels" . | nindent 8 }}
+        {{- include "autosetup.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
