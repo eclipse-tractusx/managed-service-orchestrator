@@ -20,7 +20,7 @@ RUN mvn package
 FROM eclipse-temurin:18.0.1_10-jre
 
 ARG USERNAME=autosetupuser
-ARG USER_UID=3000
+ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
 # Create the user
@@ -45,6 +45,9 @@ COPY --chown=${UID}:${GID} --from=build target/*.jar ./app.jar
 RUN chown ${UID}:${GID} /autosetup
 
 USER ${UID}:${GID}
+
+RUN adduser -DH autosetup && addgroup autosetup autosetup
+USER autosetup
 
 # set the startup command to run your binary
 CMD ["java", "-jar", "./app.jar"]
