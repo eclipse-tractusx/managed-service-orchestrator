@@ -2,7 +2,7 @@ maven/mavencentral/ch.qos.logback/logback-classic/1.2.11, EPL-1.0, approved, CQ1
 maven/mavencentral/ch.qos.logback/logback-core/1.2.11, EPL-1.0, approved, CQ13635
 maven/mavencentral/com.fasterxml.jackson.core/jackson-annotations/2.13.3, Apache-2.0, approved, CQ24135
 maven/mavencentral/com.fasterxml.jackson.core/jackson-core/2.13.3, Apache-2.0, approved, CQ24134
-maven/mavencentral/com.fasterxml.jackson.core/jackson-databind/2.14.0-rc1, Apache-2.0, restricted, clearlydefined
+maven/mavencentral/com.fasterxml.jackson.core/jackson-databind/2.14.0-rc1, Apache-2.0, approved, #4105
 maven/mavencentral/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/2.13.3, Apache-2.0, approved, #2566
 maven/mavencentral/com.fasterxml.jackson.datatype/jackson-datatype-jdk8/2.13.3, Apache-2.0, approved, CQ24138
 maven/mavencentral/com.fasterxml.jackson.datatype/jackson-datatype-jsr310/2.13.3, Apache-2.0, approved, clearlydefined
