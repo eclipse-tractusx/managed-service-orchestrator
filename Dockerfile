@@ -1,7 +1,6 @@
 # our base build image
 FROM maven:3.8-openjdk-18 as builder
 
-
 # copy the project files
 COPY ./pom.xml /pom.xml
 
@@ -13,9 +12,6 @@ COPY ./src ./src
 
 # build for release
 RUN mvn clean install
-
-# our final base image
-FROM eclipse-temurin:18.0.1_10-jre
 
 ARG USERNAME=autosetupuser
 ARG USER_UID=1000
@@ -29,11 +25,14 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
+# our final base image
+FROM eclipse-temurin:18.0.1_10-jre
+
 # set deployment directory
 WORKDIR /autosetup
 
 # copy over the built artifact from the maven image
-COPY --chown=${UID}:${GID} --from=builder target/*.jar ./app.jar
+COPY --from=builder target/*.jar ./app.jar
 
 USER $USERNAME
 
