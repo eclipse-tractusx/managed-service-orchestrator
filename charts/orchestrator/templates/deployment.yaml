@@ -75,20 +75,26 @@ spec:
                 secretKeyRef:
                   name: daps-secrets
                   key: dapsUrl
-            - name: DAPSWRAPPER_KEYCLOAK_USERNAME
-              value: "dapsuser"
-            - name: DAPSWRAPPER_KEYCLOAK_PASSWORD
-              value: "dapsuser"
-            - name: DAPSWRAPPER_KEYCLOAK_RESOURCE
-              value: "orchestratorservice"
-            - name: DAPSWRAPPER_URL
-              value: "http://drs.int.demo.catena-x.net/api/v1/daps"
-            - name: DAPSWRAPPER_KEYCLOAK_AUTH-SERVER-URL
-              value: "https://keycloak.cx.dih-cloud.com"
-            - name: DAPSWRAPPER_KEYCLOAK_REALM
-              value: "orchestrator"
             - name: DAPSWRAPPER_KEYCLOAK_TOKENURI
-              value: "https://keycloak.cx.dih-cloud.com/realms/orchestrator/protocol/openid-connect/token"
+              valueFrom:
+                secretKeyRef:
+                  name: dapssecret
+                  key: dapswrapperkeycloaktokenURI  
+            - name: DAPSWRAPPER_KEYCLOAK_CLIENTID
+              valueFrom:
+                secretKeyRef:
+                  name: dapssecret
+                  key: dapswrapperkeycloakclientId
+            - name: DAPSWRAPPER_KEYCLOAK_CLIENTSECRET
+              valueFrom:
+                secretKeyRef:
+                  name: dapssecret
+                  key: dapswrapperkeycloakclientSecret 
+            - name: DAPSWRAPPER_URL
+              valueFrom:
+                secretKeyRef:
+                  name: dapssecret
+                  key: dapswrapperUrl 
             - name: KUBEAPP_URL
               valueFrom:
                 secretKeyRef:
@@ -113,19 +119,71 @@ spec:
               value: "3"
             - name: RETRY_BACKOFFDELAY
               value: "500"
-            - name: PORTAL.EMAIL.ADDRESS
-              value: "sachin.argade@t-systems.com,AJAY.RATURI@t-systems.com,Shivaraj.Patil@t-systems.com"
+            - name: PORTAL_EMAIL_ADDRESS
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secrets
+                  key: portalemail
             - name: PORTAL_URL
-              value: "http://192.168.0.105/auth"
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secrets
+                  key: portalurl
+            - name: PORTAL_KEYCLOAK_TOKENURI
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secrets
+                  key: portaltokenurl
+            - name: PORTAL_KEYCLOAK_CLIENTID
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secrets
+                  key: portalclientid
+            - name: PORTAL_KEYCLOAK_CLIENTSECRET
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secrets
+                  key: portalclientsecret
+            - name: PORTAL_DFT_KEYCLOAK_REALM
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secrets
+                  key: portaldftkeycloakrealm
+            - name: PORTAL_DFT_KEYCLOAK_CLIENTID
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secrets
+                  key: portaldftkeycloakclient
+            - name: PORTAL_DFT_KEYCLOAK_URL
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secrets
+                  key: portaldftkeyclockurl
+            - name: PORTAL_DFT_DIGITALTWINURL
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secrets
+                  key: portaldftdigitaltwinurl
+            - name: PORTAL_DFT_DIGITALTWINAUTHURL
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secrets
+                  key: portaldftdigitaltwinauth               
             - name: KEYCLOAK_REALM
-              value: "autosetup"
+              valueFrom: 
+                secretKeyRef:
+                  name: keycloacksecret
+                  key: keycloakRealm
             - name: KEYCLOAK_AUTH-SERVER-URL
-              value: "https://keycloak.cx.dih-cloud.com"
-            - name: KEYCLOAK_SSL-REQUIRED
-              value: "external"
-              
+              valueFrom: 
+                secretKeyRef:
+                  name: keycloacksecret
+                  key: keycloakAuthserverUrl
             - name: KEYCLOAK_RESOURCES
-              value: "autosetup-service"
+              valueFrom: 
+                secretKeyRef:
+                  name: keycloacksecret
+                  key: keycloakResource                           
             - name: KEYCLOAK_SSL-REQUIRED
               value: "external"
             - name: KEYCLOAK_USE-RESOURCE-ROLE-MAPPINGS
