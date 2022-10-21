@@ -19,8 +19,8 @@ RUN mvn package
 
 FROM eclipse-temurin:18.0.1_10-jre
 
-ARG USERNAME=dftuser
-ARG USER_UID=1000
+ARG USERNAME=autosetup
+ARG USER_UID=3000
 ARG USER_GID=$USER_UID
 
 # Create the user
