@@ -42,6 +42,13 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          REGISTRY: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Extract Metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v3
@@ -52,13 +59,6 @@ jobs:
           # type=semver,pattern={{version}},value=v1.0.2
           flavor: |
               latest=true
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          REGISTRY: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
