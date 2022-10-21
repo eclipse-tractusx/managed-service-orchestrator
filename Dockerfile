@@ -4,8 +4,7 @@ FROM maven:3.8.5-openjdk-18-slim as build
 # copy the project files
 COPY ./pom.xml /pom.xml
 
-# build all dependencies
-RUN mvn dependency:go-offline -B
+
 
 # copy your other files
 COPY ./src ./src
