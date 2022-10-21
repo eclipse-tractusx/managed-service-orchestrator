@@ -51,3 +51,5 @@ USER autosetup
 
 # set the startup command to run your binary
 CMD ["java", "-jar", "./app.jar"]
+
+EXPOSE 9999
