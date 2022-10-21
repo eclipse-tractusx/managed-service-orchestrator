@@ -17,8 +17,9 @@ COPY ./src ./src
 RUN mvn package
 
 # our final base image
-FROM eclipse-temurin:18.0.1_10-jre
-
+#FROM eclipse-temurin:18.0.1_10-jre
+FROM bellsoft/liberica-openjdk-alpine:17.0.4.1-1
+RUN apk update && apk upgrade
 # set deployment directory
 WORKDIR /autosetup
 
