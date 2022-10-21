@@ -11,7 +11,6 @@ RUN mvn dependency:go-offline -B
 # copy your other files
 COPY ./src ./src
 
-
 # build for release
 RUN mvn clean install
 
@@ -30,18 +29,11 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-USER $USERNAME
-
-#ARG UID=7000
-#ARG GID=7000
-
 # set deployment directory
 WORKDIR /autosetup
 
 # copy over the built artifact from the maven image
 COPY --chown=${UID}:${GID} --from=builder target/*.jar ./app.jar
-
-RUN chown ${UID}:${GID} /autosetup
 
 USER $USERNAME
 
