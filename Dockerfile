@@ -1,6 +1,5 @@
 # our base build image
-#FROM maven:3.8-openjdk-18 as builder
-FROM maven:eclipse-temurin 
+FROM maven:3.8.6-ibm-semeru-17-focal
 
 # set directory
 WORKDIR /autosetup
@@ -33,7 +32,6 @@ RUN groupadd --gid $USER_GID $USERNAME \
 #    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
 #    && chmod 0440 /etc/sudoers.d/$USERNAME
 
-USER $USERNAME
 
 # set deployment directory
 WORKDIR /autosetup/target
