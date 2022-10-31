@@ -1,5 +1,9 @@
 # our base build image
-FROM maven:3.8-openjdk-18 as builder
+#FROM maven:3.8-openjdk-18 as builder
+FROM maven:eclipse-temurin 
+
+# set directory
+WORKDIR /autosetup
 
 # copy the project files
 COPY ./pom.xml /pom.xml
@@ -14,7 +18,7 @@ COPY ./src ./src
 RUN mvn clean install
 
 # our final base image
-FROM eclipse-temurin:18.0.1_10-jre
+#FROM eclipse-temurin:18.0.1_10-jre
 
 ARG USERNAME=autosetupuser
 ARG USER_UID=1000
@@ -29,15 +33,17 @@ RUN groupadd --gid $USER_GID $USERNAME \
 #    && chmod 0440 /etc/sudoers.d/$USERNAME
 
 # set deployment directory
-WORKDIR /autosetup
+WORKDIR /autosetup/target
 
 # copy over the built artifact from the maven image
-COPY --from=builder target/*.jar ./app.jar
+#COPY --from=builder target/*.jar ./app.jar
 
 USER $USERNAME
 
-EXPOSE 9999
 # set the startup command to run your binary
-CMD ["java", "-jar", "./app.jar"]
+#CMD ["java", "-jar", "./app.jar"]
+ENTRYPOINT ["java","-jar","auto-setup-0.0.1.jar"]
+
+EXPOSE 9999
 
 
