@@ -10,7 +10,7 @@ This service will help service provider to set up DFT/SDE with EDC and EDC as se
 
 ##### For installation guide: see [InstallationGuide.md](InstallationGuide.md)
 
-#### How to run
+### How to run
 
 Auto setup is a SpringBoot Java software project managed by Maven.
 
