@@ -1,5 +1,5 @@
 # our base build image
-FROM maven:3.8.6-ibm-semeru-17-focal
+FROM maven:latest
 
 # set directory
 WORKDIR /autosetup
