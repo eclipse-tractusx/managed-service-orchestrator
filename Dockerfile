@@ -16,7 +16,7 @@ RUN mvn clean install
 # our final base image
 #FROM eclipse-temurin:18.0.1_10-jre
 
-FROM eclipse-temurin:18.0.2_9-jre
+FROM eclipse-temurin:19_36-jre
 
 ARG USERNAME=autosetupuser
 ARG USER_UID=1000
