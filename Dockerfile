@@ -14,7 +14,9 @@ COPY ./src ./src
 RUN mvn clean install
 
 # our final base image
-FROM eclipse-temurin:18.0.1_10-jre
+#FROM eclipse-temurin:18.0.1_10-jre
+
+FROM eclipse-temurin:18.0.2.1_1-jre
 
 ARG USERNAME=autosetupuser
 ARG USER_UID=1000
