@@ -165,14 +165,38 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.security</groupId>
+					<artifactId>spring-security-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework.security</groupId>
+					<artifactId>
+						spring-security-oauth2-client
+					</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.security</groupId>
+					<artifactId>spring-security-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.security</groupId>
+					<artifactId>spring-security-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
@@ -190,7 +214,22 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-client</artifactId>
+			<version>5.7.5</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.security</groupId>
+					<artifactId>spring-security-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+        <dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>5.7.5</version>
+		</dependency>
 		<dependency>
 		    <groupId>com.h2database</groupId>
 		    <artifactId>h2</artifactId>

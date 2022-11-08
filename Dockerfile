@@ -14,7 +14,9 @@ COPY ./src ./src
 RUN mvn clean install
 
 # our final base image
-FROM eclipse-temurin:18.0.1_10-jre
+#FROM eclipse-temurin:18.0.1_10-jre
+
+FROM eclipse-temurin:19_36-jre
 
 ARG USERNAME=autosetupuser
 ARG USER_UID=1000
@@ -39,4 +41,3 @@ USER $USERNAME
 EXPOSE 9999
 # set the startup command to run your binary
 CMD ["java", "-jar", "./app.jar"]
-
