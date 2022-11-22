@@ -46,6 +46,13 @@ spec:
                 secretKeyRef:
                   name: db-secrets
                   key: dbpassword
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: dbUrl
+            #- name: SPRING_DATASOURCE_URL
+            #  value: "jdbc:postgresql://orch-postgresdb-postgresql:5432/orchdb"
             - name: SPRING_JPA_HIBERNATE_DDL-AUTO
               value: "update"
             - name: VAULT_URL
@@ -69,7 +76,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: daps-secrets
-                  key: dapsJskUrl
+                  key: dapsJksUrl
             - name: DAPSWRAPPER_DAPS_URL
               valueFrom:
                 secretKeyRef:
@@ -78,22 +85,22 @@ spec:
             - name: DAPSWRAPPER_KEYCLOAK_TOKENURI
               valueFrom:
                 secretKeyRef:
-                  name: dapssecret
+                  name: daps-secrets
                   key: dapswrapperkeycloaktokenURI  
             - name: DAPSWRAPPER_KEYCLOAK_CLIENTID
               valueFrom:
                 secretKeyRef:
-                  name: dapssecret
+                  name: daps-secrets
                   key: dapswrapperkeycloakclientId
             - name: DAPSWRAPPER_KEYCLOAK_CLIENTSECRET
               valueFrom:
                 secretKeyRef:
-                  name: dapssecret
+                  name: daps-secrets
                   key: dapswrapperkeycloakclientSecret 
             - name: DAPSWRAPPER_URL
               valueFrom:
                 secretKeyRef:
-                  name: dapssecret
+                  name: daps-secrets
                   key: dapswrapperUrl 
             - name: KUBEAPP_URL
               valueFrom:
@@ -105,16 +112,36 @@ spec:
                 secretKeyRef:
                   name: kubeapps-secrets
                   key: kubeappsToken
-            - name: SPRING_DATASOURCE_URL
-              value: "jdbc:postgresql://orch-postgresdb-postgresql:5432/orchdb"
+
             - name: TARGET_NAMESPACE
-              value: "kubeapps"
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-secrets
+                  key: targetNamesapce
             - name: TARGET_CLUSTER
-              value: "default"
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-secrets
+                  key: targetCluster
             - name: DNS_NAME_PROTOCOL
-              value: "https"
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-secrets
+                  key: dnsnameProtocol
             - name: DNS_NAME
-              value: "tenantname.cx.dih-cloud.com"
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-secrets
+                  key: dnsname
+
+            #- name: TARGET_NAMESPACE
+            #  value: "kubeapps"
+            #- name: TARGET_CLUSTER
+            #  value: "default"
+            #- name: DNS_NAME_PROTOCOL
+            #  value: "https"
+            #- name: DNS_NAME
+            #  value: "tenantname.cx.dih-cloud.com"
             - name: RETRY_MAXATTEMPTS
               value: "3"
             - name: RETRY_BACKOFFDELAY
@@ -172,36 +199,87 @@ spec:
             - name: KEYCLOAK_REALM
               valueFrom: 
                 secretKeyRef:
-                  name: keycloacksecret
+                  name: keycloack-secrets
                   key: keycloakRealm
             - name: KEYCLOAK_AUTH-SERVER-URL
               valueFrom: 
                 secretKeyRef:
-                  name: keycloacksecret
+                  name: keycloack-secrets
                   key: keycloakAuthserverUrl
             - name: KEYCLOAK_RESOURCES
               valueFrom: 
                 secretKeyRef:
-                  name: keycloacksecret
-                  key: keycloakResource                           
+                  name: keycloack-secrets
+                  key: keycloakResource
             - name: KEYCLOAK_SSL-REQUIRED
-              value: "external"
+              valueFrom: 
+                secretKeyRef:
+                  name: keycloack-secrets
+                  key: keycloakSslRequired
             - name: KEYCLOAK_USE-RESOURCE-ROLE-MAPPINGS
-              value: "true"
+              valueFrom: 
+                secretKeyRef:
+                  name: keycloack-secrets
+                  key: keycloakUseResourceRoleMappings
             - name: KEYCLOAK_BEARER-TOKEN
-              value: "true"
+              valueFrom: 
+                secretKeyRef:
+                  name: keycloack-secrets
+                  key: keycloakBearerOnly
+            - name: MANUAL_UPDATE
+              valueFrom: 
+                secretKeyRef:
+                  name: keycloack-secrets
+                  key: manualupdate
+                  
+            #- name: KEYCLOAK_SSL-REQUIRED
+            #  value: "external"
+            #- name: KEYCLOAK_USE-RESOURCE-ROLE-MAPPINGS
+            #  value: "true"
+            #- name: KEYCLOAK_BEARER-TOKEN
+            #  value: "true"
             - name: MAIL_SMTP_HOST
-              value: "mailauth.telekom.de"
-            - name: MAIL_SMTP_PORT
-              value: "587"
+              valueFrom: 
+                secretKeyRef:
+                  name: mail-secrets
+                  key: smtp_host
+             - name: MAIL_SMTP_PORT
+              valueFrom: 
+                secretKeyRef:
+                  name: mail-secrets
+                  key: smtp_port
             - name: MAIL_FROM_ADDRESS
-              value: "Auto Setup technical team<tech@telekom.de>"
+              valueFrom: 
+                secretKeyRef:
+                  name: mail-secrets
+                  key: mail_from
             - name: MAIL_REPLYTO_ADDRESS
-              value: "sachin.argade@t-systems.com,ADITYA.GAJBHIYE@t-systems.com"
+              valueFrom: 
+                secretKeyRef:
+                  name: mail-secrets
+                  key: mail_to
             - name: MAIL_SMTP_STARTTLS_ENABLE
-              value: "true"
-            - name: MAIL_SMTP_AUTH
-              value: "true"
+              valueFrom: 
+                secretKeyRef:
+                  name: mail-secrets
+                  key: smtp_tls_enable
+             - name: MAIL_SMTP_AUTH
+              valueFrom: 
+                secretKeyRef:
+                  name: mail-secrets
+                  key: smtp_auth             
+            #- name: MAIL_SMTP_HOST
+            #  value: "mailauth.telekom.de"
+            #- name: MAIL_SMTP_PORT
+            #  value: "587"
+            #- name: MAIL_FROM_ADDRESS
+            #  value: "Auto Setup technical team<tech@telekom.de>"
+            #- name: MAIL_REPLYTO_ADDRESS
+            #  value: "sachin.argade@t-systems.com,ADITYA.GAJBHIYE@t-systems.com"
+            #- name: MAIL_SMTP_STARTTLS_ENABLE
+            #  value: "true"
+            #- name: MAIL_SMTP_AUTH
+            #  value: "true"
 
 
           resources:
