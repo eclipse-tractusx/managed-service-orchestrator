@@ -54,7 +54,7 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ghcr.io/catenax-ng/tx-autosetup-backend/orchestrator
+            ghcr.io/catenax-ng/tx-autosetup-backend/autosetup
           tags: |
           # type=semver,pattern={{version}},value=v1.0.2
           flavor: |
