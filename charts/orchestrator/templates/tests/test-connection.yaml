@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ include "orchestrator.fullname" . }}-test-connection"
+  name: "{{ include "autosetup.fullname" . }}-test-connection"
   labels:
-    {{- include "orchestrator.labels" . | nindent 4 }}
+    {{- include "autosetup.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
 spec:
@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "orchestrator.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "autosetup.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never

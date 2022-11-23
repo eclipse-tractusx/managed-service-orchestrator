@@ -231,19 +231,12 @@ spec:
                 secretKeyRef:
                   name: keycloack-secrets
                   key: manualupdate
-                  
-            #- name: KEYCLOAK_SSL-REQUIRED
-            #  value: "external"
-            #- name: KEYCLOAK_USE-RESOURCE-ROLE-MAPPINGS
-            #  value: "true"
-            #- name: KEYCLOAK_BEARER-TOKEN
-            #  value: "true"
             - name: MAIL_SMTP_HOST
               valueFrom: 
                 secretKeyRef:
                   name: mail-secrets
                   key: smtp_host
-             - name: MAIL_SMTP_PORT
+            - name: MAIL_SMTP_PORT
               valueFrom: 
                 secretKeyRef:
                   name: mail-secrets
@@ -263,7 +256,7 @@ spec:
                 secretKeyRef:
                   name: mail-secrets
                   key: smtp_tls_enable
-             - name: MAIL_SMTP_AUTH
+            - name: MAIL_SMTP_AUTH
               valueFrom: 
                 secretKeyRef:
                   name: mail-secrets
