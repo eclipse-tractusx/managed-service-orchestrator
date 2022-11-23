@@ -52,7 +52,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           # Path to Docker image
-          image-ref: "ghcr.io/catenax-ng/product-autosetup-backend/autosetup:latest"
+          image-ref: "ghcr.io/catenax-ng/tx-autosetup-backend/orchestrator:latest"
           format: "sarif"
           output: "trivy-results2.sarif"
           exit-code: "1"
