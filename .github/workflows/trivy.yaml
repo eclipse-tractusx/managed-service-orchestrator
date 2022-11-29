@@ -1,4 +1,5 @@
-name: "Trivy Scan"
+name: "Trivy"
+
 on:
   push:
     branches: [main]
@@ -18,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Run Trivy vulnerability scanner in repo mode
         uses: aquasecurity/trivy-action@master
