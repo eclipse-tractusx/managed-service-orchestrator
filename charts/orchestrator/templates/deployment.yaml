@@ -195,7 +195,27 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: portal-secrets
-                  key: portaldftdigitaltwinauth               
+                  key: portaldftdigitaltwinauth
+            - name: DFT_PORTAL_POOL
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secrets
+                  key: dftportalpool
+            - name: DFT_PROTAL_BACKEND
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secrets
+                  key: dftportalbackend
+            - name: DFT_PORTAL_CLIENTID
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secrets
+                  key: dftportalclientid
+            - name: DFT_PORTAL_CLIENTSECRET
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secrets
+                  key: dftportalsecret
             - name: KEYCLOAK_REALM
               valueFrom: 
                 secretKeyRef:
@@ -260,7 +280,18 @@ spec:
               valueFrom: 
                 secretKeyRef:
                   name: mail-secrets
-                  key: smtp_auth             
+                  key: smtp_auth
+            - name: MAIL_SMTP_USERNAME
+              valueFrom: 
+                secretKeyRef:
+                  name: mail-secrets
+                  key: emailuser
+            - name: MAIL_SMTP_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: mail-secrets
+                  key: emailpassword
+                  
             #- name: MAIL_SMTP_HOST
             #  value: "mailauth.telekom.de"
             #- name: MAIL_SMTP_PORT
