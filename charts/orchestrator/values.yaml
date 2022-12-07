@@ -37,7 +37,7 @@ ingress:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/affinity: "cookie"
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
-  host: "orchestrator-beta.cx.dih-cloud.com"
+  host: "orchestrator-beta1.cx.dih-cloud.com"
 resources:
   limits:
     cpu: 800m
@@ -76,13 +76,9 @@ readinessProbe:
 postgres:
   enabled: true
   auth:
-    postgresPassword: "admin@123"
-    password: "admin@123"
     username: "orchdbuser"
-    database: "autosetupdb"
-    #existingSecret: autosetup-beta-secret
-    #secretKeys:
-    #    adminPasswordKey: "postgres-password"
-    #    userPasswordKey: "password"
-
-
+    database: "orchdb"
+    existingSecret: autosetup-beta-secret
+    secretKeys:
+        adminPasswordKey: "postgres-password"
+        userPasswordKey: "password"
