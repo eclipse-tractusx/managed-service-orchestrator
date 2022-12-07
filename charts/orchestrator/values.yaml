@@ -81,5 +81,5 @@ postgres:
     existingSecret: autosetup-beta-secret
     secretKeys:
         adminPasswordKey: "postgres-password"
-        userPasswordKey: "dbpassword"
+        userPasswordKey: "password"
 
