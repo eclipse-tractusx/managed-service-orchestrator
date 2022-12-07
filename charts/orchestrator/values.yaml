@@ -76,12 +76,10 @@ readinessProbe:
 postgres:
   enabled: true
   auth:
-    username: "dftUser"
-    database: "dftdb"
-    existingSecret: autosetup-psql-secret
+    username: "orchdbuser"
+    database: "autosetupdb"
+    existingSecret: autosetup-beta-secret
     secretKeys:
         adminPasswordKey: "postgres-password"
-        userPasswordKey: "password"
-
-
+        userPasswordKey: "dbpassword"
 

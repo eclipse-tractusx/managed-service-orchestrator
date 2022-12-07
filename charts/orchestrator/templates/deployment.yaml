@@ -46,7 +46,8 @@ spec:
             - name: RETRY_MAXATTEMPTS
               value: "3"
             - name: RETRY_BACKOFFDELAY
-              value: "500"                  
+              value: "500"
+
             #- name: MAIL_SMTP_HOST
             #  value: "mailauth.telekom.de"
             #- name: MAIL_SMTP_PORT
