@@ -1,43 +1,43 @@
-# our base build image
-FROM maven:3.8-openjdk-18 as builder
+#/********************************************************************************
+#* Copyright (c) 2022 T-Systems International GmbH
+#* Copyright (c) 2022 Contributors to the CatenaX (ng) GitHub Organisation
+#*
+#* See the NOTICE file(s) distributed with this work for additional
+#* information regarding copyright ownership.
+#*
+#* This program and the accompanying materials are made available under the
+#* terms of the Apache License, Version 2.0 which is available at
+#* https://www.apache.org/licenses/LICENSE-2.0.
+#*
+#* Unless required by applicable law or agreed to in writing, software
+#* distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#* WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#* License for the specific language governing permissions and limitations
+#* under the License.
+#*
+#* SPDX-License-Identifier: Apache-2.0
+#********************************************************************************/
 
-# copy the project files
-COPY ./pom.xml /pom.xml
+#FROM openjdk:19-jdk-alpine3.16
+FROM maven:3.8.5-openjdk-18-slim as build
+#FROM maven:3.8.6-eclipse-temurin-19-focal
 
-# build all dependencies
-RUN mvn dependency:go-offline -B
+#RUN apk update && apk add maven && apk add --upgrade maven
 
-# copy your other files
-COPY ./src ./src
+RUN apt-get update -y && apt-get install -y nocache
 
-# build for release
-RUN mvn clean install -Dmaven.test.skip=true
+#RUN  && apk add --upgrade openssl
 
-# our final base image
-#FROM eclipse-temurin:18.0.1_10-jre
+WORKDIR /app
 
-FROM eclipse-temurin:19_36-jre
+COPY . /app
 
-ARG USERNAME=autosetupuser
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+RUN mvn clean install -Dmaven.test.skip=true 
 
-# Create the user
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME 
-#    && apt-get update \
-#    && apt-get install -y sudo \
-#    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-#    && chmod 0440 /etc/sudoers.d/$USERNAME
+WORKDIR target
 
-# set deployment directory
-WORKDIR /autosetup
+#RUN mv kubeapps-wrapper-0.0.1.jar orchestrator-service.jar 
 
-# copy over the built artifact from the maven image
-COPY --from=builder target/*.jar ./app.jar
-
-USER $USERNAME
+ENTRYPOINT ["java","-jar","auto-setup-0.0.1.jar"]
 
 EXPOSE 9999
-# set the startup command to run your binary
-CMD ["java", "-jar", "./app.jar"]
