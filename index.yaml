@@ -2,18 +2,18 @@ apiVersion: v1
 entries:
   autosetup:
   - apiVersion: v2
-    appVersion: 0.0.4
-    created: "2022-12-08T12:07:57.351193+05:30"
+    appVersion: 0.0.5
+    created: "2022-12-08T12:12:23.299888+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
       repository: https://charts.bitnami.com/bitnami
       version: 11.x.x
     description: A Helm chart for Kubernetes
-    digest: 97a664f14d60a5d8259c20796484550f80ead4048b09a6b0ee3d69d63bf07abd
+    digest: 6f437c14044f3fa763ef1c2c46359b06012db1f8d9b309592271b098bf958e79
     name: autosetup
     type: application
     urls:
-    - https://catenax-ng.github.io/tx-autosetup-backend/autosetup-0.0.4.tgz
-    version: 0.0.4
-generated: "2022-12-08T12:07:57.347743+05:30"
+    - https://catenax-ng.github.io/tx-autosetup-backend/autosetup-0.0.5.tgz
+    version: 0.0.5
+generated: "2022-12-08T12:12:23.294997+05:30"
