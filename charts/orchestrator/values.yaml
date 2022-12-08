@@ -78,7 +78,7 @@ postgres:
   auth:
     username: "orchdbuser"
     database: "orchdb"
-    existingSecret: "autosetup-beta-secret" 
+    existingSecret: "autosetup-beta" 
     secretKeys:
         adminPasswordKey: "postgres-password"
         userPasswordKey: "password"
