@@ -37,7 +37,7 @@ ingress:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/affinity: "cookie"
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
-  host: "orchestrator-beta1.cx.dih-cloud.com"
+  host: " "
 resources:
   limits:
     cpu: 800m
