@@ -16,7 +16,7 @@
 
 
 
-name: autoset-test
+name: autosetup-test
 
 # Controls when the workflow will run
 on:
