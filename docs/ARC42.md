@@ -1,6 +1,6 @@
 # SDE - User Guide
 
-## ![](docs/images/pic1.png)
+## ![](images/pic1.png)
 
 ## About arc42
 arc42, the Template for documentation of software and system architecture.
@@ -18,7 +18,7 @@ SDEis a simple component provided by Catena-X named Data Format Transformer. Its
 
 ## Requirements Overview
 
-## ![](docs/images/pic0.png)
+## ![](images/pic0.png)
 
 What is necessary to enable third-party platform to provide SDEas a managed service by third-party for an SME of Catena-x?
 
@@ -58,7 +58,7 @@ The process has to comply with IDSA, GAIA-X, and Catena-X principles.
 # System Scope and Context
 ## Auto setup Process in third-party domain
 
-## ![](docs/images/pic3.png)
+## ![](images/pic3.png)
 
 ## Business Context
 **Contents.**
@@ -83,7 +83,7 @@ Alternatively (or additionally) you can use a table. The title of the table is t
 
 ### **APIs for exchanging the data between The Portal and Auto-Setup process**
 
-## ![](docs/images/pic4.png)
+## ![](images/pic4.png)
 
 ### Interfaces:
 1. **Third-PartyAuto Setup process:**
@@ -97,7 +97,7 @@ This service has to be provided by the digital twin team and will be used by SDE
 5. **DAPS Registration Service:**
 This interface will be implemented by T-Systems. This interface has to provide by Catena-X for the registration of connectors to the Catena-X DAPS
 
-## ![](docs/images/pic5.png)
+## ![](images/pic5.png)
 
 ### Initial attributes needed from Portal to start the Auto setup process:
 
@@ -212,11 +212,11 @@ To hide all complexity from the participant, a third-party service provider prov
 
 ## Needed Dialog for Auto Setup Process:
 
-## ![](docs/images/pic6.png)
+## ![](images/pic6.png)
 
 ### Deployment View
 
-## ![](docs/images/pic7.png)
+## ![](images/pic7.png)
 
 In Catena-X we use ARGO-CD for deployment<br>
 [README.md](https://github.com/catenax/kubeapps-orchestrator-service/blob/main/README.md) describe the deployment process
