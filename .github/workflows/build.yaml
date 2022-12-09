@@ -54,11 +54,10 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ghcr.io/catenax-ng/product-autosetup-backend/autosetup
+            ghcr.io/catenax-ng/tx-autosetup-backend/autosetup
           tags: |
-          # type=semver,pattern={{version}},value=v1.0.2
-          flavor: |
-              latest=true
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=semver,pattern={{version}},value=0.0.1
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
