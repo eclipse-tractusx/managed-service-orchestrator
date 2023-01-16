@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.tractusx.autosetup.constant.TriggerStatusEnum;
-import org.eclipse.tractusx.autosetup.daps.proxy.DAPsWrapperProxy;
+import org.eclipse.tractusx.autosetup.daps.proxy.PortalRegistrationProxy;
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerDetails;
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
 import org.eclipse.tractusx.autosetup.exception.ServiceException;
@@ -53,7 +53,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class DAPsWrapperManager {
+public class PortalRegistrationManager {
 
 	@Value("${dapswrapper.url}")
 	private URI dapsRegistrationUrl;
@@ -82,7 +82,7 @@ public class DAPsWrapperManager {
 	
 
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
-	private final DAPsWrapperProxy dapsWrapperProxy;
+	private final PortalRegistrationProxy portalRegistrationProxy;
 
 	@Retryable(value = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
@@ -103,20 +103,19 @@ public class DAPsWrapperManager {
 
 			String dnsNameURLProtocol = inputData.get("dnsNameURLProtocol");
 
-			String referringConnector = dnsNameURLProtocol + "://" + inputData.get("dnsName") + "/"
-					+ inputData.get("bpnNumber");
-
-			String targetNamespace = inputData.get("targetNamespace");
 
 			MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
-			body.add("clientName", targetNamespace + "-" + packageName);
-			body.add("referringConnector", referringConnector);
-			body.add("file", new FileSystemResource(file.toFile()));
+			body.add("name", customerDetails.getOrganizationName());
+			body.add("connectorUrl", dnsNameURLProtocol);
+			body.add("status", inputData.get("status"));
+			body.add("location", customerDetails.getCountry());
+			body.add("providerBpn", inputData.get("bpnNumber"));
+			body.add("certificate", new FileSystemResource(file.toFile()));
 			Map<String, String> header = new HashMap<>();
 			header.put("Authorization", "Bearer " + getKeycloakToken());
 
-			dapsWrapperProxy.registerClient(dapsRegistrationUrl, header, body);
+			portalRegistrationProxy.registerClient(URI.create("/api/administration/connectors/managed"), header, body);
 
 			inputData.put("dapsurl", dapsurl);
 			inputData.put("dapsjsksurl", dapsjsksurl);
@@ -153,7 +152,7 @@ public class DAPsWrapperManager {
 		body.add(OAuth2Constants.GRANT_TYPE, OAuth2Constants.CLIENT_CREDENTIALS);
 		body.add(OAuth2Constants.CLIENT_ID, clientId);
 		body.add(OAuth2Constants.CLIENT_SECRET, clientSecret);
-		var resultBody = dapsWrapperProxy.readAuthToken(tokenURI, body);
+		var resultBody = portalRegistrationProxy.readAuthToken(tokenURI, body);
 
 		if (resultBody != null) {
 			return resultBody.getAccessToken();
