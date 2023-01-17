@@ -19,7 +19,7 @@
 #********************************************************************************/
 
 #FROM openjdk:19-jdk-alpine3.16
-FROM maven:3.8.5-openjdk-18-slim as build
+FROM maven:3.8.5-openjdk-18-slim
 
 RUN apt-get update -y && apt-get install -y nocache
 #RUN  && apk add --upgrade openssl
@@ -36,7 +36,8 @@ RUN mvn clean install -Dmaven.test.skip=true
 WORKDIR target
 
 #RUN mv kubeapps-wrapper-0.0.1.jar orchestrator-service.jar 
+RUN mv auto-setup-0.0.1.jar app.jar
 
-ENTRYPOINT ["java","-jar","auto-setup-0.0.1.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
 
 EXPOSE 9999
