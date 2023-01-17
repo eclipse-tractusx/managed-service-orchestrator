@@ -1,0 +1,131 @@
+# Default values for dftbe.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/catenax-ng/tx-sde-autosetup-backend
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+portContainer: 8080
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 7070
+  targetPort: 8080
+
+dftbackend:
+  endpoints:
+    ## Default api exposing health checks etc
+    default:
+      # -- The network port, which the "default" api is going to be exposed by the container, pod and service
+      port: "7070"
+      # -- The path mapping the "default" api is going to be exposed at
+      path: /dftbackend 
+          
+ingress:
+  - enabled: true
+    className: "nginx"
+    annotations: {}
+#      kubernetes.io/ingress.class: nginx
+#      kubernetes.io/tls-acme: "true"
+    hostname: ""
+    
+    endpoints:
+     - default
+
+    tls: 
+
+     enabled: true    
+
+     secretName: ""
+      # -- If present overwrites the default secret name
+    certManager:
+      # -- If preset enables certificate generation via cert-manager namespace scoped issuer
+      #issuer: ""
+      # -- If preset enables certificate generation via cert-manager cluster-wide issuer
+      clusterIssuer: "letsencrypt-prod"
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+configuration:
+  properties: |-
+    #PostgresDatabaseConfig 
+    spring.datasource.driver-class-name=org.postgresql.Driver
+    spring.datasource.url=
+    spring.datasource.username=
+    spring.datasource.password=
+    spring.jpa.open-in-view=false
+    #Digital-twinsConfig
+    digital-twins.hostname=
+    digital-twins.authentication.url=
+    digital-twins.authentication.clientId=
+    digital-twins.authentication.clientSecret=
+    #EDCConfig  
+    edc.enabled=true
+    edc.hostname=
+    edc.apiKeyHeader=
+    edc.apiKey=
+    #DFTConfig
+    dft.hostname=
+    dft.apiKeyHeader=
+    dft.apiKey=
+    ## Manufacturer Id
+    manufacturerId=
+    # consumer config
+    edc.consumer.hostname=
+    edc.consumer.apikeyheader=
+    edc.consumer.apikey=
+    edc.consumer.datauri=
