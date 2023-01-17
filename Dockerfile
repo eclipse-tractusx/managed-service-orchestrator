@@ -27,7 +27,7 @@ WORKDIR /app
 
 # our final base image
 #FROM eclipse-temurin:18.0.1_10-jre
-FROM eclipse-temurin:19_36-jre
+#FROM eclipse-temurin:19_36-jre
 
 COPY . /app
 
