@@ -27,9 +27,6 @@ import java.util.Map;
 
 import org.eclipse.tractusx.autosetup.constant.ToolType;
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
-import org.eclipse.tractusx.autosetup.manager.AutoSetupTriggerManager;
-import org.eclipse.tractusx.autosetup.manager.OpenSSLClientManager;
-import org.eclipse.tractusx.autosetup.manager.VaultManager;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.eclipse.tractusx.autosetup.vault.proxy.VaultAppManageProxy;

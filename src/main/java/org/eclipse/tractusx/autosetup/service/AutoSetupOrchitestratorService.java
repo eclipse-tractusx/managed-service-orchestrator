@@ -538,7 +538,7 @@ public class AutoSetupOrchitestratorService {
 		return processResult;
 	}
 
-	private boolean checkNamespaceisExist(String targetNamespace) {
+	public boolean checkNamespaceisExist(String targetNamespace) {
 
 		String namespacesResult = kubeAppManageProxy.checkNamespace(targetCluster, targetNamespace);
 		return namespacesResult.contains("true");

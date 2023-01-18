@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
-import org.eclipse.tractusx.autosetup.manager.InputConfigurationManager;
 import org.eclipse.tractusx.autosetup.model.AutoSetupRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

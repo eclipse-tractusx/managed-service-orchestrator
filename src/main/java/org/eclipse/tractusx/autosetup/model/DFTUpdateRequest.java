@@ -36,5 +36,8 @@ public class DFTUpdateRequest {
     private String digitalTwinAuthUrl;
     private String digitalTwinClientId;
     private String digitalTwinClientSecret;
+    
+    private String dftportalclientid;
+    private String dftportalclientSecret;
 
 }

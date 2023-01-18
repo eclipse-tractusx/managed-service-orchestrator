@@ -58,21 +58,6 @@ public class PortalIntegrationManager {
 	@Value("${portal.keycloak.tokenURI}")
 	private URI tokenURI;
 
-	@Value("${portal.dft.keycloak.realm}")
-	private String keycloakRealm;
-
-	@Value("${portal.dft.keycloak.clientId}")
-	private String keycloakClientId;
-
-	@Value("${portal.dft.keycloak.url}")
-	private String keycloakUrl;
-
-	@Value("${portal.dft.digitalTwinUrl}")
-	private String digitalTwinUrl;
-
-	@Value("${portal.dft.digitalTwinAuthUrl}")
-	private String digitalTwinAuthUrl;
-
 	@SneakyThrows
 	public Map<String, String> postServiceInstanceResultAndGetTenantSpecs(Map<String, String> inputData) {
 
@@ -89,17 +74,12 @@ public class PortalIntegrationManager {
 				.postServiceInstanceResultAndGetTenantSpecs(portalUrl, header, serviceInstanceResultRequest);
 
 		if (serviceInstanceResultResponse != null) {
-			inputData.put("digital-twins.hostname", digitalTwinUrl);
-			inputData.put("digital-twins.authentication.url", digitalTwinAuthUrl);
 
 			TechnicalUserInfo technicalUserInfo = serviceInstanceResultResponse.getTechnicalUserInfo();
 			if (technicalUserInfo != null) {
 				inputData.put("digital-twins.authentication.clientId", technicalUserInfo.getTechnicalClientId());
 				inputData.put("digital-twins.authentication.clientSecret", technicalUserInfo.getTechnicalUserSecret());
 			}
-
-			inputData.put("dftkeycloakurl", keycloakUrl);
-			inputData.put("dftcloakrealm", keycloakRealm);
 
 			ClientInfo clientInfo = serviceInstanceResultResponse.getClientInfo();
 

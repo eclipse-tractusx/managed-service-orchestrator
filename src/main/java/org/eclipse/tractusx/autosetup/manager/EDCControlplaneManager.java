@@ -34,6 +34,7 @@ import org.eclipse.tractusx.autosetup.exception.ServiceException;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.eclipse.tractusx.autosetup.utility.PasswordGenerator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.retry.support.RetrySynchronizationManager;
@@ -49,6 +50,15 @@ public class EDCControlplaneManager {
 
 	private final KubeAppsPackageManagement appManagement;
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
+	
+	@Value("${daps.url}")
+	private String dapsurl;
+	
+	@Value("${daps.jskurl}")
+	private String dapsjsksurl;
+	
+	@Value("${daps.token.url}")
+	private String dapstokenurl;
 
 	@Retryable(value = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
@@ -68,6 +78,10 @@ public class EDCControlplaneManager {
 
 			String controlplaneurl = dnsNameURLProtocol + "://" + dnsName;
 
+			inputData.put("dapsurl", dapsurl);
+			inputData.put("dapsjsksurl", dapsjsksurl);
+			inputData.put("dapstokenurl", dapstokenurl);
+			
 			inputData.put("dataPlanePublicUrl",
 					dnsNameURLProtocol + "://" + packageName + "-edcdataplane-edc-dataplane:8185/api/public");
 			

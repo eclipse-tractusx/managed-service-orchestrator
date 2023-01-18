@@ -27,9 +27,6 @@ import java.util.Map;
 
 import org.eclipse.tractusx.autosetup.constant.AppActions;
 import org.eclipse.tractusx.autosetup.constant.ToolType;
-import org.eclipse.tractusx.autosetup.manager.AutoSetupTriggerManager;
-import org.eclipse.tractusx.autosetup.manager.EDCDataplaneManager;
-import org.eclipse.tractusx.autosetup.manager.KubeAppsPackageManagement;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

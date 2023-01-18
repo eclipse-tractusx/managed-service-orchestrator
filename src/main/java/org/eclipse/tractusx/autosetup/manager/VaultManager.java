@@ -98,9 +98,6 @@ public class VaultManager {
 			tenantVaultSecret.put(CONTENT, encryptionkeysalias);
 			uploadSecrete(tenantNameNamespace, ENCRYPTIONKEYS, tenantVaultSecret);
 
-			inputData.remove("selfsigncertificateprivatekey");
-			inputData.remove("selfsigncertificate");
-			
 			inputData.put(DAPS_CERT, DAPS_CERT);
 			inputData.put(CERTIFICATE_PRIVATE_KEY, CERTIFICATE_PRIVATE_KEY);
 			inputData.put("valuttenantpath", "/v1/secret/data/" + tenantNameNamespace);
