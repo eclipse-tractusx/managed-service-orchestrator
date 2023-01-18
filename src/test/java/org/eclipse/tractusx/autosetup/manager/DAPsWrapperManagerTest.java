@@ -29,9 +29,7 @@ import java.util.Map;
 
 import org.apache.commons.codec.Resources;
 import org.eclipse.tractusx.autosetup.constant.ToolType;
-import org.eclipse.tractusx.autosetup.daps.proxy.DAPsWrapperProxy;
-import org.eclipse.tractusx.autosetup.manager.AutoSetupTriggerManager;
-import org.eclipse.tractusx.autosetup.manager.DAPsWrapperManager;
+import org.eclipse.tractusx.autosetup.daps.proxy.PortalRegistrationProxy;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.eclipse.tractusx.autosetup.utility.Certutil;
@@ -50,13 +48,13 @@ import org.springframework.test.context.ActiveProfiles;
 class DAPsWrapperManagerTest {
 
     @Mock
-    private DAPsWrapperProxy dapsWrapperProxy;
+    private PortalRegistrationProxy dapsWrapperProxy;
 
     @Mock
     private AutoSetupTriggerManager autoSetupTriggerManager;
 
     @InjectMocks
-    private DAPsWrapperManager daPsWrapperManager;
+    private PortalRegistrationManager daPsWrapperManager;
 
     @Test
     void createClient() throws IOException {

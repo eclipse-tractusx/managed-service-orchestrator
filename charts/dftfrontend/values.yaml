@@ -1,0 +1,88 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/catenax-ng/tx-sde-autosetup-frontend
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+  
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+portContainer: 8080
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+#ingress:
+#  enabled: false
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+   
+dft:
+  endpoints:
+    ## Default api exposing health checks etc
+    default:
+      # -- The network port, which the "default" api is going to be exposed by the container, pod and service
+      port: "80"
+      # -- The path mapping the "default" api is going to be exposed at
+      path: /  
+          
+ingress:
+  - enabled: true
+    className: "nginx"
+    annotations: 
+     kubernetes.io/tls-acme: "true"
+    hostname: ""
+    endpoints:
+     - default
+
+    tls: 
+     enabled: true
+
+     secretName: ""
+      # -- If present overwrites the default secret name
+    certManager:
+      # -- If preset enables certificate generation via cert-manager namespace scoped issuer
+      #issuer: ""
+      # -- If preset enables certificate generation via cert-manager cluster-wide issuer
+      clusterIssuer: "letsencrypt-prod"
+  #    hosts:
+  #      - chart-example.local
+#  annotations:
+#    nginx.ingress.kubernetes.io/backend-protocol: HTTP
+#    nginx.ingress.kubernetes.io/affinity: "cookie"
+#    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+  #annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  #    hosts:
+  #      - chart-example.local
+configuration:
+  properties: |-
+     REACT_APP_PASS=
+     REACT_APP_USERNAME=
+     REACT_APP_FILESIZE=
+     REACT_APP_API_URL=
+     REACT_APP_API_KEY=
+     REACT_APP_DEFAULT_COMPANY_BPN=
+     
