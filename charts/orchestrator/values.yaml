@@ -5,7 +5,7 @@ replicaCount: 1
 image:
   repository: ghcr.io/catenax-ng/tx-autosetup-backend/autosetup
   pullPolicy: Always
-  tag: "0.0.4"
+  tag: "0.0.5"
   
 imagePullSecrets: []
 
