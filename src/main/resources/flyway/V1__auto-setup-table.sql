@@ -38,6 +38,8 @@ INSERT INTO app_tbl
 (app_name, context_cluster, context_namespace, expected_input_data, output_data, package_identifier, package_version, plugin_name, plugin_version, required_yaml_configuration, yaml_value_field_type)
 VALUES('DFT_BACKEND', 'default', 'kubeapps', 'server.port=8080
 
+spring.main.allow-bean-definition-overriding=true
+	
 spring.servlet.multipart.enabled=true
 
 spring.servlet.multipart.file-size-threshold=2KB
@@ -78,8 +80,6 @@ digital-twins.authentication.clientSecret=$\{digital-twins.authentication.client
 
 digital-twins.authentication.grantType=client_credentials
 
-edc.enabled=true
-
 edc.hostname=$\{controlPlaneDataEndpoint\}
 
 edc.apiKeyHeader=$\{edcApiKey\}
@@ -113,6 +113,10 @@ keycloak.resource=$\{dftbackendkeycloakclientid\}
 keycloak.use-resource-role-mappings=true
 
 keycloak.bearer-only=true
+
+springdoc.api-docs.path=/api-docs
+
+springdoc.swagger-ui.oauth.client-id=$\{dftbackendkeycloakclientid\}
 
 partner.pool.hostname=https://partners-pool.int.demo.catena-x.net
 
