@@ -2,41 +2,26 @@ apiVersion: v1
 entries:
   autosetup:
   - apiVersion: v2
-    appVersion: 1.0.3
-    created: "2023-01-17T20:03:04.246114+05:30"
+    appVersion: 1.0.6
+    created: "2023-01-18T15:00:44.051982+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
       repository: https://charts.bitnami.com/bitnami
       version: 11.x.x
     description: A Helm chart for Kubernetes
-    digest: e23fe6e7b421c3fca3855535e8e7be73a2964431df6cf35c868a5aa0ff43e081
+    digest: 13b58e4f250d6b4f04b7233406643c499f8a806ae792d792b88082511cbfcca1
     name: autosetup
     type: application
     urls:
-    - https://catenax-ng.github.io/orchestrator/autosetup-1.0.3.tgz
-    version: 1.0.3
-  - apiVersion: v2
-    appVersion: 0.0.2
-    created: "2023-01-17T20:03:04.241201+05:30"
-    dependencies:
-    - condition: postgresql.enabled
-      name: postgresql
-      repository: https://charts.bitnami.com/bitnami
-      version: 11.x.x
-    description: A Helm chart for Kubernetes
-    digest: da9d60d469d5a3f574aebd717a3c940a5931ebbe618bf3f261f5af86c3837b37
-    name: autosetup
-    type: application
-    urls:
-    - https://catenax-ng.github.io/orchestrator/autosetup-1.0.2.tgz
-    version: 1.0.2
+    - https://catenax-ng.github.io/orchestrator/autosetup-1.0.6.tgz
+    version: 1.0.6
   dftbackend:
   - apiVersion: v2
     appVersion: 1.4.3
-    created: "2023-01-17T20:03:04.246925+05:30"
+    created: "2023-01-18T15:00:44.053294+05:30"
     description: A Helm chart for Kubernetes
-    digest: 3ede6516a982eb0ae2765c3d7bfbfd022ec993de3ea4d8af474eb39c1ec8e1a0
+    digest: 98ae0c2d62a06f346ef7f8de82096a364c55e7a85a363f2c40170af36a14ea51
     name: dftbackend
     type: application
     urls:
@@ -45,12 +30,12 @@ entries:
   dftfrontend:
   - apiVersion: v2
     appVersion: 1.4.4
-    created: "2023-01-17T20:03:04.247487+05:30"
+    created: "2023-01-18T15:00:44.053886+05:30"
     description: A Helm chart for Kubernetes
-    digest: dac0820870fe10cf6406b6809f8f4b77c78099bc98e7d26aa750611f849f6997
+    digest: a498a71f15bf8c11087426512b8fea5808b2a1ca401547ef15d98f4251a73c8f
     name: dftfrontend
     type: application
     urls:
     - https://catenax-ng.github.io/orchestrator/dftfrontend-1.4.4.tgz
     version: 1.4.4
-generated: "2023-01-17T20:03:04.236415+05:30"
+generated: "2023-01-18T15:00:44.047978+05:30"

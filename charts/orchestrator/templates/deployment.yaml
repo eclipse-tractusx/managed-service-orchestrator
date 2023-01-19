@@ -37,7 +37,7 @@ spec:
             - containerPort: {{ .Values.portContainer }}
           envFrom:
             - secretRef:
-                name: autosetup-beta-secret
+                name: autosetup-int-secret
           env:
             - name: SPRING_JPA_HIBERNATE_DDL-AUTO
               value: "update"
