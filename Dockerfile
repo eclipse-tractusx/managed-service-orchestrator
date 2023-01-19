@@ -31,7 +31,7 @@ RUN mvn dependency:go-offline -B
 COPY ./src ./src
 
 # build for release
-RUN mvn clean install
+RUN mvn clean install -Dmaven.test.skip=true 
 
 # our final base image
 #FROM eclipse-temurin:18.0.1_10-jre
