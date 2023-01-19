@@ -77,6 +77,10 @@ public class ManualDFTPackageUpdateManager {
 			inputConfiguration.put("dftbackendkeycloakclientid", dftUpdateRequest.getKeycloakBackendClientId());
 			inputConfiguration.put("dftfrontendkeycloakclientid", dftUpdateRequest.getKeycloakFrontendClientId());
 
+			inputConfiguration.put("dftportalclientid", dftUpdateRequest.getDftportalclientid());
+			inputConfiguration.put("dftportalclientSecret", dftUpdateRequest.getDftportalclientSecret());
+
+			
 			List<Map<String, String>> autosetupResult = autoSetupTriggerMapper
 					.fromJsonStrToMap(trigger.getAutosetupResult());
 

@@ -68,9 +68,9 @@ spring.datasource.username=$\{username\}
 
 spring.datasource.password=$\{password\}
 
-digital-twins.hostname=$\{digital-twins.hostname\}
+digital-twins.hostname=https://semantics.int.demo.catena-x.net/registry
 
-digital-twins.authentication.url=$\{digital-twins.authentication.url\}
+digital-twins.authentication.url=https://centralidp.int.demo.catena-x.net/auth/realms/CX-Central/protocol/openid-connect/token
 
 digital-twins.authentication.clientId=$\{digital-twins.authentication.clientId\}
 	
@@ -102,9 +102,9 @@ edc.consumer.apikey=$\{edcApiKeyValue\}
 
 edc.consumer.datauri=/api/v1/ids/data
 
-keycloak.realm=$\{dftcloakrealm\}
+keycloak.realm=CX-Central
 
-keycloak.auth-server-url=$\{dftkeycloakurl\}
+keycloak.auth-server-url=https://centralidp.int.demo.catena-x.net/auth
 
 keycloak.ssl-required=external
 
@@ -114,9 +114,9 @@ keycloak.use-resource-role-mappings=true
 
 keycloak.bearer-only=true
 
-partner.pool.hostname=$\{dftprotalpool\}
+partner.pool.hostname=https://partners-pool.int.demo.catena-x.net
 
-portal.backend.hostname=$\{dftprotalbackend\}
+portal.backend.hostname=https://portal-backend.int.demo.catena-x.net
 
 clientId=$\{dftportalclientid\}
 
@@ -125,9 +125,9 @@ INSERT INTO app_tbl
 (app_name, context_cluster, context_namespace, expected_input_data, output_data, package_identifier, package_version, plugin_name, plugin_version, required_yaml_configuration, yaml_value_field_type)
 VALUES('DFT_FRONTEND', 'default', 'kubeapps', 'REACT_APP_API_URL=$\{dftBackEndUrl\}
 
-REACT_APP_KEYCLOAK_URL=$\{dftkeycloakurl\}
+REACT_APP_KEYCLOAK_URL=https://centralidp.int.demo.catena-x.net/auth
 
-REACT_APP_KEYCLOAK_REALM=$\{dftcloakrealm\}
+REACT_APP_KEYCLOAK_REALM=CX-Central
 
 REACT_APP_CLIENT_ID=$\{dftfrontendkeycloakclientid\}
 

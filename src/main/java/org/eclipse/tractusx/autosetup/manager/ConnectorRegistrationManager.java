@@ -29,12 +29,12 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.tractusx.autosetup.constant.TriggerStatusEnum;
-import org.eclipse.tractusx.autosetup.daps.proxy.PortalRegistrationProxy;
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerDetails;
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
 import org.eclipse.tractusx.autosetup.exception.ServiceException;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
+import org.eclipse.tractusx.autosetup.portal.proxy.PortalIntegrationProxy;
 import org.eclipse.tractusx.autosetup.utility.LogUtil;
 import org.keycloak.OAuth2Constants;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,84 +53,70 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class PortalRegistrationManager {
+public class ConnectorRegistrationManager {
 
-	@Value("${dapswrapper.url}")
-	private URI dapsRegistrationUrl;
+	private static final String PENDING = "PENDING";
+
+	@Value("${connectorregister.url}")
+	private URI connectorRegistrationUrl;
 	
-	
-	
-	@Value("${dapswrapper.daps.url}")
-	private String dapsurl;
-	
-	@Value("${dapswrapper.daps.jskurl}")
-	private String dapsjsksurl;
-	
-	@Value("${dapswrapper.daps.token.url}")
-	private String dapstokenurl;
-	
-	
-	
-	@Value("${dapswrapper.keycloak.clientId}")
+	@Value("${connectorregister.keycloak.clientId}")
 	private String clientId;
 	
-	@Value("${dapswrapper.keycloak.clientSecret}")
+	@Value("${connectorregister.keycloak.clientSecret}")
 	private String clientSecret;
 	
-	@Value("${dapswrapper.keycloak.tokenURI}")
+	@Value("${connectorregister.keycloak.tokenURI}")
 	private URI tokenURI;
 	
 
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
-	private final PortalRegistrationProxy portalRegistrationProxy;
+	private final PortalIntegrationProxy portalIntegrationProxy;
 
 	@Retryable(value = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
-	public Map<String, String> createClient(Customer customerDetails, SelectedTools tool, Map<String, String> inputData,
+	public Map<String, String> registerConnector(Customer customerDetails, SelectedTools tool, Map<String, String> inputData,
 			AutoSetupTriggerEntry triger) {
 
 		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
-				.id(UUID.randomUUID().toString()).step("DAPS").build();
+				.id(UUID.randomUUID().toString()).step("CONNECTOR-REGISTER").build();
 
 		Path file = null;
 		try {
 			String packageName = tool.getLabel();
 			String tenantName = customerDetails.getOrganizationName();
 
-			log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName) + "-DAPS package creating");
+			log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName) + "-CONNECTOR-REGISTER package creating");
 
 			file = getTestFile(inputData.get("selfsigncertificate"));
-
-			String dnsNameURLProtocol = inputData.get("dnsNameURLProtocol");
 
 
 			MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
 			body.add("name", customerDetails.getOrganizationName());
-			body.add("connectorUrl", dnsNameURLProtocol);
-			body.add("status", inputData.get("status"));
+			body.add("connectorUrl", inputData.get("controlPlaneEndpoint"));
+			body.add("status", PENDING);
 			body.add("location", customerDetails.getCountry());
 			body.add("providerBpn", inputData.get("bpnNumber"));
 			body.add("certificate", new FileSystemResource(file.toFile()));
 			Map<String, String> header = new HashMap<>();
 			header.put("Authorization", "Bearer " + getKeycloakToken());
 
-			portalRegistrationProxy.registerClient(URI.create("/api/administration/connectors/managed"), header, body);
+			portalIntegrationProxy.manageConnector(connectorRegistrationUrl, header, body);
 
-			inputData.put("dapsurl", dapsurl);
-			inputData.put("dapsjsksurl", dapsjsksurl);
-			inputData.put("dapstokenurl", dapstokenurl);
-
-			log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName) + "-DAPS package created");
+			log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName) + "-CONNECTOR-REGISTER package created");
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
+			inputData.put("connectorstatus", PENDING);
+			inputData.remove("selfsigncertificateprivatekey");
+			inputData.remove("selfsigncertificate");
 			
 		} catch (Exception ex) {
 
-			log.error("DAPsWrapperManager failed retry attempt: : {}",
+			log.error("connectorregisterManager failed retry attempt: : {}",
 					RetrySynchronizationManager.getContext().getRetryCount() + 1);
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
 			autoSetupTriggerDetails.setRemark(ex.getMessage());
-			throw new ServiceException("DAPsWrapperManager Oops! We have an exception - " + ex.getMessage());
+			throw new ServiceException("ConnectorregisterManager Oops! We have an exception - " + ex.getMessage());
 
 		} finally {
 			try {
@@ -152,7 +138,7 @@ public class PortalRegistrationManager {
 		body.add(OAuth2Constants.GRANT_TYPE, OAuth2Constants.CLIENT_CREDENTIALS);
 		body.add(OAuth2Constants.CLIENT_ID, clientId);
 		body.add(OAuth2Constants.CLIENT_SECRET, clientSecret);
-		var resultBody = portalRegistrationProxy.readAuthToken(tokenURI, body);
+		var resultBody = portalIntegrationProxy.readAuthToken(tokenURI, body);
 
 		if (resultBody != null) {
 			return resultBody.getAccessToken();

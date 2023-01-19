@@ -21,7 +21,8 @@
 
 FROM maven:3.8.5-openjdk-18-slim 
 
-RUN apt-get update -y && apt-get install -y nocache
+# build for release
+RUN mvn clean install -Dmaven.test.skip=true
 
 WORKDIR /app
 
