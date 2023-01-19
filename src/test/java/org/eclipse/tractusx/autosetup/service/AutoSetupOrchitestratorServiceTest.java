@@ -26,7 +26,6 @@ import org.eclipse.tractusx.autosetup.mapper.AutoSetupRequestMapper;
 import org.eclipse.tractusx.autosetup.model.AutoSetupRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -73,8 +72,6 @@ class AutoSetupOrchitestratorServiceTest {
                 "}";
         try {
             AutoSetupRequest autoSetupRequest = new ObjectMapper().readValue(json,AutoSetupRequest.class);
-            Mockito.when(customerDetailsMapper.fromCustomer(Mockito.any(AutoSetupRequest.class))).thenReturn(json);
-            Mockito.when(autoSetupOrchitestratorService.checkNamespaceisExist(Mockito.anyString())).thenReturn(true);
             String uuid = autoSetupOrchitestratorService.createPackage(autoSetupRequest);
             assertThat(uuid).isNotEmpty();
 
