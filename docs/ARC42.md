@@ -18,7 +18,7 @@ SDEis a simple component provided by Catena-X named Data Format Transformer. Its
 
 ## Requirements Overview
 
-## ![](images/pic0.png)
+## ![](![image](https://user-images.githubusercontent.com/24474672/214360097-833ed06f-e56c-4e9b-a9dd-d13f8731a203.png))
 
 What is necessary to enable third-party platform to provide SDEas a managed service by third-party for an SME of Catena-x?
 
@@ -83,7 +83,7 @@ Alternatively (or additionally) you can use a table. The title of the table is t
 
 ### **APIs for exchanging the data between The Portal and Auto-Setup process**
 
-## ![](images/pic4.png)
+## ![](![image](https://user-images.githubusercontent.com/24474672/214360413-530b190a-1713-496c-870d-198c51b8fc4f.png))
 
 ### Interfaces:
 1. **Third-PartyAuto Setup process:**
