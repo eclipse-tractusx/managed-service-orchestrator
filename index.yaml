@@ -2,6 +2,21 @@ apiVersion: v1
 entries:
   autosetup:
   - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2023-01-26T07:58:47.639048173Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.x.x
+    description: A Helm chart for Kubernetes
+    digest: 00d45705e73de0e94124bb518071dc0c63cbdcc71072fc8ed0151f9643da8116
+    name: autosetup
+    type: application
+    urls:
+    - https://github.com/eclipse-tractusx/autosetup-backend/releases/download/autosetup-1.1.0/autosetup-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
     appVersion: 0.0.2
     created: "2022-12-13T12:59:16.277388893Z"
     dependencies:
@@ -31,4 +46,26 @@ entries:
     urls:
     - https://catenax-ng.github.io/tx-autosetup-backend/autosetup-0.0.2.tgz
     version: 0.0.2
-generated: "2022-12-13T12:59:16.277407494Z"
+  dftbackend:
+  - apiVersion: v2
+    appVersion: 1.4.6
+    created: "2023-01-26T07:58:47.868580559Z"
+    description: A Helm chart for Kubernetes
+    digest: 3096d58ea9cdd773718d6e32b939a5e6bbd43d87ce6cbcbf752ab85d7e05404f
+    name: dftbackend
+    type: application
+    urls:
+    - https://github.com/eclipse-tractusx/autosetup-backend/releases/download/dftbackend-1.4.6/dftbackend-1.4.6.tgz
+    version: 1.4.6
+  dftfrontend:
+  - apiVersion: v2
+    appVersion: 1.4.7
+    created: "2023-01-26T07:58:48.060498151Z"
+    description: A Helm chart for Kubernetes
+    digest: d96f6f889aa72c564a85180326494f33f7f898c87cd272d1247cf6ef98e21bc5
+    name: dftfrontend
+    type: application
+    urls:
+    - https://github.com/eclipse-tractusx/autosetup-backend/releases/download/dftfrontend-1.4.7/dftfrontend-1.4.7.tgz
+    version: 1.4.7
+generated: "2023-01-26T07:58:48.060510052Z"
