@@ -30,7 +30,7 @@ import org.eclipse.tractusx.autosetup.constant.AppActions;
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
 import org.eclipse.tractusx.autosetup.manager.AppDeleteManager;
 import org.eclipse.tractusx.autosetup.manager.CertificateManager;
-import org.eclipse.tractusx.autosetup.manager.DAPsWrapperManager;
+import org.eclipse.tractusx.autosetup.manager.ConnectorRegistrationManager;
 import org.eclipse.tractusx.autosetup.manager.EDCControlplaneManager;
 import org.eclipse.tractusx.autosetup.manager.EDCDataplaneManager;
 import org.eclipse.tractusx.autosetup.manager.PostgresDBManager;
@@ -46,11 +46,11 @@ import lombok.RequiredArgsConstructor;
 public class EDCConnectorWorkFlow {
 
 	private final CertificateManager certificateManager;
-	private final DAPsWrapperManager daPsWrapperManager;
 	private final VaultManager vaultManager;
 	private final PostgresDBManager postgresManager;
 	private final EDCControlplaneManager edcControlplaneManager;
 	private final EDCDataplaneManager edcDataplaneManager;
+	private final ConnectorRegistrationManager connectorRegistrationManager;
 
 	private final AppDeleteManager appDeleteManager;
 
@@ -59,12 +59,12 @@ public class EDCConnectorWorkFlow {
 
 		inputConfiguration
 				.putAll(certificateManager.createCertificate(customerDetails, tool, inputConfiguration, triger));
-		inputConfiguration.putAll(daPsWrapperManager.createClient(customerDetails, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(vaultManager.uploadKeyandValues(customerDetails, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(
 				postgresManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(edcControlplaneManager.managePackage(customerDetails, workflowAction, tool,
 				inputConfiguration, triger));
+		inputConfiguration.putAll(connectorRegistrationManager.registerConnector(customerDetails, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(
 				edcDataplaneManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
 

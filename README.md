@@ -12,7 +12,7 @@ This service will help service provider to set up DFT/SDE with EDC and EDC as se
 
 ### How to run
 
-Auto setup is a SpringBoot Java software project managed by Maven.
+Auto setup is a SpringBoot Java software project managed by Maven
 
 When running, the project requires a postgresql database to be available to connect to. Per default configuration the application expects postgres to run on localhost on port 5432.
 

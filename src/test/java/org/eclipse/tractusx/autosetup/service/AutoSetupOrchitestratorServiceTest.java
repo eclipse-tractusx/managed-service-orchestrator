@@ -24,10 +24,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.eclipse.tractusx.autosetup.kubeapps.proxy.KubeAppManageProxy;
 import org.eclipse.tractusx.autosetup.mapper.AutoSetupRequestMapper;
 import org.eclipse.tractusx.autosetup.model.AutoSetupRequest;
-import org.eclipse.tractusx.autosetup.service.AutoSetupOrchitestratorService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -72,11 +70,8 @@ class AutoSetupOrchitestratorServiceTest {
                 "        \"serviceId\": \"DFT-WITH-EDC\"\n" +
                 "    }\n" +
                 "}";
-
         try {
             AutoSetupRequest autoSetupRequest = new ObjectMapper().readValue(json,AutoSetupRequest.class);
-            Mockito.when(customerDetailsMapper.fromCustomer(Mockito.any(AutoSetupRequest.class))).thenReturn(json);
-            Mockito.when(kubeAppManageProxy.checkNamespace(Mockito.anyString(),Mockito.anyString())).thenReturn("true");
             String uuid = autoSetupOrchitestratorService.createPackage(autoSetupRequest);
             assertThat(uuid).isNotEmpty();
 

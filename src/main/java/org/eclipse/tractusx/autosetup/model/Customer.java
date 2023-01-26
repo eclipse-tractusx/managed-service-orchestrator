@@ -42,7 +42,7 @@ import lombok.NoArgsConstructor;
 public class Customer {
 
 	@NotBlank(message = "OrganizationName is mandatory")
-	@Pattern(regexp = "[a-zA-Z0-9\\_\\-\\s]+",
+	@Pattern(regexp = "[a-zA-Z0-9\\_\\-\\s()]+",
     message = "OrganizationName should not contains special characters")
 	private String organizationName;
 

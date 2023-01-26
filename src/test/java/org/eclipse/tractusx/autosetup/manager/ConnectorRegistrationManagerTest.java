@@ -29,11 +29,9 @@ import java.util.Map;
 
 import org.apache.commons.codec.Resources;
 import org.eclipse.tractusx.autosetup.constant.ToolType;
-import org.eclipse.tractusx.autosetup.daps.proxy.DAPsWrapperProxy;
-import org.eclipse.tractusx.autosetup.manager.AutoSetupTriggerManager;
-import org.eclipse.tractusx.autosetup.manager.DAPsWrapperManager;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
+import org.eclipse.tractusx.autosetup.portal.proxy.PortalIntegrationProxy;
 import org.eclipse.tractusx.autosetup.utility.Certutil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -47,16 +45,20 @@ import org.springframework.test.context.ActiveProfiles;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 @ActiveProfiles("test")
-class DAPsWrapperManagerTest {
+class ConnectorRegistrationManagerTest {
 
-    @Mock
-    private DAPsWrapperProxy dapsWrapperProxy;
 
     @Mock
     private AutoSetupTriggerManager autoSetupTriggerManager;
-
+    
+    @Mock
+    private PortalIntegrationManager portalIntegrationManager;
+    
+    @Mock
+    private PortalIntegrationProxy portalIntegrationProxy;
+    
     @InjectMocks
-    private DAPsWrapperManager daPsWrapperManager;
+    private ConnectorRegistrationManager connectorRegistrationManager;
 
     @Test
     void createClient() throws IOException {
@@ -78,9 +80,9 @@ class DAPsWrapperManagerTest {
                 .city("DE")
                 .build();
         mockInputMap.put("selfsigncertificate", Certutil.getAsString(cert));
-        mockInputMap = daPsWrapperManager.createClient(customer, selectedTools, mockInputMap, null);
-        assertEquals(5, mockInputMap.size());
-        assertEquals("test", mockInputMap.get("targetCluster"));
+        mockInputMap = connectorRegistrationManager.registerConnector(customer, selectedTools, mockInputMap, null);
+        assertEquals(2, mockInputMap.size());
+        assertEquals("PENDING", mockInputMap.get("connectorstatus"));
     } catch (CertificateException e) {
             throw new RuntimeException(e);
         }
