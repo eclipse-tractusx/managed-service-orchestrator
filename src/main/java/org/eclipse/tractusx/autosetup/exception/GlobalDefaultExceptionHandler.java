@@ -69,8 +69,9 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
 		Map<String, String> errors = new HashMap<>();
 		ex.getBindingResult().getAllErrors().forEach(error -> {
 			String fieldName = ((FieldError) error).getField();
+			Object fieldValue = ((FieldError) error).getRejectedValue();
 			String errorMessage = error.getDefaultMessage();
-			log.error(LogUtil.encode(fieldName+ " -> "+errorMessage));
+			log.error(LogUtil.encode(fieldName+ "::"+fieldValue+" ->"+errorMessage));
 			errors.put(fieldName, errorMessage);
 		});
 		
