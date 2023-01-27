@@ -103,7 +103,7 @@ public class InputConfigurationManager {
 	}
 
 	private String buildDnsName(Customer customerDetails, String targetNamespace) {
-		targetNamespace = targetNamespace.substring(0, findIndexOfCharatcer(targetNamespace, 1));
+		targetNamespace = targetNamespace.substring(0, findIndexOfCharatcer(targetNamespace, 2)).toLowerCase();
 		String country = customerDetails.getCountry();
 		country = country.replaceAll("[^a-zA-Z0-9]", "");
 		return dnsOriginalName.replace("tenantname", targetNamespace + "-" + country.toLowerCase());

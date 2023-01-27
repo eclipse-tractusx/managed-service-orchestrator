@@ -29,6 +29,6 @@ public interface AutoSetupTriggerEntryRepository extends JpaRepository<AutoSetup
 	@Query(value = "SELECT * FROM auto_setup_trigger_tbl a WHERE a.trigger_id = ?1", nativeQuery = true)
 	AutoSetupTriggerEntry findAllByTriggerId(String triggerId);
 
-	AutoSetupTriggerEntry findTop1ByOrganizationName(String organizationName);
+	AutoSetupTriggerEntry findTop1ByOrganizationNameAndServiceId(String organizationName, String serviceId);
 
 }

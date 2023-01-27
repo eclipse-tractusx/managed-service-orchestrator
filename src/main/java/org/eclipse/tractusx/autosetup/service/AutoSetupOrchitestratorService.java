@@ -120,8 +120,8 @@ public class AutoSetupOrchitestratorService {
 
 		String organizationName = autoSetupRequest.getCustomer().getOrganizationName();
 
-		AutoSetupTriggerEntry checkTrigger = autoSetupTriggerManager
-				.isAutoSetupAvailableforOrgnizationName(organizationName);
+		AutoSetupTriggerEntry checkTrigger = autoSetupTriggerManager.isAutoSetupAvailableforOrgnizationName(
+				organizationName, autoSetupRequest.getProperties().getServiceId());
 
 		if (checkTrigger != null) {
 			throw new ValidationException("Auto setup already exist for " + organizationName
@@ -541,6 +541,6 @@ public class AutoSetupOrchitestratorService {
 	public boolean checkNamespaceisExist(String targetNamespace) {
 
 		String namespacesResult = kubeAppManageProxy.checkNamespace(targetCluster, targetNamespace);
-		return namespacesResult!=null && namespacesResult.contains("true");
+		return namespacesResult != null && namespacesResult.contains("true");
 	}
 }
