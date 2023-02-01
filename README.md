@@ -8,6 +8,12 @@ It is a standalone service which can be self-hosted.
 It is prototype implementation for Service provider.
 This service will help service provider to set up DFT/SDE with EDC and EDC as service in service provider environment.
 
+
+### Version
+
+Helm release version: 1.1.2
+Image version: 0.0.7
+
 ##### For installation guide: see [InstallationGuide.md](InstallationGuide.md)
 
 ### How to run
