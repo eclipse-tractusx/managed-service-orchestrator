@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>org.eclipse.tractusx</groupId>
 	<artifactId>auto-setup</artifactId>
-	<version>0.0.7</version>
+	<version>0.0.8</version>
 	<name>auto-setup</name>
 	<description>auto-setup</description>
 	<properties>

@@ -18,6 +18,9 @@ Release 3
 ## [1.1.2] - 2023-02-01
 Release 3 with Hot Fix
 
+## [1.1.3] - 2023-02-01
+Release 3 with Hot Fix
+
 
 ### Added
 - Enable triggering of Autosetup process for SDE application
