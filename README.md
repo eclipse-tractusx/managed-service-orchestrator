@@ -47,7 +47,7 @@ When there is a need to change the last script, it is necessary to create a new 
 Link to flyway documentation: [Documentation](https://flywaydb.org/documentation/) 
 
 ## API authentication
-Authentication for the backend is handled via an Keycloak. This can be set in the configuration file.
+Authentication for the backend is handled via an Keycloak. This can be set in the configuration file..
 
 
 ### EDC
