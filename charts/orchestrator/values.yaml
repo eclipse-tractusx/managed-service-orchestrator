@@ -94,12 +94,15 @@ readinessProbe:
   successThreshold: 1
   timeoutSeconds: 1
 
+
+secretRef: "autosetup-int-secret"
+
 postgresql:
   enabled: true
   auth:
     username: "orchdbuser"
     database: "orchdb"
-    existingSecret: "autosetup-int-secret" 
+    existingSecret: "autosetup-int-secret"
     secretKeys:
         adminPasswordKey: "postgres-password"
         userPasswordKey: "password"
