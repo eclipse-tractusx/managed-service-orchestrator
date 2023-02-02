@@ -95,6 +95,9 @@ secretRef: "autosetup-int-secret"
 
 postgresql:
   enabled: true
+  metrics:
+    containerSecurityContext:
+      enabled: false
   auth:
     username: "orchdbuser"
     database: "orchdb"
