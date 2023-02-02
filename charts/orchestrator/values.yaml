@@ -95,8 +95,6 @@ secretRef: "autosetup-int-secret"
 
 postgresql:
   enabled: true
-  securityContext:
-  allowPrivilegeEscalation: false
   auth:
     username: "orchdbuser"
     database: "orchdb"
