@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dftfrontend.fullname" . }}
+  labels:
+    {{- include "dftfrontend.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "dftfrontend.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "dftfrontend.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dftfrontend.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+          - containerPort: {{ .Values.portContainer }}  
+          envFrom:
+            - configMapRef:
+                name: {{ include "dftfrontend.fullname" . }}-configmap
+          volumeMounts:
+            - name: configuration
+              mountPath: /app/configuration.properties
+              subPath: configuration.properties
+      volumes:
+        - name: configuration
+          configMap:
+            name: {{ include "dftfrontend.fullname" . }}-configmap
+            items:
+              - key: configuration.properties
+                path: configuration.properties
