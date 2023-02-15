@@ -25,9 +25,14 @@ name: build
 on:
   push:
     branches:
-      - 'main'
+      - main
     paths:
       - './**'
+    tags:
+      - 'v*.*.*'
+      - 'v*.*.*-*'
+
+
   workflow_dispatch:
 env:
   REGISTRY: ghcr.io
@@ -71,3 +76,4 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
