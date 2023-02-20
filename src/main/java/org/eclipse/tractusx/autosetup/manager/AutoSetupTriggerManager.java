@@ -132,8 +132,8 @@ public class AutoSetupTriggerManager {
 
 	}
 
-	public AutoSetupTriggerEntry isAutoSetupAvailableforOrgnizationName(String organizationName) {
-		return autoSetupTriggerEntryRepository.findTop1ByOrganizationName(organizationName);
+	public AutoSetupTriggerEntry isAutoSetupAvailableforOrgnizationName(String organizationName,String serviceId) {
+		return autoSetupTriggerEntryRepository.findTop1ByOrganizationNameAndServiceId(organizationName, serviceId);
 	}
 
 }

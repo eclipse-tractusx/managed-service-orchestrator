@@ -12,6 +12,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [1.0.0] - 2022-10-21
 Added helm release, versioning & tagging
 
+## [1.1.0] - 2023-01-25
+Release 3
+
+## [1.1.2] - 2023-02-01
+Release 3 with Hot Fix
+
+## [1.1.3] - 2023-02-02
+Release 3 with Hot Fix
+
+## [1.1.4] - 2023-02-10
+Release 3 with QG
+
+
 ### Added
 - Enable triggering of Autosetup process for SDE application
 - Enable triggering of Autosetup process for EDC application

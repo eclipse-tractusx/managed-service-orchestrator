@@ -72,9 +72,12 @@ public class CertificateManager {
 			String c = Optional.ofNullable(customerDetails.getCountry()).map(r -> r).orElse("DE");
 			String st = Optional.ofNullable(customerDetails.getState()).map(r -> r).orElse("BE");
 			String l = Optional.ofNullable(customerDetails.getCity()).map(r -> r).orElse("Berline");
-
-			String params = String.format("O=%s, OU=%s, C=%s, ST=%s, L=%s, CN=%s", tenantName,
-					bpnNumber, c, st, l, "www." + tenantName + ".com");
+			
+			//remove all special character for certificate CN name
+			String cn = tenantName.replaceAll("[^a-zA-Z0-9\\s\\-_]", "");
+			
+			String params = String.format("O=%s, OU=%s, C=%s, ST=%s, L=%s, CN=%s", cn,
+					bpnNumber, c, st, l, "www." + cn + ".com");
 
 			Certutil.CertKeyPair certificateDetails = Certutil.generateSelfSignedCertificateSecret(params, null, null);
 			X509Certificate certificate = certificateDetails.certificate();

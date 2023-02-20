@@ -16,17 +16,13 @@
 # under the License.
 #
 # SPDX-License-Identifier: Apache-2.0
-#################################################################################
+################################################################################
 
-
-# Default values for helm.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
 replicaCount: 1
 image:
   repository: ghcr.io/catenax-ng/tx-autosetup-backend/autosetup
   pullPolicy: Always
-  tag: "0.0.6"
+  tag: ""
   
 imagePullSecrets: []
 
@@ -94,12 +90,18 @@ readinessProbe:
   successThreshold: 1
   timeoutSeconds: 1
 
+
+secretRef: "autosetup-int-secret"
+
 postgresql:
   enabled: true
+  metrics:
+    containerSecurityContext:
+      enabled: false
   auth:
     username: "orchdbuser"
     database: "orchdb"
-    existingSecret: "autosetup-int-secret" 
+    existingSecret: "autosetup-int-secret"
     secretKeys:
         adminPasswordKey: "postgres-password"
         userPasswordKey: "password"
