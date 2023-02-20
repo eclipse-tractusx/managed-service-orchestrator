@@ -2,6 +2,21 @@ apiVersion: v1
 entries:
   autosetup:
   - apiVersion: v2
+    appVersion: 1.1.4
+    created: "2023-02-20T11:45:51.65650823Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.x.x
+    description: A Helm chart for Kubernetes
+    digest: 31f30dfcab47c6a905522d96508d0c810995504b9cebe76bdf428b735298c7b6
+    name: autosetup
+    type: application
+    urls:
+    - https://github.com/eclipse-tractusx/autosetup-backend/releases/download/autosetup-1.1.4/autosetup-1.1.4.tgz
+    version: 1.1.4
+  - apiVersion: v2
     appVersion: 1.1.0
     created: "2023-01-26T07:58:47.639048173Z"
     dependencies:
@@ -68,4 +83,4 @@ entries:
     urls:
     - https://github.com/eclipse-tractusx/autosetup-backend/releases/download/dftfrontend-1.4.7/dftfrontend-1.4.7.tgz
     version: 1.4.7
-generated: "2023-01-26T07:58:48.060510052Z"
+generated: "2023-02-20T11:45:51.656555733Z"
