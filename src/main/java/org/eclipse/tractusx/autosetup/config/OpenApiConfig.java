@@ -20,32 +20,19 @@
 
 package org.eclipse.tractusx.autosetup.config;
 
-import java.util.Arrays;
-
-import org.springdoc.core.GroupedOpenApi;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.OAuthFlow;
-import io.swagger.v3.oas.models.security.OAuthFlows;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springdoc.core.GroupedOpenApi;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 
 
 @Configuration
 public class OpenApiConfig {
-
-	@Value("${keycloak.auth-server-url}")
-	private String autURL;
-	
-	@Value("${keycloak.realm}")
-	private String realm;
-	
 	
 	@Bean
 	public GroupedOpenApi externalOpenApi() {
@@ -63,26 +50,14 @@ public class OpenApiConfig {
 
 	@Bean
 	public OpenAPI customOpenAPI() {
-		return new OpenAPI()
-				.components(new Components()
-								.addSecuritySchemes("Authentication", new SecurityScheme()
-										.type(SecurityScheme.Type.OAUTH2)
-										.bearerFormat("jwt")
-							            .in(SecurityScheme.In.HEADER)
-							            .name("Authorization")
-										.flows(new OAuthFlows()
-												.authorizationCode(
-														new OAuthFlow()
-														.authorizationUrl(autURL+"/realms/"+realm+"/protocol/openid-connect/auth")
-														.tokenUrl(autURL+"/realms/"+realm+"/protocol/openid-connect/token")
-													)
-												 )
-										)
-								)
-				.security(Arrays.asList(new SecurityRequirement().addList("Authentication")))
-				.info(new Info()
-						.title("Auto Setup API information")
+		final String securitySchemeName = "bearerAuth";
+		return new OpenAPI().addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+				.components(new Components().addSecuritySchemes(securitySchemeName,
+						new SecurityScheme().name(securitySchemeName).type(SecurityScheme.Type.HTTP).scheme("bearer")
+								.bearerFormat("JWT")))
+				.info(new Info().title("Auto setup API information")
 						.description("This Service handles all auto setup related operations")
 						.version("1.0"));
+
 	}
 }
