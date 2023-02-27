@@ -20,7 +20,7 @@
 
 package org.eclipse.tractusx.autosetup.model;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import lombok.Data;
 
