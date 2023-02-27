@@ -55,7 +55,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ConnectorRegistrationManager {
 
-	private static final String PENDING = "PENDING";
+	private static final String ACTIVE = "ACTIVE";
 
 	@Value("${connectorregister.url}")
 	private URI connectorRegistrationUrl;
@@ -95,7 +95,7 @@ public class ConnectorRegistrationManager {
 
 			body.add("name", customerDetails.getOrganizationName());
 			body.add("connectorUrl", inputData.get("controlPlaneEndpoint"));
-			body.add("status", PENDING);
+			body.add("status", ACTIVE);
 			body.add("location", customerDetails.getCountry());
 			body.add("providerBpn", inputData.get("bpnNumber"));
 			body.add("certificate", new FileSystemResource(file.toFile()));
@@ -106,7 +106,7 @@ public class ConnectorRegistrationManager {
 
 			log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName) + "-CONNECTOR-REGISTER package created");
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
-			inputData.put("connectorstatus", PENDING);
+			inputData.put("connectorstatus", ACTIVE);
 			inputData.remove("selfsigncertificateprivatekey");
 			inputData.remove("selfsigncertificate");
 			
