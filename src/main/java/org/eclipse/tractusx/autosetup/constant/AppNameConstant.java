@@ -28,6 +28,8 @@ public enum AppNameConstant {
 	EDC_CONTROLPLANE,
 
 	EDC_DATAPLANE,
+	
+	EDC_TRACTUS_CONNECTOR,
 
 	POSTGRES_DB,
 	

@@ -22,6 +22,7 @@ package org.eclipse.tractusx.autosetup.service;
 
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.EDC_CONTROLPLANE;
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.EDC_DATAPLANE;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.EDC_TRACTUS_CONNECTOR;
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.POSTGRES_DB;
 
 import java.util.Map;
@@ -34,6 +35,7 @@ import org.eclipse.tractusx.autosetup.manager.ConnectorRegistrationManager;
 import org.eclipse.tractusx.autosetup.manager.EDCControlplaneManager;
 import org.eclipse.tractusx.autosetup.manager.EDCDataplaneManager;
 import org.eclipse.tractusx.autosetup.manager.PostgresDBManager;
+import org.eclipse.tractusx.autosetup.manager.TractusConnectorManager;
 import org.eclipse.tractusx.autosetup.manager.VaultManager;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
@@ -50,6 +52,7 @@ public class EDCConnectorWorkFlow {
 	private final PostgresDBManager postgresManager;
 	private final EDCControlplaneManager edcControlplaneManager;
 	private final EDCDataplaneManager edcDataplaneManager;
+	private final TractusConnectorManager tractusConnectorManager;
 	private final ConnectorRegistrationManager connectorRegistrationManager;
 
 	private final AppDeleteManager appDeleteManager;
@@ -62,16 +65,41 @@ public class EDCConnectorWorkFlow {
 		inputConfiguration.putAll(vaultManager.uploadKeyandValues(customerDetails, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(
 				postgresManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
-		inputConfiguration.putAll(edcControlplaneManager.managePackage(customerDetails, workflowAction, tool,
+		inputConfiguration.putAll(tractusConnectorManager.managePackage(customerDetails, workflowAction, tool,
 				inputConfiguration, triger));
-		inputConfiguration.putAll(connectorRegistrationManager.registerConnector(customerDetails, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(
-				edcDataplaneManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
+				connectorRegistrationManager.registerConnector(customerDetails, tool, inputConfiguration, triger));
 
 		return inputConfiguration;
 	}
 
 	public void deletePackageWorkFlow(SelectedTools tool, Map<String, String> inputConfiguration,
+			AutoSetupTriggerEntry triger) {
+
+		appDeleteManager.deletePackage(POSTGRES_DB, tool, inputConfiguration, triger);
+		appDeleteManager.deletePackage(EDC_TRACTUS_CONNECTOR, tool, inputConfiguration, triger);
+	}
+
+	
+	public Map<String, String> getWorkFlowSeparateCPandDP(Customer customerDetails, SelectedTools tool,
+			AppActions workflowAction, Map<String, String> inputConfiguration, AutoSetupTriggerEntry triger) {
+
+		inputConfiguration
+				.putAll(certificateManager.createCertificate(customerDetails, tool, inputConfiguration, triger));
+		inputConfiguration.putAll(vaultManager.uploadKeyandValues(customerDetails, tool, inputConfiguration, triger));
+		inputConfiguration.putAll(
+				postgresManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
+		inputConfiguration.putAll(edcControlplaneManager.managePackage(customerDetails, workflowAction, tool,
+				inputConfiguration, triger));
+		inputConfiguration.putAll(
+				edcDataplaneManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
+		inputConfiguration.putAll(
+				connectorRegistrationManager.registerConnector(customerDetails, tool, inputConfiguration, triger));
+
+		return inputConfiguration;
+	}
+
+	public void deletePackageWorkFlowSeparateCPandDP(SelectedTools tool, Map<String, String> inputConfiguration,
 			AutoSetupTriggerEntry triger) {
 
 		appDeleteManager.deletePackage(POSTGRES_DB, tool, inputConfiguration, triger);
