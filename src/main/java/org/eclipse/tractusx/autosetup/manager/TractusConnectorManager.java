@@ -1,6 +1,6 @@
 package org.eclipse.tractusx.autosetup.manager;
 
-import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.EDC_TRACTUS_CONNECTOR;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.TRACTUS_CONNECTOR;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +47,7 @@ public class TractusConnectorManager {
 
 		Map<String, String> outputData = new HashMap<>();
 		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
-				.id(UUID.randomUUID().toString()).step(EDC_TRACTUS_CONNECTOR.name()).build();
+				.id(UUID.randomUUID().toString()).step(TRACTUS_CONNECTOR.name()).build();
 		try {
 			String packageName = tool.getLabel();
 
@@ -85,9 +85,9 @@ public class TractusConnectorManager {
 			inputData.put("edcdatabaseurl", edcDb);
 
 			if (AppActions.CREATE.equals(action))
-				appManagement.createPackage(EDC_TRACTUS_CONNECTOR, packageName, inputData);
+				appManagement.createPackage(TRACTUS_CONNECTOR, packageName, inputData);
 			else
-				appManagement.updatePackage(EDC_TRACTUS_CONNECTOR, packageName, inputData);
+				appManagement.updatePackage(TRACTUS_CONNECTOR, packageName, inputData);
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
 

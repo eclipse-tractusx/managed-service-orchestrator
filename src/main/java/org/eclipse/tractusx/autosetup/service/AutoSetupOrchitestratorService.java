@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 T-Systems International GmbH
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -369,7 +369,7 @@ public class AutoSetupOrchitestratorService {
 			emailContent.put(TOEMAIL, portalEmail);
 
 			// End of email sending code
-			emailManager.sendEmail(emailContent, "DFT Application Deployed Successfully", "success.html");
+			emailManager.sendEmail(emailContent, "SDE/DFT Application Deployed Successfully", "success.html");
 			log.info(EMAIL_SENT_SUCCESSFULLY);
 			trigger.setStatus(TriggerStatusEnum.MANUAL_UPDATE_PENDING.name());
 
@@ -383,7 +383,7 @@ public class AutoSetupOrchitestratorService {
 			emailContent.put(TOEMAIL, customer.getEmail());
 			emailContent.put("ccemail", portalEmail);
 
-			emailManager.sendEmail(emailContent, "DFT Application Activited Successfully", "success_activate.html");
+			emailManager.sendEmail(emailContent, "SDE/DFT Application Activited Successfully", "success_activate.html");
 			log.info(EMAIL_SENT_SUCCESSFULLY);
 			// End of email sending code
 

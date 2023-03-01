@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 T-Systems International GmbH
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -55,6 +55,8 @@ public class DFTBackendManager {
 	@Value("${manual.update}")
 	private boolean manualUpdate;
 	
+	private final SDEConfigurationProperty sDEConfigurationProperty;
+	
 	@Retryable(value = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
 	public Map<String, String> managePackage(Customer customerDetails, AppActions action, SelectedTools tool,
@@ -77,6 +79,17 @@ public class DFTBackendManager {
 			inputData.put("dftBackEndApiKey", generateRandomPassword);
 			inputData.put("dftBackEndApiKeyHeader", "API_KEY");
 			inputData.put("dftFrontEndUrl", dftfrontend);
+			
+			
+			inputData.put("sde.resourceServerIssuer", sDEConfigurationProperty.getResourceServerIssuer());
+			inputData.put("sde.keycloak.realm", sDEConfigurationProperty.getKeycloakRealm());
+			inputData.put("sde.digital-twins.hostname", sDEConfigurationProperty.getDigitalTwinsHostname());
+			inputData.put("sde.digital-twins.authentication.url", sDEConfigurationProperty.getDigitalTwinsAuthenticationUrl());
+			inputData.put("sde.partner.pool.hostname", sDEConfigurationProperty.getPartnerPoolHostname());
+			inputData.put("sde.portal.backend.hostname", sDEConfigurationProperty.getPortalBackendHostname());
+			inputData.put("sde.connector.discovery.token-url", sDEConfigurationProperty.getConnectorDiscoveryTokenUrl());
+			inputData.put("sde.connector.discovery.clientId", sDEConfigurationProperty.getConnectorDiscoveryClientId());
+			inputData.put("sde.connector.discovery.clientSecret", sDEConfigurationProperty.getConnectorDiscoveryClientSecret());
 			
 			if (!manualUpdate) {
 				Map<String, String> portalDetails = portalIntegrationManager

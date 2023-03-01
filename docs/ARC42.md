@@ -14,17 +14,17 @@ This version of the template contains some help and explanations. It is used for
 
 To provide auto-setup procedure of Data Provider components (EDC,SDE) aaS for KMU/SME  as a  Blueprint solution for third-party managed service.
 
-SDEis a simple component provided by Catena-X named Data Format Transformer. Its purpose is to enable small and medium enterprises (SMEs) to upload data for a digital twin submodel registered in a digital twin registry. This data, in turn, can be accessed via a request to the inherent EDC instance. In the subsequent figure, this is sketched. 
+The SDE is a simple component provided by Catena-X named Simple data exchanger. Its purpose is to enable small and medium enterprises (SMEs) to upload data for a digital twin submodel registered in a digital twin registry. This data, in turn, can be accessed via a request to the inherent EDC instance. In the subsequent figure, this is sketched. 
 
 ## Requirements Overview
 
 ## ![](images/pic0.png)
 
-What is necessary to enable third-party platform to provide SDEas a managed service by third-party for an SME of Catena-x?
+What is necessary to enable third-party platform to provide SDE as a managed service by third-party for an SME of Catena-x?
 
 Requirements:
 
-SDEmust be a selectable item in marketspace of third-party
+SDE must be a selectable item in marketspace of third-party
 (providing an instance of EDC, SDEbackend, SDEFrontend, and storage as a in the third-party service provider tenant)
 Onboarding:
 

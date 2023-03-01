@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 T-Systems International GmbH
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -22,7 +22,7 @@ package org.eclipse.tractusx.autosetup.service;
 
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.EDC_CONTROLPLANE;
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.EDC_DATAPLANE;
-import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.EDC_TRACTUS_CONNECTOR;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.TRACTUS_CONNECTOR;
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.POSTGRES_DB;
 
 import java.util.Map;
@@ -77,7 +77,7 @@ public class EDCConnectorWorkFlow {
 			AutoSetupTriggerEntry triger) {
 
 		appDeleteManager.deletePackage(POSTGRES_DB, tool, inputConfiguration, triger);
-		appDeleteManager.deletePackage(EDC_TRACTUS_CONNECTOR, tool, inputConfiguration, triger);
+		appDeleteManager.deletePackage(TRACTUS_CONNECTOR, tool, inputConfiguration, triger);
 	}
 
 	

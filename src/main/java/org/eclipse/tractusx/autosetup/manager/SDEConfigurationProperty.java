@@ -18,18 +18,27 @@
 #* SPDX-License-Identifier: Apache-2.0
 #********************************************************************************/
 
-package org.eclipse.tractusx.autosetup.utility;
+package org.eclipse.tractusx.autosetup.manager;
 
-import org.apache.commons.text.StringEscapeUtils;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
-public class LogUtil {
+import lombok.Data;
+
+@ConfigurationProperties(prefix = "sde")
+@Configuration
+@Data
+public class SDEConfigurationProperty {
 	
-	private LogUtil() {
-	}
+	private String resourceServerIssuer;
+	private String keycloakAuth;
+	private String keycloakRealm;
+	private String digitalTwinsHostname;
+	private String digitalTwinsAuthenticationUrl;
+	private String partnerPoolHostname;
+	private String portalBackendHostname;
+	private String connectorDiscoveryTokenUrl;
+	private String connectorDiscoveryClientId;
+	private String connectorDiscoveryClientSecret;
 	
-	public static String encode(String message) {
-		return StringEscapeUtils.unescapeHtml4(StringEscapeUtils.escapeJava(message));
-	}
-
 }
-

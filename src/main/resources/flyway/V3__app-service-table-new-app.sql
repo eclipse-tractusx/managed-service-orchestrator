@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 T-Systems International GmbH
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -20,7 +20,7 @@
 
 INSERT INTO app_tbl
 (app_name, context_cluster, context_namespace, expected_input_data, output_data, package_identifier, package_version, plugin_name, plugin_version, required_yaml_configuration, yaml_value_field_type)
-VALUES('EDC_TRACTUS_CONNECTOR', 'default', 'kubeapps', '{
+VALUES('TRACTUS_CONNECTOR', 'default', 'kubeapps', '{
     "backendService": {
         "httpProxyTokenReceiverUrl": "$\{dftAddress\}"
     },
