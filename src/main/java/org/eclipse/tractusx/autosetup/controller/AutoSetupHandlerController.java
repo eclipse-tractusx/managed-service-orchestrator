@@ -22,7 +22,7 @@ package org.eclipse.tractusx.autosetup.controller;
 
 import java.util.UUID;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.eclipse.tractusx.autosetup.manager.AutoSetupTriggerManager;
 import org.eclipse.tractusx.autosetup.model.AutoSetupRequest;
