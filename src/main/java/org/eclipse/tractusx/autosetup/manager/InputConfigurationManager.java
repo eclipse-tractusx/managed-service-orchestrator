@@ -103,9 +103,10 @@ public class InputConfigurationManager {
 				count--;
 			} catch (Exception e) {
 				log.debug("Unable to generate expected namespace/dsnname" + e.getMessage());
+				index = str.length() < index ? str.length() : index;
 			}
 		}
-		return index;
+		return index == -1 ? str.length() : index;
 	}
 
 	private String buildDnsName(Customer customerDetails, String uuid) {
