@@ -67,8 +67,8 @@ public class EDCConnectorWorkFlow {
 				postgresManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(tractusConnectorManager.managePackage(customerDetails, workflowAction, tool,
 				inputConfiguration, triger));
-		inputConfiguration.putAll(
-				connectorRegistrationManager.registerConnector(customerDetails, tool, inputConfiguration, triger));
+		//inputConfiguration.putAll(
+		//		connectorRegistrationManager.registerConnector(customerDetails, tool, inputConfiguration, triger));
 
 		return inputConfiguration;
 	}

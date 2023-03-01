@@ -20,7 +20,6 @@
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<org.mapstruct.processor.version>1.4.2.Final
 		</org.mapstruct.processor.version>
-		<keycloak.version>21.0.0</keycloak.version>
 		<log4j2.version>2.17.1</log4j2.version>
 	</properties>
 	<dependencies>
@@ -69,7 +68,11 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.7</version>
 		</dependency>
-
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.15</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.retry</groupId>
 			<artifactId>spring-retry</artifactId>
@@ -141,10 +144,6 @@
 			<artifactId>spring-boot-starter-freemarker</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
 			<exclusions>
@@ -197,13 +196,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>org.keycloak.bom</groupId>
-				<artifactId>keycloak-adapter-bom</artifactId>
-				<version>${keycloak.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>

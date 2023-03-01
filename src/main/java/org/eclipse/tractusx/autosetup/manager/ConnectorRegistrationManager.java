@@ -36,7 +36,6 @@ import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.eclipse.tractusx.autosetup.portal.proxy.PortalIntegrationProxy;
 import org.eclipse.tractusx.autosetup.utility.LogUtil;
-import org.keycloak.OAuth2Constants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.retry.annotation.Backoff;
@@ -135,9 +134,9 @@ public class ConnectorRegistrationManager {
 	@SneakyThrows
 	public String getKeycloakToken() {
 		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-		body.add(OAuth2Constants.GRANT_TYPE, OAuth2Constants.CLIENT_CREDENTIALS);
-		body.add(OAuth2Constants.CLIENT_ID, clientId);
-		body.add(OAuth2Constants.CLIENT_SECRET, clientSecret);
+		body.add("grant_type", "client_credentials");
+		body.add("client_id", clientId);
+		body.add("client_secret", clientSecret);
 		var resultBody = portalIntegrationProxy.readAuthToken(tokenURI, body);
 
 		if (resultBody != null) {
