@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+ - This Version of autosetup faces several Security Issues. Those were evaluated at time of Release and will be fixed in the next version.
+ - Recommended mitigation action for Operating Companies is to enforce appropriate firewall rules so that the service cannot be accessed externally.
+   (note: within the intended purpose, autosetup shall only be called from Portal)
 
 ## [1.1.5] - 2023-03-02
 
@@ -14,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  - Added sources in Chart.yaml
  - Added LICENSE in charts
  - Added README.md in charts
+
 
 ### Changed
  - Fixed CHANGELOG.md file format
