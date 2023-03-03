@@ -12,12 +12,14 @@ This service will help service provider to set up DFT/SDE with EDC and EDC as se
 ### Software Version
 
 ```shell
-Software version: 1.1.4
-Helm release version: 1.1.4
+Application version: 1.1.4
+Helm release version: 1.1.5
 ```
 
 
-##### For installation guide: see [InstallationGuide.md](InstallationGuide.md)
+##### For installation guide:
+
+https://github.com/eclipse-tractusx/autosetup-backend/blob/main/INSTALL.md
 
 ### How to run
 
