@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 T-Systems International GmbH
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -70,9 +70,9 @@ spring.datasource.username=$\{username\}
 
 spring.datasource.password=$\{appdbpass\}
 
-digital-twins.hostname=https://semantics.int.demo.catena-x.net/registry
+digital-twins.hostname=$\{sde.digital-twins.hostname\}
 
-digital-twins.authentication.url=https://centralidp.int.demo.catena-x.net/auth/realms/CX-Central/protocol/openid-connect/token
+digital-twins.authentication.url=$\{sde.digital-twins.authentication.url\}
 
 digital-twins.authentication.clientId=$\{digital-twins.authentication.clientId\}
 	
@@ -102,42 +102,36 @@ edc.consumer.apikey=$\{edcApiKeyValue\}
 
 edc.consumer.datauri=/api/v1/ids/data
 
-keycloak.realm=CX-Central
+keycloak.clientid=$\{dftbackendkeycloakclientid\}
 
-keycloak.auth-server-url=https://centralidp.int.demo.catena-x.net/auth
-
-keycloak.ssl-required=external
-
-keycloak.resource=$\{dftbackendkeycloakclientid\}
-
-keycloak.use-resource-role-mappings=true
-
-keycloak.bearer-only=true
+spring.security.oauth2.resourceserver.jwt.issuer-uri=$\{sde.resourceServerIssuer\}
 
 springdoc.api-docs.path=/api-docs
 
 springdoc.swagger-ui.oauth.client-id=$\{dftbackendkeycloakclientid\}
 
-partner.pool.hostname=https://partners-pool.int.demo.catena-x.net
+partner.pool.hostname=$\{sde.partner.pool.hostname\}
 
-portal.backend.hostname=https://portal-backend.int.demo.catena-x.net
+portal.backend.hostname=$\{sde.portal.backend.hostname\}
 
-clientId=$\{dftportalclientid\}
+connector.discovery.token-url=$\{sde.connector.discovery.token-url\}
 
-clientSecret=$\{dftportalclientSecret\}', NULL, 'tx-autosetup/dftbackend', '1.4.4', 'helm.packages', 'v1alpha1', '{"ingresses":[{"enabled": true, "hostname":"$\{dnsName\}",  "annotations": {}, "className": "nginx", "endpoints":["default"], "tls":{"enabled":true, "secretName":"dftbackend"}, "certManager":{"clusterIssuer":"letsencrypt-prod"}}], "configuration": {"properties": "$\{yamlValues\}"}}', 'PROPERTY');
+connector.discovery.clientId=$\{sde.connector.discovery.clientId\}
+
+connector.discovery.clientSecret=$\{sde.connector.discovery.clientSecret\}', NULL, 'sde-backend/dftbackend', '1.4.6', 'helm.packages', 'v1alpha1', '{"ingresses":[{"enabled": true, "hostname":"$\{dnsName\}",  "annotations": {}, "className": "nginx", "endpoints":["default"], "tls":{"enabled":true, "secretName":"dftbackend"}, "certManager":{"clusterIssuer":"letsencrypt-prod"}}], "configuration": {"properties": "$\{yamlValues\}"}}', 'PROPERTY');
 INSERT INTO app_tbl
 (app_name, context_cluster, context_namespace, expected_input_data, output_data, package_identifier, package_version, plugin_name, plugin_version, required_yaml_configuration, yaml_value_field_type)
 VALUES('DFT_FRONTEND', 'default', 'kubeapps', 'REACT_APP_API_URL=$\{dftBackEndUrl\}
 
-REACT_APP_KEYCLOAK_URL=https://centralidp.int.demo.catena-x.net/auth
+REACT_APP_KEYCLOAK_URL=$\{sde.keycloak.auth\}
 
-REACT_APP_KEYCLOAK_REALM=CX-Central
+REACT_APP_KEYCLOAK_REALM=$\{sde.keycloak.realm\}
 
 REACT_APP_CLIENT_ID=$\{dftfrontendkeycloakclientid\}
 
 REACT_APP_DEFAULT_COMPANY_BPN=$\{bpnNumber\}
 
-REACT_APP_FILESIZE=268435456', NULL, 'tx-autosetup/dftfrontend', '1.4.5', 'helm.packages', 'v1alpha1', '{"ingresses":[{"enabled": true, "hostname":"$\{dnsName\}",  "annotations": {}, "className": "nginx", "endpoints":["default"], "tls":{"enabled":true, "secretName":"dftfrontend"}, "certManager":{"clusterIssuer":"letsencrypt-prod"}}], "configuration": {"properties": "$\{yamlValues\}"}}', 'PROPERTY');
+REACT_APP_FILESIZE=268435456', NULL, 'sde-frontend/dftfrontend', '1.4.7', 'helm.packages', 'v1alpha1', '{"ingresses":[{"enabled": true, "hostname":"$\{dnsName\}",  "annotations": {}, "className": "nginx", "endpoints":["default"], "tls":{"enabled":true, "secretName":"dftfrontend"}, "certManager":{"clusterIssuer":"letsencrypt-prod"}}], "configuration": {"properties": "$\{yamlValues\}"}}', 'PROPERTY');
 INSERT INTO app_tbl
 (app_name, context_cluster, context_namespace, expected_input_data, output_data, package_identifier, package_version, plugin_name, plugin_version, required_yaml_configuration, yaml_value_field_type)
 VALUES('EDC_CONTROLPLANE', 'default', 'kubeapps', 'edc.receiver.http.endpoint=$\{dftAddress\}

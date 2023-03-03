@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 T-Systems International GmbH
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -38,30 +38,31 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class DFTBackendManagerTest {
 
-    @InjectMocks
-    private DFTBackendManager dftBackendManager;
+	@InjectMocks
+	private DFTBackendManager dftBackendManager;
 
-    @Mock
-    private KubeAppsPackageManagement appManagement;
+	@Mock
+	private KubeAppsPackageManagement appManagement;
 
-    @Mock
-    private PortalIntegrationManager portalIntegrationManager;
+	@Mock
+	private PortalIntegrationManager portalIntegrationManager;
 
-    @Mock
-    private AutoSetupTriggerManager autoSetupTriggerManager;
+	@Mock
+	private AutoSetupTriggerManager autoSetupTriggerManager;
 
-    @Test
-    void managePackage() {
+	@Mock
+	private SDEConfigurationProperty sDEConfigurationProperty;
 
-        SelectedTools selectedTools = SelectedTools.builder()
-                .tool(ToolType.DFT)
-                .label("dfttool")
-                .build();
-        Map<String, String> mockInputMap = new HashMap<>();
-        mockInputMap.put("dnsName","test");
-        mockInputMap.put("dnsNameURLProtocol","https");
-        Map<String, String> resultMap = dftBackendManager.managePackage(null,AppActions.CREATE,selectedTools,mockInputMap,null);
-        assertEquals(8, resultMap.size());
-        assertEquals("test", mockInputMap.get("dnsName"));
-    }
+	@Test
+	void managePackage() {
+
+		SelectedTools selectedTools = SelectedTools.builder().tool(ToolType.DFT).label("dfttool").build();
+		Map<String, String> mockInputMap = new HashMap<>();
+		mockInputMap.put("dnsName", "test");
+		mockInputMap.put("dnsNameURLProtocol", "https");
+		Map<String, String> resultMap = dftBackendManager.managePackage(null, AppActions.CREATE, selectedTools,
+				mockInputMap, null);
+		assertEquals(18, resultMap.size());
+		assertEquals("test", mockInputMap.get("dnsName"));
+	}
 }
