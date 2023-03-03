@@ -1,3 +1,23 @@
+#******************************************************************************
+# Copyright (c) 2022, 2023 T-Systems International GmbH
+# Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License, Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0.
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+#*******************************************************************************
+ 
 apiVersion: v2
 name: autosetup
 description: A Helm chart for Kubernetes
@@ -12,6 +32,9 @@ description: A Helm chart for Kubernetes
 # pipeline. Library charts do not define any templates and therefore cannot be deployed.
 type: application
 
+sources:
+  - https://github.com/eclipse-tractusx/autosetup-backend
+  
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
@@ -22,7 +45,7 @@ version: 1.1.5
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "1.1.4"
+appVersion: "1.1.5"
 dependencies:
   - condition: postgresql.enabled
     name: postgresql
