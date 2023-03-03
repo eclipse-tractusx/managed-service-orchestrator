@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 T-Systems International GmbH
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -29,7 +29,6 @@ import org.eclipse.tractusx.autosetup.portal.model.ServiceInstanceResultRequest;
 import org.eclipse.tractusx.autosetup.portal.model.ServiceInstanceResultResponse;
 import org.eclipse.tractusx.autosetup.portal.model.TechnicalUserInfo;
 import org.eclipse.tractusx.autosetup.portal.proxy.PortalIntegrationProxy;
-import org.keycloak.OAuth2Constants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -98,9 +97,9 @@ public class PortalIntegrationManager {
 	private String getKeycloakToken() {
 
 		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-		body.add(OAuth2Constants.GRANT_TYPE, OAuth2Constants.CLIENT_CREDENTIALS);
-		body.add(OAuth2Constants.CLIENT_ID, clientId);
-		body.add(OAuth2Constants.CLIENT_SECRET, clientSecret);
+		body.add("grant_type", "client_credentials");
+		body.add("client_id", clientId);
+		body.add("client_secret", clientSecret);
 		var resultBody = portalIntegrationProxy.readAuthToken(tokenURI, body);
 
 		if (resultBody != null) {

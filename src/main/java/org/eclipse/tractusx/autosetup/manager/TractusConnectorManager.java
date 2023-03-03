@@ -1,26 +1,6 @@
-/********************************************************************************
- * Copyright (c) 2022, 2023 T-Systems International GmbH
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
- *
- * See the NOTICE file(s) distributed with this work for additional
- * information regarding copyright ownership.
- *
- * This program and the accompanying materials are made available under the
- * terms of the Apache License, Version 2.0 which is available at
- * https://www.apache.org/licenses/LICENSE-2.0.
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations
- * under the License.
- *
- * SPDX-License-Identifier: Apache-2.0
- ********************************************************************************/
-
 package org.eclipse.tractusx.autosetup.manager;
 
-import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.EDC_CONTROLPLANE;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.TRACTUS_CONNECTOR;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,17 +26,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class EDCControlplaneManager {
+public class TractusConnectorManager {
 
 	private final KubeAppsPackageManagement appManagement;
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
-	
+
 	@Value("${daps.url}")
 	private String dapsurl;
-	
+
 	@Value("${daps.jskurl}")
 	private String dapsjsksurl;
-	
+
 	@Value("${daps.token.url}")
 	private String dapstokenurl;
 
@@ -67,8 +47,7 @@ public class EDCControlplaneManager {
 
 		Map<String, String> outputData = new HashMap<>();
 		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
-				.id(UUID.randomUUID().toString()).step(EDC_CONTROLPLANE.name())
-				.build();
+				.id(UUID.randomUUID().toString()).step(TRACTUS_CONNECTOR.name()).build();
 		try {
 			String packageName = tool.getLabel();
 
@@ -81,10 +60,9 @@ public class EDCControlplaneManager {
 			inputData.put("dapsurl", dapsurl);
 			inputData.put("dapsjsksurl", dapsjsksurl);
 			inputData.put("dapstokenurl", dapstokenurl);
-			
+
 			inputData.put("dataPlanePublicUrl",
 					dnsNameURLProtocol + "://" + packageName + "-edcdataplane-edc-dataplane:8185/api/public");
-			
 			String localControlplane = dnsNameURLProtocol + "://" + packageName
 					+ "-edccontrolplane-edc-controlplane:8182/validation/token";
 
@@ -95,6 +73,8 @@ public class EDCControlplaneManager {
 			outputData.put("edcApiKey", "X-Api-Key");
 			outputData.put("edcApiKeyValue", generateRandomPassword);
 			outputData.put("controlPlaneIdsEndpoint", controlplaneurl + "/api/v1/ids/data");
+			outputData.put("dataplaneendpoint", controlplaneurl);
+			outputData.put("dataPlanePublicEndpoint", controlplaneurl + "/public");
 
 			inputData.putAll(outputData);
 
@@ -105,20 +85,20 @@ public class EDCControlplaneManager {
 			inputData.put("edcdatabaseurl", edcDb);
 
 			if (AppActions.CREATE.equals(action))
-				appManagement.createPackage(EDC_CONTROLPLANE, packageName, inputData);
+				appManagement.createPackage(TRACTUS_CONNECTOR, packageName, inputData);
 			else
-				appManagement.updatePackage(EDC_CONTROLPLANE, packageName, inputData);
+				appManagement.updatePackage(TRACTUS_CONNECTOR, packageName, inputData);
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
 
 		} catch (Exception ex) {
 
-			log.error("EDCControlplaneMaanger failed retry attempt: : {}",
+			log.error("TractusConnectorManager failed retry attempt: : {}",
 					RetrySynchronizationManager.getContext().getRetryCount() + 1);
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
 			autoSetupTriggerDetails.setRemark(ex.getMessage());
-			throw new ServiceException("EDCControlplaneMaanger Oops! We have an exception - " + ex.getMessage());
+			throw new ServiceException("TractusConnectorManager Oops! We have an exception - " + ex.getMessage());
 		} finally {
 			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
 		}

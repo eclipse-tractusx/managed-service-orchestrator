@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 T-Systems International GmbH
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -82,7 +82,7 @@ class ConnectorRegistrationManagerTest {
         mockInputMap.put("selfsigncertificate", Certutil.getAsString(cert));
         mockInputMap = connectorRegistrationManager.registerConnector(customer, selectedTools, mockInputMap, null);
         assertEquals(2, mockInputMap.size());
-        assertEquals("PENDING", mockInputMap.get("connectorstatus"));
+        assertEquals("ACTIVE", mockInputMap.get("connectorstatus"));
     } catch (CertificateException e) {
             throw new RuntimeException(e);
         }

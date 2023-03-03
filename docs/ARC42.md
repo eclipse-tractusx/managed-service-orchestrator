@@ -14,17 +14,17 @@ This version of the template contains some help and explanations. It is used for
 
 To provide auto-setup procedure of Data Provider components (EDC,SDE) aaS for KMU/SME  as a  Blueprint solution for third-party managed service.
 
-SDEis a simple component provided by Catena-X named Data Format Transformer. Its purpose is to enable small and medium enterprises (SMEs) to upload data for a digital twin submodel registered in a digital twin registry. This data, in turn, can be accessed via a request to the inherent EDC instance. In the subsequent figure, this is sketched. 
+The SDE is a simple component provided by Simple data exchanger. Its purpose is to enable small and medium enterprises (SMEs) to upload data for a digital twin submodel registered in a digital twin registry. This data, in turn, can be accessed via a request to the inherent EDC instance. In the subsequent figure, this is sketched. 
 
 ## Requirements Overview
 
 ## ![](images/pic0.png)
 
-What is necessary to enable third-party platform to provide SDEas a managed service by third-party for an SME of Catena-x?
+What is necessary to enable third-party platform to provide SDE as a managed service by third-party for an SME?
 
 Requirements:
 
-SDEmust be a selectable item in marketspace of third-party
+SDE must be a selectable item in marketspace of third-party
 (providing an instance of EDC, SDEbackend, SDEFrontend, and storage as a in the third-party service provider tenant)
 Onboarding:
 
@@ -33,10 +33,10 @@ Customers will only have access to SDEFrontend, but not any access to managed da
 Auto-Setup:
 
 1. deploy EDC
-2. register EDC instance at Catena-X DAPS
+2. register EDC instance at DAPS
 3. deploy SDE(Frontend, backend, and storage in one pod?)
 4. configure the SDEbackend to get access to Digital Twin Registry
-5. configure SDEFrontend to be accessed via oidc token vom Catena-X Portal
+5. configure SDEFrontend to be accessed via oidc token vom Portal
 6. configure the SDEbackend to provide the correct link in Digital Twin Registry to its EDC instance
 7. configure EDC to allow authorized requests to request data registered in Digital Twin Registry
 
@@ -53,7 +53,7 @@ Auto-Setup:
 
 ## Architecture Constraints
 
-The process has to comply with IDSA, GAIA-X, and Catena-X principles.
+The process has to comply with IDSA, GAIA-X, and principles.
 
 # System Scope and Context
 ## Auto setup Process in third-party domain
@@ -95,7 +95,7 @@ This interface has to be provided by the portal. The owner of connectors has to 
 4. **Digital Registry Registration Service:**
 This service has to be provided by the digital twin team and will be used by SDE to register the metadata of the provided data
 5. **DAPS Registration Service:**
-This interface will be implemented by T-Systems. This interface has to provide by Catena-X for the registration of connectors to the Catena-X DAPS
+This interface will be implemented by T-Systems. This interface has to provide for the registration of connectors to the DAPS
 
 ## ![](images/pic5.png)
 
@@ -196,15 +196,15 @@ Swagger API info as below:
 
 ## Solution Strategy
 
-**The managed service approach should simplify the participants to use the Catena-X Data Space without knowing technical details. Therefore we provide the auto setup process to create a managed tenant for each participant who wants to provide data to the catena-x use cases.**
+**The managed service approach should simplify the participants to use the Data Space without knowing technical details. Therefore we provide the auto setup process to create a managed tenant for each participant who wants to provide data for use cases.**
 
 **Motivation.**
 
-Easy participating Catena-X data space, especially for SMEs.
+Easy participating data space, especially for SMEs.
 
 **Form**
 
-To hide all complexity from the participant, a third-party service provider provide a managed area where an isolated managed namespace will be created for the participant. The auto-setup process will deploy all required components and configurations for the participant. The result is a ready-to-use managed service, in our case, the Simple Data Exchanger (former DFT), which can be used directly by the customer to provide his data to the catena-x use cases.
+To hide all complexity from the participant, a third-party service provider provide a managed area where an isolated managed namespace will be created for the participant. The auto-setup process will deploy all required components and configurations for the participant. The result is a ready-to-use managed service, in our case, the Simple Data Exchanger (former DFT), which can be used directly by the customer to provide his data to the use cases.
 
 
 
@@ -218,13 +218,11 @@ To hide all complexity from the participant, a third-party service provider prov
 
 ## ![](images/pic7.png)
 
-In Catena-X we use ARGO-CD for deployment<br>
-[README.md](https://github.com/catenax/kubeapps-orchestrator-service/blob/main/README.md) describe the deployment process
 
 <br>
 
 ### Quality Requirements<br>
-See Catena-X Quality Gate Documentation
+See Quality Gate Documentation
 
 ### Glossary
 
@@ -232,10 +230,10 @@ See Catena-X Quality Gate Documentation
 |-----------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Gaia-X                                  | Gaia-X represents the next generation of data infrastructure ecosystem: an open, transparent, and secure digital ecosystem, where data and services can be made available, collated and shared in an environment of trust.                                                   |
 | Catalogue                               | A Catalogue presents a list of available Service Offerings. Catalogues are the main building blocks for the publication and discovery of Self-Descriptions for Service Offerings by the Participants.                                                                        |
-| (Catena-X Data Space)                   | A Data Space is a virtual data integration concept defined as a set of participants and a set of relationships among them, where participants provide their data resources and computing services.                                                                           |
-| Catena-X Portal / Onboarding Process    | The portal is used for the registration/onboarding process in Catena-X and includes the login, user management and the initial registration.                                                                                                                                 |
+| (Data Space)                   | A Data Space is a virtual data integration concept defined as a set of participants and a set of relationships among them, where participants provide their data resources and computing services.                                                                           |
+| Portal / Onboarding Process    | The portal is used for the registration/onboarding process and includes the login, user management and the initial registration.                                                                                                                                 |
 | Claim                                   | An assertion made about a subject.                                                                                                                                                                                                                                           |
-| Custodian Wallet / Catena-X wallet      | The Custodian Wallet interface is a cross product interface which is used to share the company name as well as the company bpn to the custodian service. The service uses those data to create a new wallet for the company. The wallet will hold the company name and bpn.  |
+| Custodian Wallet / wallet      | The Custodian Wallet interface is a cross product interface which is used to share the company name as well as the company bpn to the custodian service. The service uses those data to create a new wallet for the company. The wallet will hold the company name and bpn.  |
 | Decentralized Identifier (DID)          | Decentralized Identifiers are a new type of identifiers that enables verifiable, decentralized digital identity.                                                                                                                                                             |
 | Federated Services                      | Federation Services are services required for the operational implementation of a Gaia-X Data Ecosystem.                                                                                                                                                                     |
 | Federation                              | A Federation refers to a loose set of interacting actors that directly or indirectly consume, produce, or provide resources.                                                                                                                                                 |
@@ -243,7 +241,7 @@ See Catena-X Quality Gate Documentation
 | Issuer                                  | Is an instance that can issue verifiable credentials.                                                                                                                                                                                                                        |
 | Keycloak                                | Keycloack is an open-source Identity Management and Access management solution that allows Single Sign-On.                                                                                                                                                                   |
 | Self-Description                        | A machine-readable File (json-lD) that contains description about Participants and Services.                                                                                                                                                                                 |
-| Self-Description Factory                | SD-Factory creates a Verifiable Credential based on the information taken from OS, unlocks Private Key from CX-wallet and signs it with Catena-X key.                                                                                                                        |
+| Self-Description Factory                | SD-Factory creates a Verifiable Credential based on the information taken from OS, unlocks Private Key from CX-wallet and signs it with key.                                                                                                                        |
 | Self-Description Graph                  | The Self-Description Graph contains the information imported from the Self-Descriptions that are known to the Catalogue and have an “active” lifecycle state.                                                                                                                |
 | Self-Description Hub                    | The Self-Description Hub's (SD Hub) store Self Descriptions in order to provide a flat catalogue of SDs                                                                                                                                                                      |
 | Self-Description Validator              | The Self-Description validator is provided by Gaia-X. With that any Self Descriptions can be checked against an instance of the validator.                                                                                                                                   |

@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 T-Systems International GmbH
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -55,7 +55,7 @@ public class SecurityConfig {
 	private static final String[] PUBLIC_URL = { "/ping", "/*/public/**", "/api-docs/**", "/swagger-ui/**",
 			"*/swagger-ui/**", "/actuator/health/readiness", "/actuator/health/liveness", "/v3/api-docs/**" };
 
-	@Value("${keycloak.resource.clientid}")
+	@Value("${keycloak.clientid}")
 	private String resourceName;
 
 	public interface Jwt2AuthoritiesConverter extends Converter<Jwt, Collection<? extends GrantedAuthority>> {

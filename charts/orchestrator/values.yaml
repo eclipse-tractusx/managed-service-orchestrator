@@ -18,54 +18,78 @@
 # SPDX-License-Identifier: Apache-2.0
 ################################################################################
 
+    # -- Number of Replicas for pods
 replicaCount: 1
+
 image:
+    # -- Image to use for deploying an application
   repository: ghcr.io/catenax-ng/tx-autosetup-backend/autosetup
+    # -- Set the Image Pull Policy  
   pullPolicy: Always
+    # -- Image tage is defined in chart appVersion  
   tag: ""
   
 imagePullSecrets: []
 
-portContainer: 9999
 
 serviceAccount:
-  # Specifies whether a service account should be created
+    # -- Specifies whether a service account should be created
   create: true
-  # Annotations to add to the service account
+    # -- Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+    # -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
   name: ""
 podAnnotations: {}
+
 podSecurityContext:
-  fsGroup: 2000
+  #fsGroup: 2000
+  
 securityContext:
+    # -- Controls whether a process can gain more privilege
   allowPrivilegeEscalation: false
 probe:
-  endpoint: "/api/ping"
+  endpoint: " /api/healthz"
+  
 service:
+    # -- Type of service
   type: ClusterIP
+    # -- Port details for sevice
   port: 9999
+  # -- Container Port details for sevice
+  portContainer: 9999
+  
 ingress:
+    # -- If you want to enable or disable the ingress
   enabled: true
+    # -- a reference to an Ingress Class resource that contains additional configuration including the name of the controller that should implement the class
   className: nginx
+    # -- Annotations to add to the ingress
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: HTTP
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/affinity: "cookie"
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+    
+    # -- Host of the application on which application runs
   host: ""
+  
 resources:
   limits:
+    # -- set a maximum amount of allows CPU utilization by specifying a limit on the container.
     cpu: 800m
+    # -- set a maximum amount of allows memory utilization by specifying a limit on the container.
     memory: 2Gi
   requests:
+    # -- sets the minimum amount of CPU required for the container
     cpu: 300m
+    # -- set a minimum amount of allows memory utilization by specifying a limit on the container.
     memory: 1Gi
+    
 autoscaling:
   enabled: false
 nodeSelector: {}
 tolerations: []
+
 affinity:
   podAntiAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
@@ -94,6 +118,7 @@ readinessProbe:
 secretRef: "autosetup-int-secret"
 
 postgresql:
+    # -- Enable the dependency postgres database
   enabled: true
   metrics:
     containerSecurityContext:

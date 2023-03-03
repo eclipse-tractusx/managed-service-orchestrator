@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022 T-Systems International GmbH
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 T-Systems International GmbH
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -36,7 +36,6 @@ import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.eclipse.tractusx.autosetup.portal.proxy.PortalIntegrationProxy;
 import org.eclipse.tractusx.autosetup.utility.LogUtil;
-import org.keycloak.OAuth2Constants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.retry.annotation.Backoff;
@@ -55,7 +54,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ConnectorRegistrationManager {
 
-	private static final String PENDING = "PENDING";
+	private static final String ACTIVE = "ACTIVE";
 
 	@Value("${connectorregister.url}")
 	private URI connectorRegistrationUrl;
@@ -95,7 +94,7 @@ public class ConnectorRegistrationManager {
 
 			body.add("name", customerDetails.getOrganizationName());
 			body.add("connectorUrl", inputData.get("controlPlaneEndpoint"));
-			body.add("status", PENDING);
+			body.add("status", ACTIVE);
 			body.add("location", customerDetails.getCountry());
 			body.add("providerBpn", inputData.get("bpnNumber"));
 			body.add("certificate", new FileSystemResource(file.toFile()));
@@ -106,7 +105,7 @@ public class ConnectorRegistrationManager {
 
 			log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName) + "-CONNECTOR-REGISTER package created");
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
-			inputData.put("connectorstatus", PENDING);
+			inputData.put("connectorstatus", ACTIVE);
 			inputData.remove("selfsigncertificateprivatekey");
 			inputData.remove("selfsigncertificate");
 			
@@ -135,9 +134,9 @@ public class ConnectorRegistrationManager {
 	@SneakyThrows
 	public String getKeycloakToken() {
 		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-		body.add(OAuth2Constants.GRANT_TYPE, OAuth2Constants.CLIENT_CREDENTIALS);
-		body.add(OAuth2Constants.CLIENT_ID, clientId);
-		body.add(OAuth2Constants.CLIENT_SECRET, clientSecret);
+		body.add("grant_type", "client_credentials");
+		body.add("client_id", clientId);
+		body.add("client_secret", clientSecret);
 		var resultBody = portalIntegrationProxy.readAuthToken(tokenURI, body);
 
 		if (resultBody != null) {
