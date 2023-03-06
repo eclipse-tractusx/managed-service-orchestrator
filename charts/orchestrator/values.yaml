@@ -41,6 +41,8 @@ serviceAccount:
   name: ""
 podAnnotations: {}
 
+portContainer: 9999
+
 podSecurityContext:
   #fsGroup: 2000
   
@@ -48,7 +50,7 @@ securityContext:
     # -- Controls whether a process can gain more privilege
   allowPrivilegeEscalation: false
 probe:
-  endpoint: " /api/healthz"
+  endpoint: "/api/healthz"
   
 service:
     # -- Type of service
