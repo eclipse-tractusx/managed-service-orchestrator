@@ -65,11 +65,9 @@ jobs:
           images: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{version}},value=v1.1.5
+          flavor: |
+              latest=true
 
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
