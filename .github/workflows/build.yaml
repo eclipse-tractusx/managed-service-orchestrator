@@ -39,7 +39,7 @@ on:
   workflow_dispatch:
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: catenax-ng/tx-autosetup-backend/autosetup-test
+  IMAGE_NAME: catenax-ng/tx-autosetup-backend/autosetup
   # Allows you to run this workflow manually from the Actions tab
  
 
