@@ -36,9 +36,9 @@ RUN mvn clean install -Dmaven.test.skip=true
 # our final base image
 #FROM eclipse-temurin:18.0.1_10-jre
 
-#FROM eclipse-temurin:19_36-jre
+FROM eclipse-temurin:19_36-jre
 
-FROM eclipse-temurin:3.9.0-eclipse-temurin-19-alpine
+RUN apt-get update && apt-get install openssl
 
 ARG USERNAME=autosetupuser
 ARG USER_UID=1000
