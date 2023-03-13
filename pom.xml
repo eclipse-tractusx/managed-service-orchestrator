@@ -42,12 +42,21 @@
 					<groupId>logback-classic</groupId>
 					<artifactId>slf4j-log4j12</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>org.yaml</groupId>
+					<artifactId>snakeyaml</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk15on</artifactId>
 			<version>1.70</version>
+		</dependency>
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -88,6 +97,10 @@
 				<exclusion>
 					<groupId>org.hibernate</groupId>
 					<artifactId>hibernate-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.angus</groupId>
+					<artifactId>angus-activation</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -137,7 +150,11 @@
 			<artifactId>javax.mail</artifactId>
 			<version>1.6.2</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.sun.activation</groupId>
+			<artifactId>jakarta.activation</artifactId>
+			<version>2.0.1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-freemarker</artifactId>
@@ -176,6 +193,12 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.6.6</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.yaml</groupId>
+					<artifactId>snakeyaml</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -19,13 +19,14 @@
 #*******************************************************************************
  
 # our base build image
-FROM maven:3.8-openjdk-18 as builder
+#FROM maven:3.8-openjdk-18 as builder
+FROM maven:3.9.0-eclipse-temurin-19 as builder
 
 # copy the project files
 COPY ./pom.xml /pom.xml
 
 # build all dependencies
-RUN mvn dependency:go-offline -B
+RUN mvn dependency:go-offline -B 
 
 # copy your other files
 COPY ./src ./src
@@ -36,7 +37,9 @@ RUN mvn clean install -Dmaven.test.skip=true
 # our final base image
 #FROM eclipse-temurin:18.0.1_10-jre
 
-FROM eclipse-temurin:19_36-jre
+#FROM eclipse-temurin:19_36-jre
+
+FROM eclipse-temurin:latest
 
 ARG USERNAME=autosetupuser
 ARG USER_UID=1000

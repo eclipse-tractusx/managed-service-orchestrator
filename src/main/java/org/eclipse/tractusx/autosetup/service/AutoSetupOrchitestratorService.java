@@ -118,16 +118,6 @@ public class AutoSetupOrchitestratorService {
 
 		String uuID = UUID.randomUUID().toString();
 
-		/*String organizationName = autoSetupRequest.getCustomer().getOrganizationName();
-
-		AutoSetupTriggerEntry checkTrigger = autoSetupTriggerManager.isAutoSetupAvailableforOrgnizationName(
-				organizationName, autoSetupRequest.getProperties().getServiceId());
-
-		if (checkTrigger != null) {
-			throw new ValidationException("Auto setup already exist for " + organizationName
-					+ ", use execution id to update it " + checkTrigger.getTriggerId());
-		}*/
-
 		Runnable runnable = () -> {
 
 			Map<String, String> inputConfiguration = inputConfigurationManager
@@ -189,7 +179,7 @@ public class AutoSetupOrchitestratorService {
 						log.info("Waiting after deleteing all package for recreate");
 						Thread.sleep(15000);
 					} catch (InterruptedException e) {
-						
+
 						Thread.currentThread().interrupt();
 					}
 
@@ -283,10 +273,22 @@ public class AutoSetupOrchitestratorService {
 
 					switch (selectedTool.getTool()) {
 
+					case DFT_WITH_EDC_TRACTUS:
+
+						executeDFTWithEDCTractus(autoSetupRequest, action, trigger, inputConfiguration, customer,
+								selectedTool);
+						
+						break;
+
 					case DFT_WITH_EDC:
 
 						executeDFTWithEDC(autoSetupRequest, action, trigger, inputConfiguration, customer,
 								selectedTool);
+
+						break;
+					case EDC_TRACTUS:
+
+						executeEDCTractus(autoSetupRequest, action, trigger, inputConfiguration, selectedTool);
 
 						break;
 					case EDC:
@@ -316,7 +318,7 @@ public class AutoSetupOrchitestratorService {
 		autoSetupTriggerManager.saveTriggerUpdate(trigger);
 	}
 
-	private void executeEDC(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
+	private void executeEDCTractus(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
 			Map<String, String> inputConfiguration, SelectedTools selectedTool) {
 
 		String label = selectedTool.getLabel();
@@ -326,6 +328,24 @@ public class AutoSetupOrchitestratorService {
 				action, inputConfiguration, trigger);
 		inputConfiguration.putAll(edcOutput);
 
+		edcDeployemnt(autoSetupRequest, trigger, edcOutput);
+	}
+
+	private void executeEDC(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
+			Map<String, String> inputConfiguration, SelectedTools selectedTool) {
+
+		String label = selectedTool.getLabel();
+		selectedTool.setLabel("edc-" + label);
+
+		Map<String, String> edcOutput = edcConnectorWorkFlow.getWorkFlowSeparateCPandDP(autoSetupRequest.getCustomer(),
+				selectedTool, action, inputConfiguration, trigger);
+		inputConfiguration.putAll(edcOutput);
+
+		edcDeployemnt(autoSetupRequest, trigger, edcOutput);
+	}
+
+	private void edcDeployemnt(AutoSetupRequest autoSetupRequest, AutoSetupTriggerEntry trigger,
+			Map<String, String> edcOutput) {
 		String json = autoSetupTriggerMapper.fromMaptoStr(extractEDCResultMap(edcOutput));
 
 		trigger.setAutosetupResult(json);
@@ -344,8 +364,9 @@ public class AutoSetupOrchitestratorService {
 		log.info(EMAIL_SENT_SUCCESSFULLY);
 	}
 
-	private void executeDFTWithEDC(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
-			Map<String, String> inputConfiguration, Customer customer, SelectedTools selectedTool) {
+	private void executeDFTWithEDCTractus(AutoSetupRequest autoSetupRequest, AppActions action,
+			AutoSetupTriggerEntry trigger, Map<String, String> inputConfiguration, Customer customer,
+			SelectedTools selectedTool) {
 
 		String label = selectedTool.getLabel();
 		selectedTool.setLabel("edc-" + label);
@@ -354,6 +375,26 @@ public class AutoSetupOrchitestratorService {
 				action, inputConfiguration, trigger);
 		inputConfiguration.putAll(edcOutput);
 
+		dftDeployment(autoSetupRequest, action, trigger, inputConfiguration, customer, selectedTool, label);
+
+	}
+
+	private void executeDFTWithEDC(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
+			Map<String, String> inputConfiguration, Customer customer, SelectedTools selectedTool) {
+
+		String label = selectedTool.getLabel();
+		selectedTool.setLabel("edc-" + label);
+
+		Map<String, String> edcOutput = edcConnectorWorkFlow.getWorkFlowSeparateCPandDP(autoSetupRequest.getCustomer(),
+				selectedTool, action, inputConfiguration, trigger);
+		inputConfiguration.putAll(edcOutput);
+
+		dftDeployment(autoSetupRequest, action, trigger, inputConfiguration, customer, selectedTool, label);
+
+	}
+
+	private void dftDeployment(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
+			Map<String, String> inputConfiguration, Customer customer, SelectedTools selectedTool, String label) {
 		selectedTool.setLabel("dft-" + label);
 		Map<String, String> map = dftWorkFlow.getWorkFlow(autoSetupRequest.getCustomer(), selectedTool, action,
 				inputConfiguration, trigger);
@@ -392,7 +433,6 @@ public class AutoSetupOrchitestratorService {
 		String json = autoSetupTriggerMapper.fromMaptoStr(extractResultMap(map));
 
 		trigger.setAutosetupResult(json);
-
 	}
 
 	private void processDeleteTrigger(AutoSetupTriggerEntry trigger, Map<String, String> inputConfiguration) {
@@ -426,7 +466,7 @@ public class AutoSetupOrchitestratorService {
 			String label = "";
 			switch (selectedTool.getTool()) {
 
-			case DFT_WITH_EDC:
+			case DFT_WITH_EDC_TRACTUS:
 
 				label = selectedTool.getLabel();
 				selectedTool.setLabel("edc-" + label);
@@ -435,11 +475,28 @@ public class AutoSetupOrchitestratorService {
 				dftWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
 
 				break;
-			case EDC:
+
+			case DFT_WITH_EDC:
+
+				label = selectedTool.getLabel();
+				selectedTool.setLabel("edc-" + label);
+				edcConnectorWorkFlow.deletePackageWorkFlowSeparateCPandDP(selectedTool, inputConfiguration, trigger);
+				selectedTool.setLabel("dft-" + label);
+				dftWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
+
+				break;
+			case EDC_TRACTUS:
 
 				label = selectedTool.getLabel();
 				selectedTool.setLabel("edc-" + label);
 				edcConnectorWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
+
+				break;
+			case EDC:
+
+				label = selectedTool.getLabel();
+				selectedTool.setLabel("edc-" + label);
+				edcConnectorWorkFlow.deletePackageWorkFlowSeparateCPandDP(selectedTool, inputConfiguration, trigger);
 
 				break;
 			default:

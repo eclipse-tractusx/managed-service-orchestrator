@@ -2,23 +2,58 @@ apiVersion: v1
 entries:
   autosetup:
   - apiVersion: v2
-    appVersion: 1.1.4
-    created: "2023-02-15T12:02:31.270997+05:30"
+    appVersion: 1.2.0
+    created: "2023-03-13T18:42:05.755636+05:30"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.x.x
+    description: This service will help service provider to set up DFT/SDE with EDC
+      and EDC as service in service provider environment.
+    digest: 445bb07d54c5122c0a77d167217a7177da0714d302aa394fc6c758a46c8d2fb5
+    name: autosetup
+    sources:
+    - https://github.com/eclipse-tractusx/autosetup-backend
+    type: application
+    urls:
+    - https://catenax-ng.github.io/tx-autosetup-backend/autosetup-1.2.0.tgz
+    version: 1.2.0
+  - apiVersion: v2
+    appVersion: 1.1.5
+    created: "2023-03-13T18:42:05.750136+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
       repository: https://charts.bitnami.com/bitnami
       version: 11.x.x
     description: A Helm chart for Kubernetes
-    digest: bed5d978788ebfef6f912044e08a3fb13059af13a59c43f70ac404401431a217
+    digest: 04563b2e84ff94388d09e3645699f47be07fbc985fccc4dbc5997b6c754608bd
+    name: autosetup
+    sources:
+    - https://github.com/eclipse-tractusx/autosetup-backend
+    type: application
+    urls:
+    - https://catenax-ng.github.io/tx-autosetup-backend/autosetup-1.1.5.tgz
+    version: 1.1.5
+  - apiVersion: v2
+    appVersion: 1.1.4
+    created: "2023-03-13T18:42:05.741332+05:30"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.x.x
+    description: A Helm chart for Kubernetes
+    digest: 31f30dfcab47c6a905522d96508d0c810995504b9cebe76bdf428b735298c7b6
     name: autosetup
     type: application
     urls:
-    - https://catenax-ng.github.io/orchestrator/autosetup-1.1.4.tgz
+    - https://catenax-ng.github.io/tx-autosetup-backend/autosetup-1.1.4.tgz
     version: 1.1.4
   - apiVersion: v2
     appVersion: 0.0.8
-    created: "2023-02-15T12:02:31.26577+05:30"
+    created: "2023-03-13T18:42:05.728857+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -29,6 +64,6 @@ entries:
     name: autosetup
     type: application
     urls:
-    - https://catenax-ng.github.io/orchestrator/autosetup-1.1.3.tgz
+    - https://catenax-ng.github.io/tx-autosetup-backend/autosetup-1.1.3.tgz
     version: 1.1.3
-generated: "2023-02-15T12:02:31.256647+05:30"
+generated: "2023-03-13T18:42:05.717901+05:30"

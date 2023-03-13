@@ -70,6 +70,8 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}
             type=semver,pattern={{major}}.{{minor}}
+          flavor: |
+              latest=true
 
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'

@@ -80,7 +80,6 @@ public class EDCConnectorWorkFlow {
 		appDeleteManager.deletePackage(TRACTUS_CONNECTOR, tool, inputConfiguration, triger);
 	}
 
-	
 	public Map<String, String> getWorkFlowSeparateCPandDP(Customer customerDetails, SelectedTools tool,
 			AppActions workflowAction, Map<String, String> inputConfiguration, AutoSetupTriggerEntry triger) {
 
