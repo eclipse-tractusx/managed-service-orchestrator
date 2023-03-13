@@ -24,7 +24,7 @@ Helm release version: 1.2.0
 
 ### How to run
 
-Auto setup is a SpringBoot Java software project managed by Maven
+Auto setup is a SpringBoot Java software project managed by Maven.
 
 When running, the project requires a postgresql database to be available to connect to. Per default configuration the application expects postgres to run on localhost on port 5432.
 
