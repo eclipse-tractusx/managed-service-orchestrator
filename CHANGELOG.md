@@ -7,6 +7,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 
+## [1.1.6] - 2023-03-13
+
+### Changed
+ - Security fixes
+ - Snakeyaml jar fixed
+ - Supports EDC connector 0.1.6
+ - Changed base image to eclipse-temurin
+ 
 
 ## [1.1.5] - 2023-03-02
 
@@ -15,9 +23,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  - Added sources in Chart.yaml
  - Added LICENSE in charts
  - Added README.md in charts
- - This Version of autosetup faces several Security Issues. Those were evaluated at time of Release and will be fixed in the next version.
- - Recommended mitigation action for Operating Companies is to enforce appropriate firewall rules so that the service cannot be accessed externally.
-   (note: within the intended purpose, autosetup shall only be called from Portal)
+ - Springboot jar fixes
+ - keycloak jar fixes
 
 
 ### Changed

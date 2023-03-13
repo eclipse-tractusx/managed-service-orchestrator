@@ -2,8 +2,26 @@ apiVersion: v1
 entries:
   autosetup:
   - apiVersion: v2
+    appVersion: 1.1.6
+    created: "2023-03-13T16:56:05.806956+05:30"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.x.x
+    description: This service will help service provider to set up DFT/SDE with EDC
+      and EDC as service in service provider environment.
+    digest: b7f6cef0d221954306fa7e899cab5c17a5e2a5e42c136487f856e4a829c02759
+    name: autosetup
+    sources:
+    - https://github.com/eclipse-tractusx/autosetup-backend
+    type: application
+    urls:
+    - https://catenax-ng.github.io/tx-autosetup-backend/autosetup-1.1.6.tgz
+    version: 1.1.6
+  - apiVersion: v2
     appVersion: 1.1.5
-    created: "2023-03-06T15:57:16.963764+05:30"
+    created: "2023-03-13T16:56:05.801551+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -20,7 +38,7 @@ entries:
     version: 1.1.5
   - apiVersion: v2
     appVersion: 1.1.4
-    created: "2023-03-06T15:57:16.958985+05:30"
+    created: "2023-03-13T16:56:05.792421+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -35,7 +53,7 @@ entries:
     version: 1.1.4
   - apiVersion: v2
     appVersion: 0.0.8
-    created: "2023-03-06T15:57:16.949955+05:30"
+    created: "2023-03-13T16:56:05.783103+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -48,4 +66,4 @@ entries:
     urls:
     - https://catenax-ng.github.io/tx-autosetup-backend/autosetup-1.1.3.tgz
     version: 1.1.3
-generated: "2023-03-06T15:57:16.938374+05:30"
+generated: "2023-03-13T16:56:05.765684+05:30"

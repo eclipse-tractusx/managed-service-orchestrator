@@ -1,8 +1,8 @@
 # autosetup
 
-![Version: 1.1.5](https://img.shields.io/badge/Version-1.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.1.5](https://img.shields.io/badge/AppVersion-1.1.5-informational?style=flat-square)
+![Version: 1.1.6](https://img.shields.io/badge/Version-1.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.1.6](https://img.shields.io/badge/AppVersion-1.1.6-informational?style=flat-square)
 
-A Helm chart for Kubernetes
+This service will help service provider to set up DFT/SDE with EDC and EDC as service in service provider environment.
 
 ## Source Code
 
@@ -39,6 +39,7 @@ A Helm chart for Kubernetes
 | nodeSelector | object | `{}` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | string | `nil` |  |
+| portContainer | int | `9999` |  |
 | postgresql.auth.database | string | `"orchdb"` |  |
 | postgresql.auth.existingSecret | string | `"autosetup-int-secret"` |  |
 | postgresql.auth.secretKeys.adminPasswordKey | string | `"postgres-password"` |  |
@@ -46,7 +47,7 @@ A Helm chart for Kubernetes
 | postgresql.auth.username | string | `"orchdbuser"` |  |
 | postgresql.enabled | bool | `true` | Enable the dependency postgres database |
 | postgresql.metrics.containerSecurityContext.enabled | bool | `false` |  |
-| probe.endpoint | string | `" /api/healthz"` |  |
+| probe.endpoint | string | `"/api/healthz"` |  |
 | readinessProbe.failureThreshold | int | `3` |  |
 | readinessProbe.initialDelaySeconds | int | `60` |  |
 | readinessProbe.periodSeconds | int | `10` |  |
