@@ -40,7 +40,7 @@ You can find the standard credentials as well as further database configurations
 
 ### Steps
 1. Clone the GitHub Repository - https://github.com/eclipse-tractusx/autosetup-backend
-2. Get your instance of postgres running.
+2. Get your instance of postgres running
 3. Setup your project environment to JDK 18
 4. Start the application from your IDE.
 
