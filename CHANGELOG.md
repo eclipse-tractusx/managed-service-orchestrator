@@ -7,11 +7,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 
-## [1.1.6] - 2023-03-13
+## [1.2.0] - 2023-03-14
+
+### Fixed
+ - Security issues fixed
+ - Snakeyaml jar issue fixed
+ - veracode security issue fixed
 
 ### Changed
- - Security fixes
- - Snakeyaml jar fixed
  - Supports EDC connector 0.1.6
  - Changed base image to eclipse-temurin
  

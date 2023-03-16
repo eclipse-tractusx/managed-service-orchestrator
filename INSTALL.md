@@ -4,7 +4,7 @@ Helm charts are provided inside https://github.com/eclipse-tractusx/autosetup-ba
 
  - Using helm commands <br />
 
-How to install application using helm:-
+How to install application using helm:-  <br />
     helm install ReleaseName ChartName
     
     a.) Add helm repository in tractusx:-
