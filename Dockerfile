@@ -19,7 +19,6 @@
 #*******************************************************************************
  
 # our base build image
-#FROM maven:3.8-openjdk-18 as builder
 FROM maven:3.9.0-eclipse-temurin-19 as builder
 
 # copy the project files
@@ -34,10 +33,6 @@ COPY ./src ./src
 # build for release
 RUN mvn clean install -Dmaven.test.skip=true 
 
-# our final base image
-#FROM eclipse-temurin:18.0.1_10-jre
-
-#FROM eclipse-temurin:19_36-jre
 
 FROM eclipse-temurin:latest
 
@@ -48,12 +43,7 @@ ARG USER_GID=$USER_UID
 # Create the user
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME 
-#    && apt-get update \
-#    && apt-get install -y sudo \
-#    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-#    && chmod 0440 /etc/sudoers.d/$USERNAME
 
-# set deployment directory
 WORKDIR /autosetup
 
 # copy over the built artifact from the maven image
