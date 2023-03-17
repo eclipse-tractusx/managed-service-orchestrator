@@ -22,8 +22,8 @@ package org.eclipse.tractusx.autosetup.service;
 
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.EDC_CONTROLPLANE;
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.EDC_DATAPLANE;
-import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.TRACTUS_CONNECTOR;
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.POSTGRES_DB;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.TRACTUS_CONNECTOR;
 
 import java.util.Map;
 
@@ -35,6 +35,7 @@ import org.eclipse.tractusx.autosetup.manager.ConnectorRegistrationManager;
 import org.eclipse.tractusx.autosetup.manager.EDCControlplaneManager;
 import org.eclipse.tractusx.autosetup.manager.EDCDataplaneManager;
 import org.eclipse.tractusx.autosetup.manager.PostgresDBManager;
+import org.eclipse.tractusx.autosetup.manager.TestConnectorServiceManager;
 import org.eclipse.tractusx.autosetup.manager.TractusConnectorManager;
 import org.eclipse.tractusx.autosetup.manager.VaultManager;
 import org.eclipse.tractusx.autosetup.model.Customer;
@@ -54,6 +55,7 @@ public class EDCConnectorWorkFlow {
 	private final EDCDataplaneManager edcDataplaneManager;
 	private final TractusConnectorManager tractusConnectorManager;
 	private final ConnectorRegistrationManager connectorRegistrationManager;
+	private final TestConnectorServiceManager testConnectorServiceManager;
 
 	private final AppDeleteManager appDeleteManager;
 
@@ -69,6 +71,9 @@ public class EDCConnectorWorkFlow {
 				inputConfiguration, triger));
 		inputConfiguration.putAll(
 				connectorRegistrationManager.registerConnector(customerDetails, tool, inputConfiguration, triger));
+
+		inputConfiguration.putAll(testConnectorServiceManager.verifyConnectorTestingThroughTestService(customerDetails,
+				inputConfiguration, triger));
 
 		return inputConfiguration;
 	}
