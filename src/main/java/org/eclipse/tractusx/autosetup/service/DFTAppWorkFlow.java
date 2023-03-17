@@ -22,7 +22,6 @@ package org.eclipse.tractusx.autosetup.service;
 
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DFT_BACKEND;
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DFT_FRONTEND;
-import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.POSTGRES_DB;
 
 import java.util.Map;
 
@@ -31,7 +30,6 @@ import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
 import org.eclipse.tractusx.autosetup.manager.AppDeleteManager;
 import org.eclipse.tractusx.autosetup.manager.DFTBackendManager;
 import org.eclipse.tractusx.autosetup.manager.DFTFrontendManager;
-import org.eclipse.tractusx.autosetup.manager.PostgresDBManager;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.springframework.stereotype.Component;
@@ -42,7 +40,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DFTAppWorkFlow {
 
-	private final PostgresDBManager postgresManager;
 	private final DFTBackendManager dftBackendManager;
 	private final DFTFrontendManager dftFrontendManager;
 
@@ -51,8 +48,6 @@ public class DFTAppWorkFlow {
 	public Map<String, String> getWorkFlow(Customer customerDetails, SelectedTools tool, AppActions workflowAction,
 			Map<String, String> inputConfiguration, AutoSetupTriggerEntry triger) {
 
-		inputConfiguration.putAll(
-				postgresManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(
 				dftBackendManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(
@@ -64,7 +59,6 @@ public class DFTAppWorkFlow {
 	public void deletePackageWorkFlow(SelectedTools tool, Map<String, String> inputConfiguration,
 			AutoSetupTriggerEntry triger) {
 
-		appDeleteManager.deletePackage(POSTGRES_DB, tool, inputConfiguration, triger);
 		appDeleteManager.deletePackage(DFT_BACKEND, tool, inputConfiguration, triger);
 		appDeleteManager.deletePackage(DFT_FRONTEND, tool, inputConfiguration, triger);
 

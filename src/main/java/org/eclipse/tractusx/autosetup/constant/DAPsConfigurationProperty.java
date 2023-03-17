@@ -18,27 +18,24 @@
 #* SPDX-License-Identifier: Apache-2.0
 #********************************************************************************/
 
-package org.eclipse.tractusx.autosetup.manager;
+package org.eclipse.tractusx.autosetup.constant;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-import lombok.Data;
+import lombok.Getter;
 
-@ConfigurationProperties(prefix = "sde")
-@Configuration
-@Data
-public class SDEConfigurationProperty {
-	
-	private String resourceServerIssuer;
-	private String keycloakAuth;
-	private String keycloakRealm;
-	private String digitalTwinsHostname;
-	private String digitalTwinsAuthenticationUrl;
-	private String partnerPoolHostname;
-	private String portalBackendHostname;
-	private String connectorDiscoveryTokenUrl;
-	private String connectorDiscoveryClientId;
-	private String connectorDiscoveryClientSecret;
-	
+@Getter
+@Component
+public class DAPsConfigurationProperty {
+
+	@Value("${daps.url}")
+	private String url;
+
+	@Value("${daps.jskurl}")
+	private String jskUrl;
+
+	@Value("${daps.token.url}")
+	private String tokenUrl;
+
 }

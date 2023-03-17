@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.tractusx.autosetup.constant.AppActions;
+import org.eclipse.tractusx.autosetup.constant.SDEConfigurationProperty;
 import org.eclipse.tractusx.autosetup.constant.TriggerStatusEnum;
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerDetails;
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
@@ -100,7 +101,7 @@ public class DFTBackendManager {
 
 			String packageName = tool.getLabel();
 
-			String dftDb = "jdbc:postgresql://" + packageName + "-postgresdb-postgresql:5432/postgres";
+			String dftDb = "jdbc:postgresql://" + packageName + "-dftbackend-dftpostgresql:5432/postgres";
 			inputData.put("dftdatabaseurl", dftDb);
 
 			if (AppActions.CREATE.equals(action))
