@@ -64,12 +64,6 @@ spring.datasource.driver-class-name=org.postgresql.Driver
 
 spring.jpa.open-in-view=false
 
-spring.datasource.url=$\{dftdatabaseurl\}
-
-spring.datasource.username=$\{username\}
-
-spring.datasource.password=$\{appdbpass\}
-
 digital-twins.hostname=$\{sde.digital-twins.hostname\}
 
 digital-twins.authentication.url=$\{sde.digital-twins.authentication.url\}
@@ -118,7 +112,7 @@ connector.discovery.token-url=$\{sde.connector.discovery.token-url\}
 
 connector.discovery.clientId=$\{sde.connector.discovery.clientId\}
 
-connector.discovery.clientSecret=$\{sde.connector.discovery.clientSecret\}', NULL, 'sde-backend/dftbackend', '1.9.0', 'helm.packages', 'v1alpha1', '{"dftpostgresql": {"enabled": true, "auth" : {"postgresPassword":"$\{postgresPassword\}","username":"$\{username\}","password":"$\{appdbpass\}","database":"$\{database\}"}},"ingresses":[{"enabled": true, "hostname":"$\{dnsName\}",  "annotations": {}, "className": "nginx", "endpoints":["default"], "tls":{"enabled":true, "secretName":"dftbackend"}, "certManager":{"clusterIssuer":"letsencrypt-prod"}}], "configuration": {"properties": "$\{yamlValues\}"}}', 'PROPERTY');
+connector.discovery.clientSecret=$\{sde.connector.discovery.clientSecret\}', NULL, 'sde-backend/dftbackend', '1.9.0', 'helm.packages', 'v1alpha1', '{"dftpostgresql": {"enabled": true, "auth" : {"secretKeys":{"password":"$\{postgresPassword}"\},"username":"$\{username\}","database":"$\{database\}"}},"ingresses":[{"enabled": true, "hostname":"$\{dnsName\}",  "annotations": {}, "className": "nginx", "endpoints":["default"], "tls":{"enabled":true, "secretName":"dftbackend"}, "certManager":{"clusterIssuer":"letsencrypt-prod"}}], "configuration": {"properties": "$\{yamlValues\}"}}', 'PROPERTY');
 INSERT INTO app_tbl
 (app_name, context_cluster, context_namespace, expected_input_data, output_data, package_identifier, package_version, plugin_name, plugin_version, required_yaml_configuration, yaml_value_field_type)
 VALUES('DFT_FRONTEND', 'default', 'kubeapps', 'REACT_APP_API_URL=$\{dftBackEndUrl\}

@@ -101,9 +101,6 @@ public class DFTBackendManager {
 
 			String packageName = tool.getLabel();
 
-			String dftDb = "jdbc:postgresql://" + packageName + "-dftbackend-dftpostgresql:5432/postgres";
-			inputData.put("dftdatabaseurl", dftDb);
-
 			if (AppActions.CREATE.equals(action))
 				appManagement.createPackage(DFT_BACKEND, packageName, inputData);
 			else
