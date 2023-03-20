@@ -12,8 +12,8 @@ This service will help service provider to set up DFT/SDE with EDC and EDC as se
 ### Software Version
 
 ```shell
-Application version: 1.2.0
-Helm release version: 1.2.0
+Application version: 1.2.1
+Helm release version: 1.2.1
 ```
 
 
@@ -40,7 +40,7 @@ You can find the standard credentials as well as further database configurations
 
 ### Steps
 1. Clone the GitHub Repository - https://github.com/eclipse-tractusx/autosetup-backend
-2. Get your instance of postgres running.
+2. Get your instance of postgres running
 3. Setup your project environment to JDK 18
 4. Start the application from your IDE.
 

@@ -33,8 +33,6 @@ import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
 import org.eclipse.tractusx.autosetup.exception.ServiceException;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
-import org.eclipse.tractusx.autosetup.utility.PasswordGenerator;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.retry.support.RetrySynchronizationManager;
@@ -50,15 +48,7 @@ public class TractusConnectorManager {
 
 	private final KubeAppsPackageManagement appManagement;
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
-
-	@Value("${daps.url}")
-	private String dapsurl;
-
-	@Value("${daps.jskurl}")
-	private String dapsjsksurl;
-
-	@Value("${daps.token.url}")
-	private String dapstokenurl;
+	private final ConnectorCommonUtilityManager connectorCommonUtilityManager;
 
 	@Retryable(value = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
@@ -71,38 +61,7 @@ public class TractusConnectorManager {
 		try {
 			String packageName = tool.getLabel();
 
-			String generateRandomPassword = PasswordGenerator.generateRandomPassword(50);
-			String dnsName = inputData.get("dnsName");
-			String dnsNameURLProtocol = inputData.get("dnsNameURLProtocol");
-
-			String controlplaneurl = dnsNameURLProtocol + "://" + dnsName;
-
-			inputData.put("dapsurl", dapsurl);
-			inputData.put("dapsjsksurl", dapsjsksurl);
-			inputData.put("dapstokenurl", dapstokenurl);
-
-			inputData.put("dataPlanePublicUrl",
-					dnsNameURLProtocol + "://" + packageName + "-edcdataplane-edc-dataplane:8185/api/public");
-			String localControlplane = dnsNameURLProtocol + "://" + packageName
-					+ "-edccontrolplane-edc-controlplane:8182/validation/token";
-
-			outputData.put("controlPlaneValidationEndpoint", localControlplane);
-
-			outputData.put("controlPlaneEndpoint", controlplaneurl);
-			outputData.put("controlPlaneDataEndpoint", controlplaneurl + "/data");
-			outputData.put("edcApiKey", "X-Api-Key");
-			outputData.put("edcApiKeyValue", generateRandomPassword);
-			outputData.put("controlPlaneIdsEndpoint", controlplaneurl + "/api/v1/ids/data");
-			outputData.put("dataplaneendpoint", controlplaneurl);
-			outputData.put("dataPlanePublicEndpoint", controlplaneurl + "/public");
-
-			inputData.putAll(outputData);
-
-			String dftAddress = dnsNameURLProtocol + "://" + dnsName + "/dftbackend/api";
-			inputData.put("dftAddress", dftAddress);
-
-			String edcDb = "jdbc:postgresql://" + packageName + "-postgresdb-postgresql:5432/postgres";
-			inputData.put("edcdatabaseurl", edcDb);
+			outputData = connectorCommonUtilityManager.prepareConnectorInput(packageName, inputData);
 
 			if (AppActions.CREATE.equals(action))
 				appManagement.createPackage(TRACTUS_CONNECTOR, packageName, inputData);
