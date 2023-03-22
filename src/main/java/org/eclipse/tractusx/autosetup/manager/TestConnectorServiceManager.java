@@ -28,7 +28,7 @@ public class TestConnectorServiceManager {
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
 
 	private final ConnectorTestServiceProxy connectorTestServiceProxy;
-	
+
 	@Value("${connector.test.service.url}")
 	private String connectorTestServiceURL;
 
@@ -45,13 +45,8 @@ public class TestConnectorServiceManager {
 					.apiKeyHeader(inputData.get("edcApiKey")).apiKeyValue(inputData.get("edcApiKeyValue"))
 					.connectorHost(inputData.get("controlPlaneEndpoint")).build();
 
-			try {
-				log.info("Waiting after connector setup to get pod up to test connector as data provider/consumer");
-				Thread.sleep(60000);
-			} catch (InterruptedException e) {
-
-				Thread.currentThread().interrupt();
-			}
+			log.info("Waiting after connector setup to get pod up to test connector as data provider/consumer");
+			Thread.sleep(60000);
 
 			ConnectorTestServiceResponse testResult = connectorTestServiceProxy
 					.verifyConnectorTestingThroughTestService(connectorTestRequest);
@@ -59,7 +54,7 @@ public class TestConnectorServiceManager {
 			log.info("Connector status: " + testResult.getMessage());
 
 			inputData.put("connectorTestResult", testResult.getMessage());
-			
+
 			inputData.put("testServiceURL", connectorTestServiceURL);
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
