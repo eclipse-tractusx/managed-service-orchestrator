@@ -99,6 +99,9 @@ public class EDCConnectorWorkFlow {
 				edcDataplaneManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(
 				connectorRegistrationManager.registerConnector(customerDetails, tool, inputConfiguration, triger));
+		
+		inputConfiguration.putAll(testConnectorServiceManager.verifyConnectorTestingThroughTestService(customerDetails,
+				inputConfiguration, triger));
 
 		return inputConfiguration;
 	}

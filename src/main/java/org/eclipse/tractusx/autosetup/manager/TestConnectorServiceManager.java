@@ -10,6 +10,8 @@ import org.eclipse.tractusx.autosetup.exception.ServiceException;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.testservice.proxy.ConnectorTestRequest;
 import org.eclipse.tractusx.autosetup.testservice.proxy.ConnectorTestServiceProxy;
+import org.eclipse.tractusx.autosetup.testservice.proxy.ConnectorTestServiceResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.retry.support.RetrySynchronizationManager;
@@ -26,6 +28,9 @@ public class TestConnectorServiceManager {
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
 
 	private final ConnectorTestServiceProxy connectorTestServiceProxy;
+	
+	@Value("${connector.test.service.url}")
+	private String connectorTestServiceURL;
 
 	@Retryable(value = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
@@ -40,10 +45,22 @@ public class TestConnectorServiceManager {
 					.apiKeyHeader(inputData.get("edcApiKey")).apiKeyValue(inputData.get("edcApiKeyValue"))
 					.connectorHost(inputData.get("controlPlaneEndpoint")).build();
 
-			String testResult = connectorTestServiceProxy
+			try {
+				log.info("Waiting after connector setup to get pod up to test connector as data provider/consumer");
+				Thread.sleep(60000);
+			} catch (InterruptedException e) {
+
+				Thread.currentThread().interrupt();
+			}
+
+			ConnectorTestServiceResponse testResult = connectorTestServiceProxy
 					.verifyConnectorTestingThroughTestService(connectorTestRequest);
 
-			inputData.put("connectorTestResult", testResult);
+			log.info("Connector status: " + testResult.getMessage());
+
+			inputData.put("connectorTestResult", testResult.getMessage());
+			
+			inputData.put("testServiceURL", connectorTestServiceURL);
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
 

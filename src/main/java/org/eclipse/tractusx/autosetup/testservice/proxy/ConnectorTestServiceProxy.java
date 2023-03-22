@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface ConnectorTestServiceProxy {
 
 	@PostMapping("/connector-test")
-	public String verifyConnectorTestingThroughTestService(@RequestBody ConnectorTestRequest connectorTestRequest);
+	public ConnectorTestServiceResponse verifyConnectorTestingThroughTestService(@RequestBody ConnectorTestRequest connectorTestRequest);
 
 }
