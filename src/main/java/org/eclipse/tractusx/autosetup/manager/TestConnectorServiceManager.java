@@ -18,6 +18,7 @@ import org.springframework.retry.support.RetrySynchronizationManager;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -45,8 +46,7 @@ public class TestConnectorServiceManager {
 					.apiKeyHeader(inputData.get("edcApiKey")).apiKeyValue(inputData.get("edcApiKeyValue"))
 					.connectorHost(inputData.get("controlPlaneEndpoint")).build();
 
-			log.info("Waiting after connector setup to get pod up to test connector as data provider/consumer");
-			Thread.sleep(60000);
+			waitingTime();
 
 			ConnectorTestServiceResponse testResult = connectorTestServiceProxy
 					.verifyConnectorTestingThroughTestService(connectorTestRequest);
@@ -72,6 +72,18 @@ public class TestConnectorServiceManager {
 		}
 
 		return inputData;
+	}
+
+	@SneakyThrows
+	private void waitingTime() {
+		
+		try {
+			log.info("Waiting after connector setup to get pod up to test connector as data provider/consumer");
+			Thread.sleep(60000);
+		} catch (InterruptedException e) {
+
+			Thread.currentThread().interrupt();
+		}
 	}
 
 }
