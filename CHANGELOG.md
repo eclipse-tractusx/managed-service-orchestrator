@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [1.2.2] - 2023-03-23
+
+### Added
+ - Connector test service integration for managed connector connectivity test
+ - Update email template for connector status
+
 ## [1.2.1] - 2023-03-18
 
 ### Fixed
