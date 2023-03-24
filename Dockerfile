@@ -19,7 +19,7 @@
 #*******************************************************************************
  
 # our base build image
-FROM maven:3.9.0-eclipse-temurin-19 as builder
+FROM maven:3.8.7-eclipse-temurin-17 AS builder
 
 # copy the project files
 COPY ./pom.xml /pom.xml
@@ -34,23 +34,19 @@ COPY ./src ./src
 RUN mvn clean install -Dmaven.test.skip=true 
 
 
-FROM eclipse-temurin:latest
+FROM eclipse-temurin:17.0.6_10-jdk-alpine
 
-ARG USERNAME=autosetupuser
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+RUN adduser -DH autosetupuser && addgroup autosetupuser autosetupuser
 
-# Create the user
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME 
+USER autosetupuser
 
 WORKDIR /autosetup
 
 # copy over the built artifact from the maven image
 COPY --from=builder target/*.jar ./app.jar
 
-USER $USERNAME
-
 EXPOSE 9999
+
 # set the startup command to run your binary
 CMD ["java", "-jar", "./app.jar"]
+
