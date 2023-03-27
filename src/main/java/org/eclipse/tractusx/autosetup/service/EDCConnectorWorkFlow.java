@@ -29,6 +29,7 @@ import java.util.Map;
 
 import org.eclipse.tractusx.autosetup.constant.AppActions;
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
+import org.eclipse.tractusx.autosetup.exception.ServiceException;
 import org.eclipse.tractusx.autosetup.manager.AppDeleteManager;
 import org.eclipse.tractusx.autosetup.manager.CertificateManager;
 import org.eclipse.tractusx.autosetup.manager.ConnectorRegistrationManager;
@@ -43,9 +44,11 @@ import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class EDCConnectorWorkFlow {
 
 	private final CertificateManager certificateManager;
@@ -72,8 +75,12 @@ public class EDCConnectorWorkFlow {
 		inputConfiguration.putAll(
 				connectorRegistrationManager.registerConnector(customerDetails, tool, inputConfiguration, triger));
 
-		inputConfiguration.putAll(testConnectorServiceManager.verifyConnectorTestingThroughTestService(customerDetails,
-				inputConfiguration, triger));
+		try {
+			inputConfiguration.putAll(testConnectorServiceManager
+					.verifyConnectorTestingThroughTestService(customerDetails, inputConfiguration, triger));
+		} catch (ServiceException ex) {
+			log.warn(ex.getMessage());
+		}
 
 		return inputConfiguration;
 	}
@@ -99,9 +106,13 @@ public class EDCConnectorWorkFlow {
 				edcDataplaneManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(
 				connectorRegistrationManager.registerConnector(customerDetails, tool, inputConfiguration, triger));
-		
-		inputConfiguration.putAll(testConnectorServiceManager.verifyConnectorTestingThroughTestService(customerDetails,
-				inputConfiguration, triger));
+
+		try {
+			inputConfiguration.putAll(testConnectorServiceManager
+					.verifyConnectorTestingThroughTestService(customerDetails, inputConfiguration, triger));
+		} catch (ServiceException ex) {
+			log.warn(ex.getMessage());
+		}
 
 		return inputConfiguration;
 	}

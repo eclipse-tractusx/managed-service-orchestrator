@@ -46,6 +46,8 @@ public class TestConnectorServiceManager {
 					.apiKeyHeader(inputData.get("edcApiKey")).apiKeyValue(inputData.get("edcApiKeyValue"))
 					.connectorHost(inputData.get("controlPlaneEndpoint")).build();
 
+			inputData.put("testServiceURL", connectorTestServiceURL);
+
 			waitingTime();
 
 			ConnectorTestServiceResponse testResult = connectorTestServiceProxy
@@ -55,12 +57,12 @@ public class TestConnectorServiceManager {
 
 			inputData.put("connectorTestResult", testResult.getMessage());
 
-			inputData.put("testServiceURL", connectorTestServiceURL);
-
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
 
 		} catch (Exception ex) {
 
+			inputData.put("connectorTestResult", "The automatic test wasn't successfully completed");
+			
 			log.error("ConnectorTestService failed retry attempt: : {}",
 					RetrySynchronizationManager.getContext().getRetryCount() + 1);
 
