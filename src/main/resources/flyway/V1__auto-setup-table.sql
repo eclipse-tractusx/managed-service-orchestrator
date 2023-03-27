@@ -112,7 +112,7 @@ connector.discovery.token-url=$\{sde.connector.discovery.token-url\}
 
 connector.discovery.clientId=$\{sde.connector.discovery.clientId\}
 
-connector.discovery.clientSecret=$\{sde.connector.discovery.clientSecret\}', NULL, 'sde-backend/dftbackend', '1.9.0', 'helm.packages', 'v1alpha1', '{"dftpostgresql": {"enabled": true, "auth" : {"secretKeys":{"password":"$\{postgresPassword}"\},"username":"$\{username\}","database":"$\{database\}"}},"ingresses":[{"enabled": true, "hostname":"$\{dnsName\}",  "annotations": {}, "className": "nginx", "endpoints":["default"], "tls":{"enabled":true, "secretName":"dftbackend"}, "certManager":{"clusterIssuer":"letsencrypt-prod"}}], "configuration": {"properties": "$\{yamlValues\}"}}', 'PROPERTY');
+connector.discovery.clientSecret=$\{sde.connector.discovery.clientSecret\}', NULL, 'sde-backend/dftbackend', '2.0.0', 'helm.packages', 'v1alpha1', '{"dftpostgresql": {"enabled": true, "primary":{"persistence":{"size" :"1Gi"}},"persistence":{"size" :"1Gi"}, "auth" : {"secretKeys":{"password":"$\{postgresPassword}"\},"username":"$\{username\}","database":"$\{database\}"}},"ingresses":[{"enabled": true, "hostname":"$\{dnsName\}",  "annotations": {}, "className": "nginx", "endpoints":["default"], "tls":{"enabled":true, "secretName":"dftbackend"}, "certManager":{"clusterIssuer":"letsencrypt-prod"}}], "configuration": {"properties": "$\{yamlValues\}"}}', 'PROPERTY');
 INSERT INTO app_tbl
 (app_name, context_cluster, context_namespace, expected_input_data, output_data, package_identifier, package_version, plugin_name, plugin_version, required_yaml_configuration, yaml_value_field_type)
 VALUES('DFT_FRONTEND', 'default', 'kubeapps', 'REACT_APP_API_URL=$\{dftBackEndUrl\}
@@ -125,7 +125,7 @@ REACT_APP_CLIENT_ID=$\{dftfrontendkeycloakclientid\}
 
 REACT_APP_DEFAULT_COMPANY_BPN=$\{bpnNumber\}
 
-REACT_APP_FILESIZE=268435456', NULL, 'sde-frontend/dftfrontend', '1.9.0', 'helm.packages', 'v1alpha1', '{"ingresses":[{"enabled": true, "hostname":"$\{dnsName\}",  "annotations": {}, "className": "nginx", "endpoints":["default"], "tls":{"enabled":true, "secretName":"dftfrontend"}, "certManager":{"clusterIssuer":"letsencrypt-prod"}}], "configuration": {"properties": "$\{yamlValues\}"}}', 'PROPERTY');
+REACT_APP_FILESIZE=268435456', NULL, 'sde-frontend/dftfrontend', '2.0.0', 'helm.packages', 'v1alpha1', '{"ingresses":[{"enabled": true, "hostname":"$\{dnsName\}",  "annotations": {}, "className": "nginx", "endpoints":["default"], "tls":{"enabled":true, "secretName":"dftfrontend"}, "certManager":{"clusterIssuer":"letsencrypt-prod"}}], "configuration": {"properties": "$\{yamlValues\}"}}', 'PROPERTY');
 INSERT INTO app_tbl
 (app_name, context_cluster, context_namespace, expected_input_data, output_data, package_identifier, package_version, plugin_name, plugin_version, required_yaml_configuration, yaml_value_field_type)
 VALUES('EDC_CONTROLPLANE', 'default', 'kubeapps', 'edc.receiver.http.endpoint=$\{dftAddress\}
