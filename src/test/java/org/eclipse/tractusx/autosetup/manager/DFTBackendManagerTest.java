@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.tractusx.autosetup.constant.AppActions;
+import org.eclipse.tractusx.autosetup.constant.SDEConfigurationProperty;
 import org.eclipse.tractusx.autosetup.constant.ToolType;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.junit.jupiter.api.Test;

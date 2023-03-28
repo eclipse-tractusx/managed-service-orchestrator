@@ -22,19 +22,23 @@ package org.eclipse.tractusx.autosetup.manager;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.tractusx.autosetup.constant.AppActions;
+import org.eclipse.tractusx.autosetup.constant.AppNameConstant;
 import org.eclipse.tractusx.autosetup.constant.ToolType;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
@@ -43,28 +47,29 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class EDCControlplaneManagerTest {
 
-    @Mock
-    private KubeAppsPackageManagement appManagement;
+	@MockBean
+	private KubeAppsPackageManagement appManagement;
 
-    @Mock
-    private AutoSetupTriggerManager autoSetupTriggerManager;
+	@MockBean
+	private AutoSetupTriggerManager autoSetupTriggerManager;
 
-    @InjectMocks
-    private EDCControlplaneManager edcControlplaneManager;
+	@Autowired
+	private EDCControlplaneManager edcControlplaneManager;
 
-    @Test
-    void managePackage() {
-        Map<String, String> mockInputMap = new HashMap<>();
-        mockInputMap.put("targetCluster","test");
-        mockInputMap.put("dnsName", "test");
-        mockInputMap.put("dnsNameURLProtocol","https");
+	@Test
+	void managePackage() {
+		Map<String, String> mockInputMap = new HashMap<>();
+		mockInputMap.put("targetCluster", "test");
+		mockInputMap.put("dnsName", "test");
+		mockInputMap.put("dnsNameURLProtocol", "https");
+		String result = "packageCreated";
 
-        SelectedTools selectedTools = SelectedTools.builder()
-                .tool(ToolType.DFT)
-                .label("DFT")
-                .build();
-        mockInputMap = edcControlplaneManager.managePackage(null, AppActions.CREATE,selectedTools,mockInputMap, null);
-        assertEquals(6, mockInputMap.size());
-        assertNotNull(mockInputMap.get("controlPlaneEndpoint"));
-    }
+		when(appManagement.createPackage(eq(AppNameConstant.EDC_CONTROLPLANE), eq(ToolType.DFT.name()), anyMap()))
+				.thenReturn(result);
+
+		SelectedTools selectedTools = SelectedTools.builder().tool(ToolType.DFT).label("DFT").build();
+		mockInputMap = edcControlplaneManager.managePackage(null, AppActions.CREATE, selectedTools, mockInputMap, null);
+		assertEquals(17, mockInputMap.size());
+		assertNotNull(mockInputMap.get("controlPlaneEndpoint"));
+	}
 }
