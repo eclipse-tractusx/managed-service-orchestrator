@@ -18,23 +18,19 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.autosetup.constant;
+package org.eclipse.tractusx.autosetup.testservice.proxy;
 
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 
-@Getter
-public enum AppNameConstant {
+@Data
+@Builder
+public class ConnectorTestRequest {
 
-	EDC_CONTROLPLANE,
+	private String connectorHost;
 
-	EDC_DATAPLANE,
-	
-	TRACTUS_CONNECTOR,
+	private String apiKeyHeader;
 
-	POSTGRES_DB,
-	
-	DFT_FRONTEND,
-	
-	DFT_BACKEND,
-	
+	private String apiKeyValue;
+
 }

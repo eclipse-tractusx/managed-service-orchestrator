@@ -18,23 +18,16 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.autosetup.constant;
+package org.eclipse.tractusx.autosetup.testservice.proxy;
 
-import lombok.Getter;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-@Getter
-public enum AppNameConstant {
+@FeignClient(name = "ConnectorTestServiceProxy", url = "${connector.test.service.url}")
+public interface ConnectorTestServiceProxy {
 
-	EDC_CONTROLPLANE,
+	@PostMapping("/connector-test")
+	public ConnectorTestServiceResponse verifyConnectorTestingThroughTestService(@RequestBody ConnectorTestRequest connectorTestRequest);
 
-	EDC_DATAPLANE,
-	
-	TRACTUS_CONNECTOR,
-
-	POSTGRES_DB,
-	
-	DFT_FRONTEND,
-	
-	DFT_BACKEND,
-	
 }
