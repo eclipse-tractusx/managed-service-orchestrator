@@ -69,6 +69,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AutoSetupOrchitestratorService {
 
+	private static final String TEST_SERVICE_URL = "testServiceURL";
+	private static final String CONNECTOR_TEST_RESULT = "connectorTestResult";
 	private static final String EMAIL_SENT_SUCCESSFULLY = "Email sent successfully";
 	private static final String TOEMAIL = "toemail";
 	private static final String ORGNAME = "orgname";
@@ -398,15 +400,18 @@ public class AutoSetupOrchitestratorService {
 		selectedTool.setLabel("dft-" + label);
 		Map<String, String> map = dftWorkFlow.getWorkFlow(autoSetupRequest.getCustomer(), selectedTool, action,
 				inputConfiguration, trigger);
-
+		
+		Map<String, Object> emailContent = new HashMap<>();
+		emailContent.put(DFT_FRONTEND_URL, map.get(DFT_FRONTEND_URL));
+		emailContent.put(DFT_BACKEND_URL, map.get(DFT_BACKEND_URL));
+		emailContent.put(CONNECTOR_TEST_RESULT, map.get(CONNECTOR_TEST_RESULT));
+		emailContent.put(TEST_SERVICE_URL, map.get(TEST_SERVICE_URL));
+		
+		
 		if (manualUpdate) {
 			// Send an email
-			Map<String, Object> emailContent = new HashMap<>();
-
 			emailContent.put("helloto", "Team");
 			emailContent.put(ORGNAME, customer.getOrganizationName());
-			emailContent.put(DFT_FRONTEND_URL, map.get(DFT_FRONTEND_URL));
-			emailContent.put(DFT_BACKEND_URL, map.get(DFT_BACKEND_URL));
 			emailContent.put(TOEMAIL, portalEmail);
 
 			// End of email sending code
@@ -417,10 +422,9 @@ public class AutoSetupOrchitestratorService {
 		} else {
 
 			trigger.setStatus(TriggerStatusEnum.SUCCESS.name());
+			
 			// Send an email
-			Map<String, Object> emailContent = new HashMap<>();
 			emailContent.put(ORGNAME, customer.getOrganizationName());
-			emailContent.put(DFT_FRONTEND_URL, map.get(DFT_FRONTEND_URL));
 			emailContent.put(TOEMAIL, customer.getEmail());
 			emailContent.put("ccemail", portalEmail);
 
