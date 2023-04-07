@@ -3,7 +3,7 @@ entries:
   autosetup:
   - apiVersion: v2
     appVersion: 1.2.3
-    created: "2023-04-06T17:17:17.984689+05:30"
+    created: "2023-04-07T13:32:21.782177+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -11,7 +11,7 @@ entries:
       version: 11.x.x
     description: This service will help service provider to set up DFT/SDE with EDC
       and EDC as service in service provider environment.
-    digest: b439fc3c7956666e21fa875444c560fc4c1c69df5ab39083b863137d91889cd9
+    digest: e9c421b9f3f4c1a9a4df37ac615fceca31c152fa13ae561e10c6cc99d0e247dc
     name: autosetup
     sources:
     - https://github.com/eclipse-tractusx/autosetup-backend
@@ -21,7 +21,7 @@ entries:
     version: 1.2.3
   - apiVersion: v2
     appVersion: 1.2.2
-    created: "2023-04-06T17:17:17.979259+05:30"
+    created: "2023-04-07T13:32:21.777224+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -39,7 +39,7 @@ entries:
     version: 1.2.2
   - apiVersion: v2
     appVersion: 1.2.1
-    created: "2023-04-06T17:17:17.973534+05:30"
+    created: "2023-04-07T13:32:21.768085+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -57,7 +57,7 @@ entries:
     version: 1.2.1
   - apiVersion: v2
     appVersion: 1.2.0
-    created: "2023-04-06T17:17:17.967028+05:30"
+    created: "2023-04-07T13:32:21.758319+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -75,7 +75,7 @@ entries:
     version: 1.2.0
   - apiVersion: v2
     appVersion: 1.1.5
-    created: "2023-04-06T17:17:17.954635+05:30"
+    created: "2023-04-07T13:32:21.748221+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -92,7 +92,7 @@ entries:
     version: 1.1.5
   - apiVersion: v2
     appVersion: 1.1.4
-    created: "2023-04-06T17:17:17.942228+05:30"
+    created: "2023-04-07T13:32:21.739225+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -107,7 +107,7 @@ entries:
     version: 1.1.4
   - apiVersion: v2
     appVersion: 0.0.8
-    created: "2023-04-06T17:17:17.936254+05:30"
+    created: "2023-04-07T13:32:21.728094+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -120,4 +120,4 @@ entries:
     urls:
     - https://catenax-ng.github.io/tx-autosetup-backend/autosetup-1.1.3.tgz
     version: 1.1.3
-generated: "2023-04-06T17:17:17.924166+05:30"
+generated: "2023-04-07T13:32:21.707683+05:30"

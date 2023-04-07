@@ -10,7 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [1.2.3] - 2023-04-07
 
 ### Fixed
- - Fix email sent issue for failure usecase of connector test
+ - Fixed email sent issue for failure use case of connector test
+ - Rename tractus-X connector app name because of ingress access issue
 
 ## [1.2.2] - 2023-03-30
 
