@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022, 2023 T-Systems International GmbH
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023 T-Systems International GmbH
+ * Copyright (c) 2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,23 +18,4 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.autosetup.constant;
-
-import lombok.Getter;
-
-@Getter
-public enum AppNameConstant {
-
-	EDC_CONTROLPLANE,
-
-	EDC_DATAPLANE,
-	
-	EDC_CONNECTOR,
-
-	POSTGRES_DB,
-	
-	DFT_FRONTEND,
-	
-	DFT_BACKEND,
-	
-}
+UPDATE app_tbl set app_name='EDC_CONNECTOR' where app_name='TRACTUS_CONNECTOR';
