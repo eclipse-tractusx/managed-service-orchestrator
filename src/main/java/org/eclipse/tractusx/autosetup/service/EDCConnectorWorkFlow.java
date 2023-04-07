@@ -23,7 +23,7 @@ package org.eclipse.tractusx.autosetup.service;
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.EDC_CONTROLPLANE;
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.EDC_DATAPLANE;
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.POSTGRES_DB;
-import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.TRACTUS_CONNECTOR;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.EDC_CONNECTOR;
 
 import java.util.Map;
 
@@ -89,7 +89,7 @@ public class EDCConnectorWorkFlow {
 			AutoSetupTriggerEntry triger) {
 
 		appDeleteManager.deletePackage(POSTGRES_DB, tool, inputConfiguration, triger);
-		appDeleteManager.deletePackage(TRACTUS_CONNECTOR, tool, inputConfiguration, triger);
+		appDeleteManager.deletePackage(EDC_CONNECTOR, tool, inputConfiguration, triger);
 	}
 
 	public Map<String, String> getWorkFlowSeparateCPandDP(Customer customerDetails, SelectedTools tool,
