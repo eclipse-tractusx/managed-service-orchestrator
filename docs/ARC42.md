@@ -39,6 +39,7 @@ Auto-Setup:
 5. configure SDEFrontend to be accessed via oidc token vom Portal
 6. configure the SDEbackend to provide the correct link in Digital Twin Registry to its EDC instance
 7. configure EDC to allow authorized requests to request data registered in Digital Twin Registry
+8. test EDC connector as a consumer and provider using E2E-Data-Exchange-test-service
 
 
 ## Quality Goals
