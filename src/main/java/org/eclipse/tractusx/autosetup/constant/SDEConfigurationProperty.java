@@ -40,5 +40,7 @@ public class SDEConfigurationProperty {
 	private String connectorDiscoveryTokenUrl;
 	private String connectorDiscoveryClientId;
 	private String connectorDiscoveryClientSecret;
+	private String dtregitryidpClientId;
+	private String dtregitrytenantId;
 	
 }

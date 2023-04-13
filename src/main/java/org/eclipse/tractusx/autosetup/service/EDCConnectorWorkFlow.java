@@ -72,12 +72,12 @@ public class EDCConnectorWorkFlow {
 				postgresManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(tractusConnectorManager.managePackage(customerDetails, workflowAction, tool,
 				inputConfiguration, triger));
-		inputConfiguration.putAll(
-				connectorRegistrationManager.registerConnector(customerDetails, tool, inputConfiguration, triger));
+		//inputConfiguration.putAll(
+		//		connectorRegistrationManager.registerConnector(customerDetails, tool, inputConfiguration, triger));
 
 		try {
-			inputConfiguration.putAll(testConnectorServiceManager
-					.verifyConnectorTestingThroughTestService(customerDetails, inputConfiguration, triger));
+		//	inputConfiguration.putAll(testConnectorServiceManager
+		//			.verifyConnectorTestingThroughTestService(customerDetails, inputConfiguration, triger));
 		} catch (ServiceException ex) {
 			log.warn(ex.getMessage());
 		}
@@ -104,12 +104,12 @@ public class EDCConnectorWorkFlow {
 				inputConfiguration, triger));
 		inputConfiguration.putAll(
 				edcDataplaneManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
-		inputConfiguration.putAll(
-				connectorRegistrationManager.registerConnector(customerDetails, tool, inputConfiguration, triger));
+		//inputConfiguration.putAll(
+		//		connectorRegistrationManager.registerConnector(customerDetails, tool, inputConfiguration, triger));
 
 		try {
-			inputConfiguration.putAll(testConnectorServiceManager
-					.verifyConnectorTestingThroughTestService(customerDetails, inputConfiguration, triger));
+		//	inputConfiguration.putAll(testConnectorServiceManager
+		//			.verifyConnectorTestingThroughTestService(customerDetails, inputConfiguration, triger));
 		} catch (ServiceException ex) {
 			log.warn(ex.getMessage());
 		}
