@@ -32,26 +32,29 @@ VALUES('DT_REGISTRY', 'default', 'kubeapps', '{
 		 "persistence":{
 		      "size" :"1Gi"
 		  }
+		},
+		"persistence": {
+		    "size" :"1Gi"
 		}
 	},
     "registry": {
         "host": "$\{dnsName\}",
 		"idpClientId" : "$\{idpClientId\}",
 		"idpIssuerUri": "$\{idpIssuerUri\}",
-		"tenantId" : "$\{tenantId\}"
-		"image" :"ghcr.io/catenax-ng/sldt-digital-twin-registry",
+		"tenantId" : "$\{tenantId\}",
+		"image" :"ghcr.io/catenax-ng/sldt-digital-twin-registry:0.3.1-M1",
         "ingress": {
                 "enabled": true,
                 "hostname": "$\{dnsName\}",
-                "annotations": [
-				      {"cert-manager.io/cluster-issuer": letsencrypt-prod},
-				      {"nginx.ingress.kubernetes.io/cors-allow-credentials": "true"},
-				      {"nginx.ingress.kubernetes.io/enable-cors": "true"},
-				      {"nginx.ingress.kubernetes.io/rewrite-target": /$2},
-				      {"nginx.ingress.kubernetes.io/use-regex": "true"},
-				      {"nginx.ingress.kubernetes.io/x-forwarded-prefix": /semantics/registry}
-				],
-				"urlPrefix": /semantics/registry
+                "annotations": {
+				      "cert-manager.io/cluster-issuer": letsencrypt-prod,
+				      "nginx.ingress.kubernetes.io/cors-allow-credentials": "true",
+				      "nginx.ingress.kubernetes.io/enable-cors": "true",
+				      "nginx.ingress.kubernetes.io/rewrite-target": /$2,
+				      "nginx.ingress.kubernetes.io/use-regex": "true",
+				      "nginx.ingress.kubernetes.io/x-forwarded-prefix": $\{dtregistryUrlPrefix\}
+				},
+				"urlPrefix": $\{dtregistryUrlPrefix\},
                 "className": "nginx",
                 "tls": {
                     "enabled": true,

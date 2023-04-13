@@ -85,8 +85,6 @@ public class DFTBackendManager {
 			inputData.put("sde.resourceServerIssuer", sDEConfigurationProperty.getResourceServerIssuer());
 			inputData.put("sde.keycloak.auth", sDEConfigurationProperty.getKeycloakAuth());
 			inputData.put("sde.keycloak.realm", sDEConfigurationProperty.getKeycloakRealm());
-			inputData.put("sde.digital-twins.hostname", sDEConfigurationProperty.getDigitalTwinsHostname());
-			inputData.put("sde.digital-twins.authentication.url", sDEConfigurationProperty.getDigitalTwinsAuthenticationUrl());
 			inputData.put("sde.partner.pool.hostname", sDEConfigurationProperty.getPartnerPoolHostname());
 			inputData.put("sde.portal.backend.hostname", sDEConfigurationProperty.getPortalBackendHostname());
 			inputData.put("sde.connector.discovery.token-url", sDEConfigurationProperty.getConnectorDiscoveryTokenUrl());
