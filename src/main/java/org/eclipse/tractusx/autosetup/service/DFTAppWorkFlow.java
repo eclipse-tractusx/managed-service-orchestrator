@@ -22,6 +22,7 @@ package org.eclipse.tractusx.autosetup.service;
 
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DFT_BACKEND;
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DFT_FRONTEND;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DT_REGISTRY;
 
 import java.util.Map;
 
@@ -30,6 +31,7 @@ import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
 import org.eclipse.tractusx.autosetup.manager.AppDeleteManager;
 import org.eclipse.tractusx.autosetup.manager.DFTBackendManager;
 import org.eclipse.tractusx.autosetup.manager.DFTFrontendManager;
+import org.eclipse.tractusx.autosetup.manager.DTRegistryManager;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.springframework.stereotype.Component;
@@ -42,12 +44,16 @@ public class DFTAppWorkFlow {
 
 	private final DFTBackendManager dftBackendManager;
 	private final DFTFrontendManager dftFrontendManager;
+	private final DTRegistryManager dtregistryManager;
 
 	private final AppDeleteManager appDeleteManager;
 
 	public Map<String, String> getWorkFlow(Customer customerDetails, SelectedTools tool, AppActions workflowAction,
 			Map<String, String> inputConfiguration, AutoSetupTriggerEntry triger) {
 
+		inputConfiguration.putAll(
+				dtregistryManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
+		
 		inputConfiguration.putAll(
 				dftBackendManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(
@@ -59,6 +65,7 @@ public class DFTAppWorkFlow {
 	public void deletePackageWorkFlow(SelectedTools tool, Map<String, String> inputConfiguration,
 			AutoSetupTriggerEntry triger) {
 
+		appDeleteManager.deletePackage(DT_REGISTRY, tool, inputConfiguration, triger);
 		appDeleteManager.deletePackage(DFT_BACKEND, tool, inputConfiguration, triger);
 		appDeleteManager.deletePackage(DFT_FRONTEND, tool, inputConfiguration, triger);
 

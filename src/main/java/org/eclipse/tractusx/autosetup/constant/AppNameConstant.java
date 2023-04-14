@@ -37,4 +37,6 @@ public enum AppNameConstant {
 	
 	DFT_BACKEND,
 	
+	DT_REGISTRY,
+	
 }
