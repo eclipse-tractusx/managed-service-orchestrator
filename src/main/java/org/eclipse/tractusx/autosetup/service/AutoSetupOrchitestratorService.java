@@ -83,6 +83,7 @@ public class AutoSetupOrchitestratorService {
 
 	private final EDCConnectorWorkFlow edcConnectorWorkFlow;
 	private final DFTAppWorkFlow dftWorkFlow;
+	private final DTAppWorkFlow dtAppWorkFlow;
 
 	private final InputConfigurationManager inputConfigurationManager;
 	private final ManualDFTPackageUpdateManager manualDFTPackageUpdateManager;
@@ -298,6 +299,11 @@ public class AutoSetupOrchitestratorService {
 						executeEDC(autoSetupRequest, action, trigger, inputConfiguration, selectedTool);
 
 						break;
+					case DT_REGISTRY:
+
+						dtDeployment(autoSetupRequest.getCustomer(), action, trigger, inputConfiguration, selectedTool);
+
+						break;
 					default:
 						throw new ServiceException(selectedTool.getTool() + " is not supported for auto setup");
 					}
@@ -395,8 +401,45 @@ public class AutoSetupOrchitestratorService {
 
 	}
 
+	private void dtDeployment(Customer customer, AppActions action, AutoSetupTriggerEntry trigger,
+			Map<String, String> inputConfiguration, SelectedTools selectedTool) {
+
+		String label = selectedTool.getLabel();
+		selectedTool.setLabel("dt-" + label);
+
+		dtAppWorkFlow.getWorkFlow(customer, selectedTool, action, inputConfiguration, trigger);
+
+		String json = autoSetupTriggerMapper.fromMaptoStr(extractDTResultMap(inputConfiguration));
+		trigger.setAutosetupResult(json);
+
+		trigger.setStatus(TriggerStatusEnum.SUCCESS.name());
+
+		// Send an email
+		Map<String, Object> emailContent = new HashMap<>();
+		emailContent.put(ORGNAME, customer.getOrganizationName());
+		emailContent.putAll(inputConfiguration);
+		emailContent.put(TOEMAIL, customer.getEmail());
+		emailContent.put("ccemail", portalEmail);
+
+		emailManager.sendEmail(emailContent, "DT registry Application Activited Successfully",
+				"dt_success_template.html");
+		log.info(EMAIL_SENT_SUCCESSFULLY);
+
+	}
+
+	private void dtDeploymentWithDft(Customer customer, AppActions action, AutoSetupTriggerEntry trigger,
+			Map<String, String> inputConfiguration, SelectedTools selectedTool, String label) {
+
+		selectedTool.setLabel("dt-" + label);
+		dtAppWorkFlow.getWorkFlow(customer, selectedTool, action, inputConfiguration, trigger);
+
+	}
+
 	private void dftDeployment(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
 			Map<String, String> inputConfiguration, Customer customer, SelectedTools selectedTool, String label) {
+
+		dtDeploymentWithDft(customer, action, trigger, inputConfiguration, selectedTool, label);
+
 		selectedTool.setLabel("dft-" + label);
 		Map<String, String> map = dftWorkFlow.getWorkFlow(autoSetupRequest.getCustomer(), selectedTool, action,
 				inputConfiguration, trigger);
@@ -406,8 +449,8 @@ public class AutoSetupOrchitestratorService {
 		emailContent.put(DFT_BACKEND_URL, map.get(DFT_BACKEND_URL));
 		emailContent.put(CONNECTOR_TEST_RESULT, map.get(CONNECTOR_TEST_RESULT));
 		emailContent.put(TEST_SERVICE_URL, map.get(TEST_SERVICE_URL));
-		
-		
+		emailContent.putAll(map);
+
 		if (manualUpdate) {
 			// Send an email
 			emailContent.put("helloto", "Team");
@@ -473,8 +516,13 @@ public class AutoSetupOrchitestratorService {
 			case DFT_WITH_EDC_TRACTUS:
 
 				label = selectedTool.getLabel();
+
 				selectedTool.setLabel("edc-" + label);
 				edcConnectorWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
+
+				selectedTool.setLabel("dt-" + label);
+				dtAppWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
+
 				selectedTool.setLabel("dft-" + label);
 				dftWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
 
@@ -483,8 +531,13 @@ public class AutoSetupOrchitestratorService {
 			case DFT_WITH_EDC:
 
 				label = selectedTool.getLabel();
+
 				selectedTool.setLabel("edc-" + label);
 				edcConnectorWorkFlow.deletePackageWorkFlowSeparateCPandDP(selectedTool, inputConfiguration, trigger);
+
+				selectedTool.setLabel("dt-" + label);
+				dtAppWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
+
 				selectedTool.setLabel("dft-" + label);
 				dftWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
 
@@ -501,6 +554,14 @@ public class AutoSetupOrchitestratorService {
 				label = selectedTool.getLabel();
 				selectedTool.setLabel("edc-" + label);
 				edcConnectorWorkFlow.deletePackageWorkFlowSeparateCPandDP(selectedTool, inputConfiguration, trigger);
+
+				break;
+
+			case DT_REGISTRY:
+
+				label = selectedTool.getLabel();
+				selectedTool.setLabel("dt-" + label);
+				dtAppWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
 
 				break;
 			default:
@@ -577,6 +638,9 @@ public class AutoSetupOrchitestratorService {
 		dft.put(DFT_BACKEND_URL, outputMap.get(DFT_BACKEND_URL));
 		processResult.add(dft);
 
+		Map<String, String> dt = extractDTResultMap(outputMap).get(0);
+		processResult.add(dt);
+
 		Map<String, String> edc = extractEDCResultMap(outputMap).get(0);
 		processResult.add(edc);
 
@@ -595,6 +659,19 @@ public class AutoSetupOrchitestratorService {
 		edc.put("edcApiKey", outputMap.get("edcApiKey"));
 		edc.put("edcApiKeyValue", outputMap.get("edcApiKeyValue"));
 		processResult.add(edc);
+
+		return processResult;
+	}
+
+	private List<Map<String, String>> extractDTResultMap(Map<String, String> outputMap) {
+
+		List<Map<String, String>> processResult = new ArrayList<>();
+
+		Map<String, String> dt = new ConcurrentHashMap<>();
+		dt.put("name", "DT");
+		dt.put("dtregistryUrl", outputMap.get("dtregistryUrl"));
+		dt.put("idpClientId", outputMap.get("idpClientId"));
+		processResult.add(dt);
 
 		return processResult;
 	}

@@ -69,6 +69,6 @@ VALUES('DT_REGISTRY', 'default', 'kubeapps', '{
 
 INSERT INTO app_service_catalog_tbl
 (canonical_service_id, ct_name, service_tools, workflow)
-VALUES('DT-REGISTRY', 'DT-REGISTRY', '[{"tool": "DT_REGISTRY","label": "dtregistry"}]', 'DT_REGISTRY');
+VALUES('DT-REGISTRY', 'DT-REGISTRY', '[{"tool": "DT_REGISTRY","label": "dt"}]', 'DT_REGISTRY');
 
 update app_tbl set expected_input_data= replace(replace(expected_input_data,'\{','{'),'\}','}'), required_yaml_configuration=replace(replace(required_yaml_configuration,'\{','{'),'\}','}');
