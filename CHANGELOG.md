@@ -7,7 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
  - NA
 
-## [1.2.5] - 2023-04-21
+## [1.2.6] - 2023-04-21
+
+### Added
+ - Added changes related to digital twin registry
+ - Added spring expression 6.0.8 version
 
 ### Fixed
  - Fix for cross site scripting
