@@ -7,7 +7,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
  - NA
 
-## [1.2.4] - 2023-04-14
+## [1.2.5] - 2023-04-21
+
+### Fixed
+ - Fix for cross site scripting
+
+## [1.2.4] - 2023-04-20
 
 ### Added
  - Support Digital Twin registry in Autosetup
