@@ -20,6 +20,9 @@
 
 package org.eclipse.tractusx.autosetup.model;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,12 +34,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AppServiceCatalogAndCustomerMappingPojo {
 
+	@NotBlank(message = "Customer is mandatory")
+	@Pattern(regexp = "[a-zA-ZÀ-ÿ0-9][a-zA-ZÀ-ÿ0-9\\-_]+", message = "Customer should not contains special characters")
 	private String customer;
 
+	@NotBlank(message = "ServiceId is mandatory")
+	@Pattern(regexp = "[a-zA-ZÀ-ÿ0-9][a-zA-ZÀ-ÿ0-9\\-_]+", message = "ServiceId should not contains special characters")
 	private String serviceId;
 
+	@Valid
 	private AppServiceCatalogPojo serviceCatalog;
 
+	@NotBlank(message = "CanonicalId is mandatory")
+	@Pattern(regexp = "[a-zA-ZÀ-ÿ0-9][a-zA-ZÀ-ÿ0-9\\-_]+", message = "CanonicalId should not contains special characters")
 	private String canonicalId;
 
 }
