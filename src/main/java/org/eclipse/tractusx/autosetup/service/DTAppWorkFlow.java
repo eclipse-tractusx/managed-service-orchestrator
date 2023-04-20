@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022, 2023 T-Systems International GmbH
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023 T-Systems International GmbH
+ * Copyright (c) 2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -20,16 +20,14 @@
 
 package org.eclipse.tractusx.autosetup.service;
 
-import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DFT_BACKEND;
-import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DFT_FRONTEND;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DT_REGISTRY;
 
 import java.util.Map;
 
 import org.eclipse.tractusx.autosetup.constant.AppActions;
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
 import org.eclipse.tractusx.autosetup.manager.AppDeleteManager;
-import org.eclipse.tractusx.autosetup.manager.DFTBackendManager;
-import org.eclipse.tractusx.autosetup.manager.DFTFrontendManager;
+import org.eclipse.tractusx.autosetup.manager.DTRegistryManager;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.springframework.stereotype.Component;
@@ -38,29 +36,22 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class DFTAppWorkFlow {
+public class DTAppWorkFlow {
 
-	private final DFTBackendManager dftBackendManager;
-	private final DFTFrontendManager dftFrontendManager;
-
+	private final DTRegistryManager dtregistryManager;
 	private final AppDeleteManager appDeleteManager;
 
 	public Map<String, String> getWorkFlow(Customer customerDetails, SelectedTools tool, AppActions workflowAction,
 			Map<String, String> inputConfiguration, AutoSetupTriggerEntry triger) {
 
 		inputConfiguration.putAll(
-				dftBackendManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
-		inputConfiguration.putAll(
-				dftFrontendManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
+				dtregistryManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
 
 		return inputConfiguration;
 	}
 
 	public void deletePackageWorkFlow(SelectedTools tool, Map<String, String> inputConfiguration,
 			AutoSetupTriggerEntry triger) {
-
-		appDeleteManager.deletePackage(DFT_BACKEND, tool, inputConfiguration, triger);
-		appDeleteManager.deletePackage(DFT_FRONTEND, tool, inputConfiguration, triger);
-
+		appDeleteManager.deletePackage(DT_REGISTRY, tool, inputConfiguration, triger);
 	}
 }

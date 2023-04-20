@@ -20,7 +20,8 @@
 
 package org.eclipse.tractusx.autosetup.manager;
 
-import java.util.HashMap;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DT_REGISTRY;
+
 import java.util.Map;
 import java.util.UUID;
 
@@ -40,8 +41,6 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DT_REGISTRY;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -57,7 +56,6 @@ public class DTRegistryManager {
 	public Map<String, String> managePackage(Customer customerDetails, AppActions action, SelectedTools tool,
 			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
 
-		Map<String, String> outputData = new HashMap<>();
 		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
 				.id(UUID.randomUUID().toString()).step(DT_REGISTRY.name()).build();
 		try {
@@ -66,7 +64,7 @@ public class DTRegistryManager {
 			String dnsName = inputData.get("dnsName");
 			String dnsNameURLProtocol = inputData.get("dnsNameURLProtocol");
 
-			String dtregistryUrl = dnsNameURLProtocol + "://" + dnsName + "/"
+			String dtregistryUrl = dnsNameURLProtocol + "://" + dnsName + ""
 					+ sDEConfigurationProperty.getDtregistryUrlPrefix();
 
 			inputData.put("rgdatabase", "registry");
@@ -77,9 +75,10 @@ public class DTRegistryManager {
 			inputData.put("tenantId", "bpn");
 			inputData.put("dtregistryUrlPrefix", sDEConfigurationProperty.getDtregistryUrlPrefix());
 
-			outputData.put("sde.digital-twins.hostname", dtregistryUrl);
-			outputData.put("sde.digital-twins.authentication.url",
+			inputData.put("sde.digital-twins.hostname", dtregistryUrl);
+			inputData.put("sde.digital-twins.authentication.url",
 					sDEConfigurationProperty.getDigitalTwinsAuthenticationUrl());
+			inputData.put("dtregistryUrl", dtregistryUrl);
 
 			if (AppActions.CREATE.equals(action))
 				appManagement.createPackage(DT_REGISTRY, packageName, inputData);
@@ -100,7 +99,7 @@ public class DTRegistryManager {
 			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
 		}
 
-		return outputData;
+		return inputData;
 	}
 
 }
