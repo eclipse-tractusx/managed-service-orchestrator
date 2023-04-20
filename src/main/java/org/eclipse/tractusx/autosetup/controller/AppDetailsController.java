@@ -42,6 +42,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 
 @RestController
 public class AppDetailsController {
@@ -54,7 +55,7 @@ public class AppDetailsController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = AppDetails.class))) })
 	@PostMapping("/internal/app-details")
-	public AppDetails createOrUpdateAppInfo(@RequestBody AppDetailsRequest appDetailsRequest) {
+	public AppDetails createOrUpdateAppInfo(@Valid @RequestBody AppDetailsRequest appDetailsRequest) {
 		return appDetailsService.createOrUpdateAppInfo(appDetailsRequest);
 	}
 
@@ -80,7 +81,7 @@ public class AppDetailsController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = AppServiceCatalog.class))) })
 	@PostMapping("/internal/catalog-service")
-	public AppServiceCatalog createCatalogService(@RequestBody AppServiceCatalogPojo appServiceCatalog) {
+	public AppServiceCatalog createCatalogService(@Valid @RequestBody AppServiceCatalogPojo appServiceCatalog) {
 		return appDetailsService.createCatalogService(appServiceCatalog);
 	}
 
@@ -105,7 +106,7 @@ public class AppDetailsController {
 			@ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = AppServiceCatalogAndCustomerMapping.class))) })
 	@PostMapping("/internal/catalog-service-mapping")
 	public AppServiceCatalogAndCustomerMapping createCatalogServiceMapping(
-			@RequestBody AppServiceCatalogAndCustomerMappingPojo appServiceCatalogAndCustomerMapping) {
+			@Valid @RequestBody AppServiceCatalogAndCustomerMappingPojo appServiceCatalogAndCustomerMapping) {
 		return appDetailsService.createCatalogServiceMapping(appServiceCatalogAndCustomerMapping);
 	}
 
