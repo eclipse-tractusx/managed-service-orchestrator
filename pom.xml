@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.2</version>
+		<version>3.0.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.eclipse.tractusx</groupId>
@@ -209,9 +209,9 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-expression</artifactId>
-					<version>6.0.8</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>6.0.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -222,6 +222,11 @@
 					<artifactId>json-smart</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>6.0.8</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
