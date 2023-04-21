@@ -7,14 +7,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
  - NA
 
-## [1.2.6] - 2023-04-21
+## [1.2.7] - 2023-04-21
 
 ### Added
  - Added changes related to digital twin registry
- - Added spring expression 6.0.8 version
+ - Validate input request attribute
+
+### Changed
+ - Upgrade spring expression to 6.0.8 version
+ - Spring boot upgraded to 3.0.5
 
 ### Fixed
- - Fix for cross site scripting
+ - Fixed for cross site scripting
+ - Veracode issue fix
 
 ## [1.2.4] - 2023-04-20
 
