@@ -74,7 +74,7 @@ digital-twins.authentication.clientSecret=$\{digital-twins.authentication.client
 
 digital-twins.authentication.grantType=client_credentials
 
-edc.hostname=$\{controlPlaneDataEndpoint\}
+edc.hostname=$\{controlPlaneEndpoint\}
 
 edc.apiKeyHeader=$\{edcApiKey\}
 
