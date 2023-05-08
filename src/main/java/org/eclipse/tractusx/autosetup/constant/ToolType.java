@@ -22,6 +22,6 @@ package org.eclipse.tractusx.autosetup.constant;
 
 public enum ToolType {
 
-	DFT_WITH_EDC, DFT, EDC, DFT_WITH_EDC_TRACTUS, EDC_TRACTUS
+	DFT_WITH_EDC, DFT, EDC, DFT_WITH_EDC_TRACTUS, EDC_TRACTUS, DT_REGISTRY
 
 }

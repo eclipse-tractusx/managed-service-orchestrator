@@ -68,9 +68,9 @@ public class AutoSetupHandlerController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Created", content = @Content(schema = @Schema(implementation = UUID.class))) })
 	@PutMapping("/internal/update-package/{executionId}")
-	public String updateDftPackage(@PathVariable("executionId") String executionId,
+	public String updateDftPackage(@PathVariable("executionId") UUID executionId,
 			@RequestBody DFTUpdateRequest dftUpdateRequest) {
-		return appHandlerService.updateDftPackage(executionId, dftUpdateRequest);
+		return appHandlerService.updateDftPackage(executionId.toString(), dftUpdateRequest);
 	}
 
 	// portal access
@@ -88,9 +88,9 @@ public class AutoSetupHandlerController {
 			@ApiResponse(responseCode = "200", description = "Updated", content = @Content(schema = @Schema(implementation = UUID.class))) })
 
 	@PutMapping("/autosetup/{executionId}")
-	public String updatePackage(@PathVariable("executionId") String executionId,
+	public String updatePackage(@PathVariable("executionId") UUID executionId,
 			@RequestBody @Valid AutoSetupRequest autoSetupRequest) {
-		return appHandlerService.updatePackage(autoSetupRequest, executionId);
+		return appHandlerService.updatePackage(autoSetupRequest, executionId.toString());
 	}
 
 	// portal access
@@ -98,8 +98,8 @@ public class AutoSetupHandlerController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Deleted", content = @Content(schema = @Schema(implementation = UUID.class))) })
 	@DeleteMapping("/autosetup/{executionId}")
-	public String deletePackage(@PathVariable("executionId") String executionId) {
-		return appHandlerService.deletePackage(executionId);
+	public String deletePackage(@PathVariable("executionId") UUID executionId) {
+		return appHandlerService.deletePackage(executionId.toString());
 	}
 
 	// portal access
@@ -107,7 +107,7 @@ public class AutoSetupHandlerController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = AutoSetupResponse.class))) })
 	@GetMapping("/autosetup/{executionId}")
-	public AutoSetupResponse getCheckDetails(@PathVariable("executionId") String executionId) {
-		return autoSetupTriggerManager.getCheckDetails(executionId);
+	public AutoSetupResponse getCheckDetails(@PathVariable("executionId") UUID executionId) {
+		return autoSetupTriggerManager.getCheckDetails(executionId.toString());
 	}
 }

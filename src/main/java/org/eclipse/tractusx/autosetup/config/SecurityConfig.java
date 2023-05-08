@@ -20,7 +20,12 @@
 
 package org.eclipse.tractusx.autosetup.config;
 
-import lombok.SneakyThrows;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
@@ -36,16 +41,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AnyRequestMatcher;
+import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter.HeaderValue;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
+import lombok.SneakyThrows;
 
 @Configuration
 @EnableWebSecurity
@@ -118,9 +119,14 @@ public class SecurityConfig {
             .anyRequest().authenticated();
         // @formatter:on
 
-		http.headers().xssProtection().and()
-				.contentSecurityPolicy("default-src 'self'; script-src 'self' 'unsafe-inline'").and()
-				.httpStrictTransportSecurity().requestMatcher(AnyRequestMatcher.INSTANCE);
+		http.headers().xssProtection(xssProtection -> xssProtection.headerValue(HeaderValue.ENABLED_MODE_BLOCK));
+		
+		http.headers()
+		      .contentSecurityPolicy("default-src 'self'; script-src 'self'")
+		      .and()
+		      .httpStrictTransportSecurity()
+		      		.includeSubDomains(true)
+		      		.maxAgeInSeconds(15724800);
 
 		return http.build();
 	}
