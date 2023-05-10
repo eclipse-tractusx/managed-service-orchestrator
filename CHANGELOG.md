@@ -8,12 +8,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  - NA
 
 
-## [1.2.6] - 2023-05-08
+## [1.2.6] - 2023-05-10
 
+### Added
+ - Added .tractusx file
+ 
 ### Fixed
  - Veracode security issue fixes
- - Added .tractusx file
  - Fixed DEPENDENCIES file issue
+ - Specified runAsUser for securitycontext of container
+ - Specified base image in Readme
 
 ## [1.2.5] - 2023-04-21
 

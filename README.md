@@ -16,8 +16,21 @@ Application version: 1.2.6
 Helm release version: 1.2.6
 ```
 
+### Container images
 
-##### For installation guide:
+This application provides container images for demonstration purposes. The base image used, to build this demo application image is eclipse-temurin:17-jdk-alpine
+
+Docker Hub:
+
+ - eclipse-temurin(https://hub.docker.com/_/eclipse-temurin)
+ - 17.0.6_10-jdk(https://hub.docker.com/layers/library/eclipse-temurin/17.0.6_10-jdk/images/sha256-ec8d3b91c6e30208bf69ecbbc3abdbc0f9aeaa2b955162e46c089fd6e07f4fb0?context=explore)
+
+Source:
+
+ - temurin-build(https://github.com/adoptium/temurin-build)
+ - temurin docker repo info(https://github.com/docker-library/repo-info/tree/master/repos/eclipse-temurin)
+
+### For installation guide:
 
 [INSTALL.md](INSTALL.md)
 
