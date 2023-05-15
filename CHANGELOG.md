@@ -8,6 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  - NA
 
 
+## [1.2.7] - 2023-05-15
+
+### Added
+ - Added header to the files
+ 
 ## [1.2.6] - 2023-05-10
 
 ### Added
