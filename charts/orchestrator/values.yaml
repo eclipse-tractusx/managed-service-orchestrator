@@ -44,11 +44,12 @@ podAnnotations: {}
 portContainer: 9999
 
 podSecurityContext:
-  #fsGroup: 2000
+  fsGroup: 2000
   
 securityContext:
     # -- Controls whether a process can gain more privilege
   allowPrivilegeEscalation: false
+  runAsUser: 1000
 probe:
   endpoint: "/api/healthz"
   
@@ -78,14 +79,14 @@ ingress:
 resources:
   limits:
     # -- set a maximum amount of allows CPU utilization by specifying a limit on the container.
-    cpu: 800m
+    cpu: 600m
     # -- set a maximum amount of allows memory utilization by specifying a limit on the container.
     memory: 2Gi
   requests:
     # -- sets the minimum amount of CPU required for the container
-    cpu: 300m
+    cpu: 600m
     # -- set a minimum amount of allows memory utilization by specifying a limit on the container.
-    memory: 1Gi
+    memory: 2Gi
     
 autoscaling:
   enabled: false
