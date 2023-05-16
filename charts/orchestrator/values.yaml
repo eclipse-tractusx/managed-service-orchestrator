@@ -131,5 +131,5 @@ postgresql:
     database: "orchdb"
     existingSecret: "autosetup-int-secret"
     secretKeys:
-        adminPasswordKey: "postgres-password"
-        userPasswordKey: "password"
+      adminPasswordKey: "postgres-password"
+      userPasswordKey: "password"
