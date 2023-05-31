@@ -1,6 +1,6 @@
 ## Installation Steps
 
-Helm charts are provided inside https://github.com/eclipse-tractusx/autosetup-backend
+Helm charts are provided inside https://github.com/eclipse-tractusx/managed-service-orchestrator
 
  - Using helm commands <br />
 

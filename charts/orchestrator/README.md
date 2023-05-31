@@ -1,12 +1,12 @@
 # autosetup
 
-![Version: 1.2.6](https://img.shields.io/badge/Version-1.2.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.2.6](https://img.shields.io/badge/AppVersion-1.2.6-informational?style=flat-square)
+![Version: 1.2.8](https://img.shields.io/badge/Version-1.2.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.2.8](https://img.shields.io/badge/AppVersion-1.2.8-informational?style=flat-square)
 
 This service will help service provider to set up DFT/SDE with EDC and EDC as service in service provider environment.
 
 ## Source Code
 
-* <https://github.com/eclipse-tractusx/autosetup-backend>
+* <https://github.com/eclipse-tractusx/managed-service-orchestrator>
 
 ## Requirements
 
@@ -29,7 +29,7 @@ This service will help service provider to set up DFT/SDE with EDC and EDC as se
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{"cert-manager.io/cluster-issuer":"letsencrypt-prod","nginx.ingress.kubernetes.io/affinity":"cookie","nginx.ingress.kubernetes.io/backend-protocol":"HTTP","nginx.ingress.kubernetes.io/session-cookie-max-age":"172800"}` | Annotations to add to the ingress |
 | ingress.className | string | `"nginx"` | a reference to an Ingress Class resource that contains additional configuration including the name of the controller that should implement the class |
-| ingress.enabled | bool | `true` | If you want to enable or disable the ingress |
+| ingress.enabled | bool | `false` | If you want to enable or disable the ingress |
 | ingress.host | string | `""` |  |
 | livenessProbe.failureThreshold | int | `3` |  |
 | livenessProbe.initialDelaySeconds | int | `60` |  |
