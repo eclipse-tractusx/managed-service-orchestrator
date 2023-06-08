@@ -72,8 +72,8 @@ public class VaultManager {
 	@SneakyThrows
 	@Retryable(value = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
-	public Map<String, String> uploadKeyandValues(Customer customerDetails, SelectedTools tool, Map<String, String> inputData,
-			AutoSetupTriggerEntry triger) {
+	public Map<String, String> uploadKeyandValues(Customer customerDetails, SelectedTools tool,
+			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
 
 		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
 				.id(UUID.randomUUID().toString()).step("VAULT").build();
@@ -92,7 +92,7 @@ public class VaultManager {
 			tenantVaultSecret = new HashMap<>();
 			tenantVaultSecret.put(CONTENT, inputData.get("selfsigncertificateprivatekey"));
 			uploadSecrete(tenantNameNamespace, CERTIFICATE_PRIVATE_KEY, tenantVaultSecret);
-			
+
 			String encryptionkeysalias = openSSLClientManager.executeCommand("openssl rand -base64 16");
 			tenantVaultSecret = new HashMap<>();
 			tenantVaultSecret.put(CONTENT, encryptionkeysalias);
@@ -107,10 +107,9 @@ public class VaultManager {
 			inputData.put(ENCRYPTIONKEYS, ENCRYPTIONKEYS);
 			inputData.put("certificate-data-plane-private-key", CERTIFICATE_PRIVATE_KEY);
 			inputData.put("certificate-data-plane-public-key", CERTIFICATE_PRIVATE_KEY);
-			
-			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
-			log.info(LogUtil.encode(orgName) +"-"+  LogUtil.encode(packageName) + "-Vault created");
 
+			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
+			log.info(LogUtil.encode(orgName) + "-" + LogUtil.encode(packageName) + "-Vault created");
 
 		} catch (Exception ex) {
 
@@ -135,6 +134,48 @@ public class VaultManager {
 		VaultSecreteRequest vaultSecreteRequest = VaultSecreteRequest.builder().data(tenantVaultSecret).build();
 		URI url = new URI(valutURLwithpath);
 		vaultManagerProxy.uploadKeyandValue(url, vaultSecreteRequest);
+
+	}
+
+	@SneakyThrows
+	@Retryable(retryFor = {
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+	public void deleteAllSecret(SelectedTools tool, Map<String, String> inputData, AutoSetupTriggerEntry triger) {
+
+		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
+				.id(UUID.randomUUID().toString()).step("VAULT").build();
+
+		try {
+
+			String tenantNameNamespace = triger.getAutosetupTenantName();
+			String packageName = tool.getLabel();
+			String orgName = triger.getOrganizationName();
+			log.info(LogUtil.encode(orgName) + "-" + LogUtil.encode(packageName) + "-Vault deleting");
+
+			deleteSecret(tenantNameNamespace, DAPS_CERT);
+			deleteSecret(tenantNameNamespace, CERTIFICATE_PRIVATE_KEY);
+			deleteSecret(tenantNameNamespace, ENCRYPTIONKEYS);
+			log.info(LogUtil.encode(orgName) + "-" + LogUtil.encode(packageName) + "-Vault deleted");
+
+		} catch (Exception ex) {
+
+			log.error("VaultManager failed retry attempt: : {}",
+					RetrySynchronizationManager.getContext().getRetryCount() + 1);
+
+			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
+			autoSetupTriggerDetails.setRemark(ex.getMessage());
+			throw new ServiceException("VaultManager Oops! We have an exception - " + ex.getMessage());
+
+		} finally {
+			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
+		}
+	}
+
+	public void deleteSecret(String tenantName, String secretePath) throws URISyntaxException {
+
+		String valutURLwithpath = valutURL + "/v1/secret/data/" + tenantName+ "/data/" + secretePath;;
+		URI url = new URI(valutURLwithpath);
+		vaultManagerProxy.deleteKeyandValue(url);
 
 	}
 

@@ -109,6 +109,9 @@ public class AutoSetupOrchitestratorService {
 	@Value("${manual.update}")
 	private boolean manualUpdate;
 
+	@Value("${managed.dt-registry:true}")
+	private boolean managedDtRegistry;
+
 	public String getAllInstallPackages() {
 		return kubeAppManageProxy.getAllInstallPackages();
 	}
@@ -427,18 +430,13 @@ public class AutoSetupOrchitestratorService {
 
 	}
 
-	private void dtDeploymentWithDft(Customer customer, AppActions action, AutoSetupTriggerEntry trigger,
-			Map<String, String> inputConfiguration, SelectedTools selectedTool, String label) {
-
-		selectedTool.setLabel("dt-" + label);
-		dtAppWorkFlow.getWorkFlow(customer, selectedTool, action, inputConfiguration, trigger);
-
-	}
-
 	private void dftDeployment(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
 			Map<String, String> inputConfiguration, Customer customer, SelectedTools selectedTool, String label) {
-
-		dtDeploymentWithDft(customer, action, trigger, inputConfiguration, selectedTool, label);
+		
+		if (managedDtRegistry) {
+			selectedTool.setLabel("dt-" + label);
+			dtAppWorkFlow.getWorkFlow(customer, selectedTool, action, inputConfiguration, trigger);
+		}
 
 		selectedTool.setLabel("dft-" + label);
 		Map<String, String> map = dftWorkFlow.getWorkFlow(autoSetupRequest.getCustomer(), selectedTool, action,

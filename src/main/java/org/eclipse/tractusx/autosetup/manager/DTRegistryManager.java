@@ -51,7 +51,7 @@ public class DTRegistryManager {
 
 	private final SDEConfigurationProperty sDEConfigurationProperty;
 
-	@Retryable(value = {
+	@Retryable(retryFor  = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
 	public Map<String, String> managePackage(Customer customerDetails, AppActions action, SelectedTools tool,
 			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
@@ -72,7 +72,7 @@ public class DTRegistryManager {
 			inputData.put("rgusername", "catenax");
 			inputData.put("idpClientId", sDEConfigurationProperty.getDtregistryidpClientId());
 			inputData.put("idpIssuerUri", sDEConfigurationProperty.getResourceServerIssuer());
-			inputData.put("tenantId", "bpn");
+			inputData.put("tenantId", sDEConfigurationProperty.getDtregistrytenantId());
 			inputData.put("dtregistryUrlPrefix", sDEConfigurationProperty.getDtregistryUrlPrefix());
 
 			inputData.put("sde.digital-twins.hostname", dtregistryUrl);

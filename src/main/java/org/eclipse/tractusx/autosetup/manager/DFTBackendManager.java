@@ -56,9 +56,12 @@ public class DFTBackendManager {
 	@Value("${manual.update}")
 	private boolean manualUpdate;
 	
+	@Value("${managed.dt-registry:true}")
+	private boolean managedDtRegistry;
+	
 	private final SDEConfigurationProperty sDEConfigurationProperty;
 	
-	@Retryable(value = {
+	@Retryable(retryFor = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
 	public Map<String, String> managePackage(Customer customerDetails, AppActions action, SelectedTools tool,
 			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
@@ -81,6 +84,11 @@ public class DFTBackendManager {
 			inputData.put("dftBackEndApiKeyHeader", "API_KEY");
 			inputData.put("dftFrontEndUrl", dftfrontend);
 			
+			if (managedDtRegistry) {
+			inputData.put("sde.digital-twins.hostname", sDEConfigurationProperty.getDigitalTwinsHostname());
+			inputData.put("sde.digital-twins.authentication.url",
+					sDEConfigurationProperty.getDigitalTwinsAuthenticationUrl());
+			}
 			
 			inputData.put("sde.resourceServerIssuer", sDEConfigurationProperty.getResourceServerIssuer());
 			inputData.put("sde.keycloak.auth", sDEConfigurationProperty.getKeycloakAuth());
