@@ -124,7 +124,7 @@ update app_tbl set expected_input_data= '{
             }
         ]
     }
-}', package_version='0.4.1' where app_name='EDC_CONNECTOR';
+}', package_version='0.4.1', package_identifier='tx-all-repo/tractusx-connector' where app_name='EDC_CONNECTOR';
 
 update app_tbl set expected_input_data= '{
     "enablePostgres": true,
@@ -168,6 +168,6 @@ update app_tbl set expected_input_data= '{
                 "tls": true
             }
     }
-}', package_version='0.3.2' where app_name='DT-REGISTRY';
+}', package_version='0.3.2' where app_name='DT_REGISTRY';
 
 update app_tbl set expected_input_data= replace(replace(expected_input_data,'\{','{'),'\}','}'), required_yaml_configuration=replace(replace(required_yaml_configuration,'\{','{'),'\}','}');

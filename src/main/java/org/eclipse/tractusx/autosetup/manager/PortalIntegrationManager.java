@@ -63,6 +63,7 @@ public class PortalIntegrationManager {
 		String dftFrontendURL = inputData.get("dftFrontEndUrl");
 		String subscriptionId = inputData.get("subscriptionId");
 
+		Map<String, String> output = new HashMap<>();
 		Map<String, String> header = new HashMap<>();
 		header.put("Authorization", "Bearer " + getKeycloakToken());
 
@@ -76,21 +77,20 @@ public class PortalIntegrationManager {
 
 			TechnicalUserInfo technicalUserInfo = serviceInstanceResultResponse.getTechnicalUserInfo();
 			if (technicalUserInfo != null) {
-				inputData.put("digital-twins.authentication.clientId", technicalUserInfo.getTechnicalClientId());
-				inputData.put("digital-twins.authentication.clientSecret", technicalUserInfo.getTechnicalUserSecret());
+				output.put("digital-twins.authentication.clientId", technicalUserInfo.getTechnicalClientId());
+				output.put("digital-twins.authentication.clientSecret", technicalUserInfo.getTechnicalUserSecret());
 			}
 
 			ClientInfo clientInfo = serviceInstanceResultResponse.getClientInfo();
 
 			if (clientInfo != null) {
-				inputData.put("dftbackendkeycloakclientid", clientInfo.getClientId());
-				inputData.put("dftfrontendkeycloakclientid", clientInfo.getClientId());
+				output.put("dftbackendkeycloakclientid", clientInfo.getClientId());
+				output.put("dftfrontendkeycloakclientid", clientInfo.getClientId());
 			}
 		} else {
 			log.error("Error in request process with portal");
 		}
-
-		return inputData;
+		return output;
 	}
 
 	@SneakyThrows

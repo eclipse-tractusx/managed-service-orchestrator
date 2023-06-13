@@ -25,6 +25,7 @@ import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DT_REGISTR
 import java.util.Map;
 import java.util.UUID;
 
+import org.eclipse.tractusx.autosetup.apiproxy.EDCProxyService;
 import org.eclipse.tractusx.autosetup.constant.AppActions;
 import org.eclipse.tractusx.autosetup.constant.SDEConfigurationProperty;
 import org.eclipse.tractusx.autosetup.constant.TriggerStatusEnum;
@@ -51,7 +52,9 @@ public class DTRegistryManager {
 
 	private final SDEConfigurationProperty sDEConfigurationProperty;
 
-	@Retryable(retryFor  = {
+	private final EDCProxyService eDCProxyService;
+
+	@Retryable(retryFor = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
 	public Map<String, String> managePackage(Customer customerDetails, AppActions action, SelectedTools tool,
 			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
@@ -64,7 +67,7 @@ public class DTRegistryManager {
 			String dnsName = inputData.get("dnsName");
 			String dnsNameURLProtocol = inputData.get("dnsNameURLProtocol");
 
-			String dtregistryUrl = dnsNameURLProtocol + "://" + dnsName + ""
+			String dtregistryUrl = dnsNameURLProtocol + "://" + dnsName + "/"
 					+ sDEConfigurationProperty.getDtregistryUrlPrefix();
 
 			inputData.put("rgdatabase", "registry");
@@ -75,9 +78,6 @@ public class DTRegistryManager {
 			inputData.put("tenantId", sDEConfigurationProperty.getDtregistrytenantId());
 			inputData.put("dtregistryUrlPrefix", sDEConfigurationProperty.getDtregistryUrlPrefix());
 
-			inputData.put("sde.digital-twins.hostname", dtregistryUrl);
-			inputData.put("sde.digital-twins.authentication.url",
-					sDEConfigurationProperty.getDigitalTwinsAuthenticationUrl());
 			inputData.put("dtregistryUrl", dtregistryUrl);
 
 			if (AppActions.CREATE.equals(action))
@@ -100,6 +100,36 @@ public class DTRegistryManager {
 		}
 
 		return inputData;
+	}
+
+	@Retryable(retryFor = {
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+	public void dtRegistryRegistrationInEDC(Customer customerDetails, SelectedTools tool, Map<String, String> inputData,
+			AutoSetupTriggerEntry triger) {
+		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
+				.id(UUID.randomUUID().toString()).step("DT_EDC_REGISTRATION").build();
+		log.info("DT_EDC_REGISTRATION creating");
+		try {
+
+			String assetId = eDCProxyService.createAsset(customerDetails, inputData);
+			String policyId = eDCProxyService.createPolicy(customerDetails, inputData);
+			String contractPolicy = eDCProxyService.createContractDefination(customerDetails, inputData, assetId,
+					policyId);
+
+			log.info("DT_EDC_REGISTRATION created " + assetId + ":" + policyId + ";" + contractPolicy);
+
+		} catch (Exception ex) {
+
+			log.error("DTRegistryManager DT_EDC_REGISTRATION failed retry attempt: : {}",
+					RetrySynchronizationManager.getContext().getRetryCount() + 1);
+
+			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
+			autoSetupTriggerDetails.setRemark(ex.getMessage());
+			throw new ServiceException(
+					"DTRegistryManager DT_EDC_REGISTRATION Oops! We have an exception - " + ex.getMessage());
+		} finally {
+			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
+		}
 	}
 
 }
