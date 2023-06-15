@@ -6,7 +6,7 @@ maven/mavencentral/com.fasterxml.jackson.core/jackson-annotations/2.14.2, Apache
 maven/mavencentral/com.fasterxml.jackson.core/jackson-core/2.14.2, Apache-2.0 AND MIT, approved, #4303
 maven/mavencentral/com.fasterxml.jackson.core/jackson-databind/2.14.2, Apache-2.0, approved, #4105
 maven/mavencentral/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/2.14.2, Apache-2.0, approved, #5933
-maven/mavencentral/com.fasterxml.jackson.datatype/jackson-datatype-jdk8/2.14.2, Apache-2.0, approved, clearlydefined
+maven/mavencentral/com.fasterxml.jackson.datatype/jackson-datatype-jdk8/2.14.2, Apache-2.0, approved, #8597
 maven/mavencentral/com.fasterxml.jackson.datatype/jackson-datatype-jsr310/2.14.2, Apache-2.0, approved, #4699
 maven/mavencentral/com.fasterxml.jackson.module/jackson-module-parameter-names/2.14.2, Apache-2.0, approved, #5938
 maven/mavencentral/com.fasterxml/classmate/1.5.1, Apache-2.0, approved, clearlydefined
@@ -122,7 +122,7 @@ maven/mavencentral/org.springframework.data/spring-data-commons/3.0.4, Apache-2.
 maven/mavencentral/org.springframework.data/spring-data-jpa/3.0.4, Apache-2.0, approved, #5935
 maven/mavencentral/org.springframework.retry/spring-retry/2.0.1, Apache-2.0, approved, clearlydefined
 maven/mavencentral/org.springframework.security/spring-security-config/6.0.2, Apache-2.0, approved, #7338
-maven/mavencentral/org.springframework.security/spring-security-core/6.0.2, Apache-2.0, approved, #7325
+maven/mavencentral/org.springframework.security/spring-security-core/6.0.3, Apache-2.0, approved, #7325
 maven/mavencentral/org.springframework.security/spring-security-crypto/6.0.2, Apache-2.0 AND ISC, approved, #7326
 maven/mavencentral/org.springframework.security/spring-security-oauth2-client/6.0.2, Apache-2.0, approved, #5931
 maven/mavencentral/org.springframework.security/spring-security-oauth2-core/6.0.2, Apache-2.0, approved, #7324

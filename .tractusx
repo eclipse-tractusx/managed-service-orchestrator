@@ -1,2 +1,2 @@
-product: "autosetup-backend"
-leadingRepository: "https://github.com/eclipse-tractusx/autosetup-backend"
+product: "managed-service-orchestrator"
+leadingRepository: "https://github.com/eclipse-tractusx/managed-service-orchestrator"
