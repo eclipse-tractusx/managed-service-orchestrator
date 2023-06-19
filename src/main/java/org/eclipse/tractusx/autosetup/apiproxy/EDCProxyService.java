@@ -68,6 +68,7 @@ public class EDCProxyService {
 				            "asset:prop:name": "Digital Twin Registry Endpoint of provider  %s",
 				            "asset:prop:contenttype": "application/json",
 				            "asset:prop:policy-id": "use-eu"
+				            "asset:prop:baseUrl": "%s"
 				        }
 				    },
 				    "dataAddress": {
@@ -75,7 +76,7 @@ public class EDCProxyService {
 				        "type": "HttpData",
 				        "baseUrl": "%s"
 				    }
-				}""", uId, uId, orgName, baseUrl);
+				}""", uId, uId, orgName, baseUrl, baseUrl);
 
 		ObjectNode json = (ObjectNode) new ObjectMapper().readTree(jsonString);
 
