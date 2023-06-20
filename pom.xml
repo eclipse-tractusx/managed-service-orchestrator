@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.5</version>
+		<version>3.1.0</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.eclipse.tractusx</groupId>
@@ -16,7 +16,7 @@
 	<description>auto-setup</description>
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2022.0.0-RC3</spring-cloud.version>
+		<spring-cloud.version>2022.0.3</spring-cloud.version>
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<org.mapstruct.processor.version>1.4.2.Final
 		</org.mapstruct.processor.version>
@@ -214,11 +214,6 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-expression</artifactId>
-			<version>6.0.8</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-oauth2-client</artifactId>
 			<exclusions>
@@ -233,24 +228,9 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>6.0.8</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>6.0.8</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>6.0.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-			<version>6.0.3</version>
+			<version>6.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>

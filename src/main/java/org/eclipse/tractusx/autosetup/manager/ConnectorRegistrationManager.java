@@ -71,7 +71,7 @@ public class ConnectorRegistrationManager {
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
 	private final PortalIntegrationProxy portalIntegrationProxy;
 
-	@Retryable(value = {
+	@Retryable(retryFor = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
 	public Map<String, String> registerConnector(Customer customerDetails, SelectedTools tool,
 			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
@@ -107,14 +107,14 @@ public class ConnectorRegistrationManager {
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
 			inputData.put("connectorstatus", ACTIVE);
 			inputData.put("connectorId", connectorId.replace("\"", ""));
-			autoSetupTriggerDetails.setRemark("connectorId:"+connectorId);
+			autoSetupTriggerDetails.setRemark("connectorId:" + connectorId);
 
 			inputData.remove("selfsigncertificateprivatekey");
 			inputData.remove("selfsigncertificate");
 
 		} catch (Exception ex) {
 
-			log.error("connectorregisterManager failed retry attempt: : {}",
+			log.error("ConnectorregisterManager failed retry attempt: : {}",
 					RetrySynchronizationManager.getContext().getRetryCount() + 1);
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
 			autoSetupTriggerDetails.setRemark(ex.getMessage());
