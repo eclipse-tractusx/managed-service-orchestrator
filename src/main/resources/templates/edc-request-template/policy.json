@@ -1,0 +1,11 @@
+{
+	"@context": {
+		"odrl": "http://www.w3.org/ns/odrl/2/"
+	},
+	"@type": "PolicyDefinitionRequestDto",
+	"@id": "%s",
+	"policy": {
+		"@type": "Policy",
+		"odrl:permission": []
+	}
+}

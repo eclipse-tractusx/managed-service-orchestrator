@@ -87,6 +87,7 @@ public class EDCConnectorWorkFlow {
 			AutoSetupTriggerEntry triger) {
 		
 		vaultManager.deleteAllSecret(tool, inputConfiguration, triger);
+		connectorRegistrationManager.deleteConnector(tool, inputConfiguration, triger);
 		appDeleteManager.deletePackage(EDC_CONNECTOR, tool, inputConfiguration, triger);
 	}
 

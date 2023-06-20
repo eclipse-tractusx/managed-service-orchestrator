@@ -20,6 +20,7 @@
 
 package org.eclipse.tractusx.autosetup.apiproxy;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +29,8 @@ import java.util.UUID;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.MappingJsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -56,31 +59,12 @@ public class EDCProxyService {
 		String orgName = customerDetails.getOrganizationName();
 		String baseUrl = inputData.get("dtregistryUrl");
 
-		String jsonString = String.format("""
-				      {
-				    "@context": {},
-				    "asset": {
-				        "@type": "Asset",
-				        "@id": "%s",
-				        "properties": {
-				        	"asset:prop:id": "%s",
-				            "asset:prop:type": "data.core.digitalTwinRegistry",
-				            "asset:prop:name": "Digital Twin Registry Endpoint of provider  %s",
-				            "asset:prop:contenttype": "application/json",
-				            "asset:prop:policy-id": "use-eu"
-				            "asset:prop:baseUrl": "%s"
-				        }
-				    },
-				    "dataAddress": {
-				        "@type": "DataAddress",
-				        "type": "HttpData",
-				        "baseUrl": "%s"
-				    }
-				}""", uId, uId, orgName, baseUrl, baseUrl);
+		String readValueAsTree = getSchemaFromFile("/resources/edc-request-template/asset.json");
+		String jsonString = String.format(readValueAsTree, uId, uId, orgName, baseUrl, baseUrl);
 
 		ObjectNode json = (ObjectNode) new ObjectMapper().readTree(jsonString);
-
 		eDCApiProxy.createAsset(new URI(dataURL), requestHeader(inputData), json);
+
 		return uId;
 	}
 
@@ -89,18 +73,8 @@ public class EDCProxyService {
 
 		String uId = UUID.randomUUID().toString();
 
-		String jsonString = String.format("""
-				{
-					"@context": {
-					  "odrl": "http://www.w3.org/ns/odrl/2/"
-					},
-					"@type": "PolicyDefinitionRequestDto",
-					"@id": "%s",
-					"policy": {
-					  "@type": "Policy",
-					  "odrl:permission": []
-					}
-					}""", uId);
+		String readValueAsTree = getSchemaFromFile("/resources/edc-request-template/policy.json");
+		String jsonString = String.format(readValueAsTree, uId);
 
 		String dataURL = inputData.get(CONTROL_PLANE_DATA_ENDPOINT);
 		ObjectNode json = (ObjectNode) new ObjectMapper().readTree(jsonString);
@@ -113,25 +87,27 @@ public class EDCProxyService {
 			String policyId) {
 		String uId = UUID.randomUUID().toString();
 
-		String jsonString = String.format("""
-					      {
-				    "@context": {},
-				    "@id": "%s",
-				    "@type": "ContractDefinition",
-				    "accessPolicyId": "%s",
-				    "contractPolicyId": "%s",
-				    "assetsSelector": {
-				        "@type": "CriterionDto",
-				        "operandLeft": "https://w3id.org/edc/v0.0.1/ns/id",
-				        "operator": "=",
-				        "operandRight": "%s"
-				    }
-				}""", uId, policyId, policyId, assetId);
+		String readValueAsTree = getSchemaFromFile("/resources/edc-request-template/contract-defination.json");
+		String jsonString = String.format(readValueAsTree, uId, policyId, policyId, assetId);
 
 		String dataURL = inputData.get(CONTROL_PLANE_DATA_ENDPOINT);
 		ObjectNode json = (ObjectNode) new ObjectMapper().readTree(jsonString);
 		eDCApiProxy.createContractDefination(new URI(dataURL), requestHeader(inputData), json);
 		return uId;
+	}
+
+	@SneakyThrows
+	private String getSchemaFromFile(String schemaFile) {
+		JsonParser createParser = null;
+		try {
+			MappingJsonFactory jf = new MappingJsonFactory();
+			InputStream jsonFile = this.getClass().getResourceAsStream(schemaFile);
+			createParser = jf.createParser(jsonFile);
+			return createParser.getValueAsString();
+		} finally {
+			if (createParser != null)
+				createParser.close();
+		}
 	}
 
 }

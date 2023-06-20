@@ -505,6 +505,11 @@ public class AutoSetupOrchitestratorService {
 			AppServiceCatalogAndCustomerMapping appCatalogDetails) {
 
 		List<SelectedTools> selectedTools = getToolInfo(appCatalogDetails);
+		
+		List<Map<String, String>> autosetupResult = autoSetupTriggerMapper
+				.fromJsonStrToMap(trigger.getAutosetupResult());
+
+		autosetupResult.forEach(inputConfiguration::putAll);
 
 		for (SelectedTools selectedTool : selectedTools) {
 
@@ -656,6 +661,7 @@ public class AutoSetupOrchitestratorService {
 		edc.put("dataPlanePublicEndpoint", outputMap.get("dataPlanePublicEndpoint"));
 		edc.put("edcApiKey", outputMap.get("edcApiKey"));
 		edc.put("edcApiKeyValue", outputMap.get("edcApiKeyValue"));
+		edc.put("connectorId", outputMap.get("connectorId"));
 		processResult.add(edc);
 
 		return processResult;
