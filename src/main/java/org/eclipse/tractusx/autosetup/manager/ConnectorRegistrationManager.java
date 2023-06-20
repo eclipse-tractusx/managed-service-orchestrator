@@ -106,7 +106,8 @@ public class ConnectorRegistrationManager {
 					+ "-CONNECTOR-REGISTER package created");
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
 			inputData.put("connectorstatus", ACTIVE);
-			inputData.put("connectorId", connectorId);
+			inputData.put("connectorId", connectorId.replace("\"", ""));
+			autoSetupTriggerDetails.setRemark("connectorId:"+connectorId);
 
 			inputData.remove("selfsigncertificateprivatekey");
 			inputData.remove("selfsigncertificate");
@@ -133,7 +134,7 @@ public class ConnectorRegistrationManager {
 
 	}
 
-	@Retryable(value = {
+	@Retryable(retryFor = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
 	public Map<String, String> deleteConnector(SelectedTools tool, Map<String, String> inputData,
 			AutoSetupTriggerEntry triger) {

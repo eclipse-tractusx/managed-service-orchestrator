@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.eclipse.tractusx.autosetup.portal.model.ServiceInstanceResultResponse;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -35,6 +36,9 @@ import feign.Headers;
 
 @FeignClient(name = "EDCApiProxy", url = "placeholder")
 public interface EDCApiProxy {
+
+	@PostMapping(value ="/v2/assets/request", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public String getAssets(URI url, @RequestHeader Map<String, String> header);
 
 	@PostMapping("/v2/assets")
 	@Headers("Content-Type: application/json")

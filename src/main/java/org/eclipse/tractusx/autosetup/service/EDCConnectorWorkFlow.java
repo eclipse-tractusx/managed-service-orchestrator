@@ -85,9 +85,15 @@ public class EDCConnectorWorkFlow {
 
 	public void deletePackageWorkFlow(SelectedTools tool, Map<String, String> inputConfiguration,
 			AutoSetupTriggerEntry triger) {
-		
+
 		vaultManager.deleteAllSecret(tool, inputConfiguration, triger);
-		connectorRegistrationManager.deleteConnector(tool, inputConfiguration, triger);
+		
+		try {
+			connectorRegistrationManager.deleteConnector(tool, inputConfiguration, triger);
+		} catch (ServiceException ex) {
+			log.error(ex.getMessage());
+		}
+
 		appDeleteManager.deletePackage(EDC_CONNECTOR, tool, inputConfiguration, triger);
 	}
 

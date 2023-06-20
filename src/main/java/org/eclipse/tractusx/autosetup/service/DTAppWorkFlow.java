@@ -26,7 +26,6 @@ import java.util.Map;
 
 import org.eclipse.tractusx.autosetup.constant.AppActions;
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
-import org.eclipse.tractusx.autosetup.exception.ServiceException;
 import org.eclipse.tractusx.autosetup.manager.AppDeleteManager;
 import org.eclipse.tractusx.autosetup.manager.DTRegistryManager;
 import org.eclipse.tractusx.autosetup.model.Customer;
@@ -34,11 +33,9 @@ import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class DTAppWorkFlow {
 
 	private final DTRegistryManager dtregistryManager;
@@ -50,11 +47,10 @@ public class DTAppWorkFlow {
 		inputConfiguration.putAll(
 				dtregistryManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
 
-		try {
-			dtregistryManager.dtRegistryRegistrationInEDC(customerDetails, tool, inputConfiguration, triger);
-		} catch (ServiceException ex) {
-			log.warn(ex.getMessage());
-		}
+		Runnable runnable = () -> dtregistryManager.dtRegistryRegistrationInEDC(customerDetails, tool,
+				inputConfiguration, triger);
+
+		new Thread(runnable).start();
 
 		return inputConfiguration;
 	}
