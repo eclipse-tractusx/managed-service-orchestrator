@@ -50,6 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class VaultManager {
 
+	private static final String V1_SECRET_DATA = "/v1/secret/data/";
 	public static final String ENCRYPTIONKEYS = "encryptionkeys";
 	public static final String CONTENT = "content";
 	public static final String DAPS_CERT = "daps-cert";
@@ -70,7 +71,7 @@ public class VaultManager {
 	int counter = 0;
 
 	@SneakyThrows
-	@Retryable(value = {
+	@Retryable(retryFor = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
 	public Map<String, String> uploadKeyandValues(Customer customerDetails, SelectedTools tool,
 			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
@@ -100,7 +101,7 @@ public class VaultManager {
 
 			inputData.put(DAPS_CERT, DAPS_CERT);
 			inputData.put(CERTIFICATE_PRIVATE_KEY, CERTIFICATE_PRIVATE_KEY);
-			inputData.put("valuttenantpath", "/v1/secret/data/" + tenantNameNamespace);
+			inputData.put("valuttenantpath", V1_SECRET_DATA + tenantNameNamespace);
 			inputData.put("vaulturl", valutURL);
 			inputData.put("vaulttoken", vaulttoken);
 			inputData.put("vaulttimeout", vaulttimeout);
@@ -130,7 +131,7 @@ public class VaultManager {
 	public void uploadSecrete(String tenantName, String secretePath, Map<String, String> tenantVaultSecret)
 			throws URISyntaxException {
 
-		String valutURLwithpath = valutURL + "/v1/secret/data/" + tenantName + "/data/" + secretePath;
+		String valutURLwithpath = valutURL + V1_SECRET_DATA + tenantName + "/data/" + secretePath;
 		VaultSecreteRequest vaultSecreteRequest = VaultSecreteRequest.builder().data(tenantVaultSecret).build();
 		URI url = new URI(valutURLwithpath);
 		vaultManagerProxy.uploadKeyandValue(url, vaultSecreteRequest);
@@ -173,7 +174,7 @@ public class VaultManager {
 
 	public void deleteSecret(String tenantName, String secretePath) throws URISyntaxException {
 
-		String valutURLwithpath = valutURL + "/v1/secret/data/" + tenantName+ "/data/" + secretePath;;
+		String valutURLwithpath = valutURL + V1_SECRET_DATA + tenantName+ "/data/" + secretePath;
 		URI url = new URI(valutURLwithpath);
 		vaultManagerProxy.deleteKeyandValue(url);
 

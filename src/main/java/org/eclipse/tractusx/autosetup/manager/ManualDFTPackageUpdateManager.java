@@ -34,7 +34,7 @@ import org.eclipse.tractusx.autosetup.model.AutoSetupRequest;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.DFTUpdateRequest;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
-import org.eclipse.tractusx.autosetup.service.DFTAppWorkFlow;
+import org.eclipse.tractusx.autosetup.service.SDEAppWorkFlow;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +51,7 @@ public class ManualDFTPackageUpdateManager {
 
 	private final AutoSetupTriggerMapper autoSetupTriggerMapper;
 
-	private final DFTAppWorkFlow dftWorkFlow;
+	private final SDEAppWorkFlow dftWorkFlow;
 	private final EmailManager emailManager;
 
 	@Value("${portal.email.address}")

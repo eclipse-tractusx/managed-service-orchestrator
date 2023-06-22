@@ -62,8 +62,8 @@ class CertificateManagerTest {
                 .build();
 
         SelectedTools selectedTools = SelectedTools.builder()
-                .tool(ToolType.DFT)
-                .label("DFT")
+                .tool(ToolType.SDE_WITH_EDC_TRACTUS)
+                .label("SDE")
                 .build();
         Map<String, String> mockInputMap = new HashMap<>();
         mockInputMap.put("bpnNumber","BPN1234567");

@@ -58,11 +58,11 @@ class AppDeleteManagerTest {
         mockInputMap.put("targetCluster","test");
 
         SelectedTools selectedTools = SelectedTools.builder()
-                .tool(ToolType.DFT)
-                .label("DFT")
+                .tool(ToolType.EDC_TRACTUS)
+                .label("EDC_TRACTUS")
                 .build();
 
-        mockInputMap = appDeleteManager.deletePackage(AppNameConstant.POSTGRES_DB, selectedTools, mockInputMap, null);
+        mockInputMap = appDeleteManager.deletePackage(AppNameConstant.EDC_CONNECTOR, selectedTools, mockInputMap, null);
 
         assertEquals(1, mockInputMap.size());
         assertEquals("test", mockInputMap.get("targetCluster"));
