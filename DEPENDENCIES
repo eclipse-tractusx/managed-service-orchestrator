@@ -3,7 +3,7 @@ maven/mavencentral/ch.qos.logback/logback-core/1.4.7, EPL-1.0 OR LGPL-2.1-only, 
 maven/mavencentral/com.fasterxml.jackson.core/jackson-annotations/2.15.0, Apache-2.0, approved, #7947
 maven/mavencentral/com.fasterxml.jackson.core/jackson-core/2.15.0, MIT AND Apache-2.0, approved, #7932
 maven/mavencentral/com.fasterxml.jackson.core/jackson-databind/2.15.0, Apache-2.0, approved, #7934
-maven/mavencentral/com.fasterxml.jackson.dataformat/jackson-dataformat-toml/2.15.0, Apache-2.0, restricted, clearlydefined
+maven/mavencentral/com.fasterxml.jackson.dataformat/jackson-dataformat-toml/2.15.0, Apache-2.0, approved, #9160
 maven/mavencentral/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/2.15.0, Apache-2.0, approved, #8802
 maven/mavencentral/com.fasterxml.jackson.datatype/jackson-datatype-jdk8/2.15.0, Apache-2.0, approved, #8808
 maven/mavencentral/com.fasterxml.jackson.datatype/jackson-datatype-jsr310/2.15.0, Apache-2.0, approved, #7930
@@ -69,7 +69,7 @@ maven/mavencentral/org.glassfish.jaxb/jaxb-runtime/4.0.2, BSD-3-Clause, approved
 maven/mavencentral/org.glassfish.jaxb/txw2/4.0.2, BSD-3-Clause, approved, ee4j.jaxb
 maven/mavencentral/org.hamcrest/hamcrest/2.2, BSD-3-Clause, approved, clearlydefined
 maven/mavencentral/org.hibernate.common/hibernate-commons-annotations/6.0.6.Final, LGPL-2.1-only, approved, #6962
-maven/mavencentral/org.hibernate.orm/hibernate-core/6.2.2.Final, LGPL-2.1, restricted, clearlydefined
+maven/mavencentral/org.hibernate.orm/hibernate-core/6.2.2.Final, LGPL-2.1-only AND Apache-2.0 AND MIT AND CC-PDDC AND (EPL-2.0 OR BSD-3-Clause), approved, #9121
 maven/mavencentral/org.hibernate.validator/hibernate-validator/8.0.0.Final, Apache-2.0, approved, clearlydefined
 maven/mavencentral/org.jboss.logging/jboss-logging/3.5.0.Final, Apache-2.0, approved, clearlydefined
 maven/mavencentral/org.junit.jupiter/junit-jupiter-api/5.9.3, EPL-2.0, approved, #3133
@@ -84,7 +84,7 @@ maven/mavencentral/org.mockito/mockito-junit-jupiter/4.8.1, MIT, approved, clear
 maven/mavencentral/org.objenesis/objenesis/3.2, Apache-2.0, approved, clearlydefined
 maven/mavencentral/org.opentest4j/opentest4j/1.2.0, Apache-2.0, approved, clearlydefined
 maven/mavencentral/org.ow2.asm/asm/9.3, BSD-3-Clause, approved, clearlydefined
-maven/mavencentral/org.postgresql/postgresql/42.6.0, BSD-2-Clause, restricted, clearlydefined
+maven/mavencentral/org.postgresql/postgresql/42.6.0, BSD-2-Clause AND LicenseRef-scancode-free-unknown AND Apache-2.0, restricted, #9159
 maven/mavencentral/org.projectlombok/lombok/1.18.26, MIT AND LicenseRef-Public-Domain, approved, CQ23907
 maven/mavencentral/org.skyscreamer/jsonassert/1.5.1, Apache-2.0, approved, clearlydefined
 maven/mavencentral/org.slf4j/jul-to-slf4j/2.0.7, MIT, approved, #7698
@@ -118,7 +118,7 @@ maven/mavencentral/org.springframework.cloud/spring-cloud-openfeign-core/4.0.3, 
 maven/mavencentral/org.springframework.cloud/spring-cloud-starter-openfeign/4.0.3, Apache-2.0, approved, #7302
 maven/mavencentral/org.springframework.cloud/spring-cloud-starter/4.0.3, Apache-2.0, approved, #7299
 maven/mavencentral/org.springframework.data/spring-data-commons/3.1.0, Apache-2.0, approved, #8805
-maven/mavencentral/org.springframework.data/spring-data-jpa/3.1.0, Apache-2.0 AND NOASSERTION, restricted, clearlydefined
+maven/mavencentral/org.springframework.data/spring-data-jpa/3.1.0, Apache-2.0, approved, #9120
 maven/mavencentral/org.springframework.retry/spring-retry/2.0.1, Apache-2.0, approved, clearlydefined
 maven/mavencentral/org.springframework.security/spring-security-config/6.1.0, Apache-2.0, approved, clearlydefined
 maven/mavencentral/org.springframework.security/spring-security-core/6.1.0, Apache-2.0, approved, clearlydefined
