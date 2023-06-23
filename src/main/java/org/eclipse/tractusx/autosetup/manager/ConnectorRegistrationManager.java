@@ -58,24 +58,23 @@ public class ConnectorRegistrationManager {
 
 	@Value("${connectorregister.url}")
 	private URI connectorRegistrationUrl;
-	
+
 	@Value("${connectorregister.keycloak.clientId}")
 	private String clientId;
-	
+
 	@Value("${connectorregister.keycloak.clientSecret}")
 	private String clientSecret;
-	
+
 	@Value("${connectorregister.keycloak.tokenURI}")
 	private URI tokenURI;
-	
 
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
 	private final PortalIntegrationProxy portalIntegrationProxy;
 
 	@Retryable(value = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
-	public Map<String, String> registerConnector(Customer customerDetails, SelectedTools tool, Map<String, String> inputData,
-			AutoSetupTriggerEntry triger) {
+	public Map<String, String> registerConnector(Customer customerDetails, SelectedTools tool,
+			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
 
 		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
 				.id(UUID.randomUUID().toString()).step("CONNECTOR-REGISTER").build();
@@ -85,10 +84,10 @@ public class ConnectorRegistrationManager {
 			String packageName = tool.getLabel();
 			String tenantName = customerDetails.getOrganizationName();
 
-			log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName) + "-CONNECTOR-REGISTER package creating");
+			log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName)
+					+ "-CONNECTOR-REGISTER package creating");
 
 			file = getTestFile(inputData.get("selfsigncertificate"));
-
 
 			MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
@@ -101,14 +100,18 @@ public class ConnectorRegistrationManager {
 			Map<String, String> header = new HashMap<>();
 			header.put("Authorization", "Bearer " + getKeycloakToken());
 
-			portalIntegrationProxy.manageConnector(connectorRegistrationUrl, header, body);
+			String connectorId = portalIntegrationProxy.manageConnector(connectorRegistrationUrl, header, body);
 
-			log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName) + "-CONNECTOR-REGISTER package created");
+			log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName)
+					+ "-CONNECTOR-REGISTER package created");
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
 			inputData.put("connectorstatus", ACTIVE);
+			inputData.put("connectorId", connectorId.replace("\"", ""));
+			autoSetupTriggerDetails.setRemark("connectorId:"+connectorId);
+
 			inputData.remove("selfsigncertificateprivatekey");
 			inputData.remove("selfsigncertificate");
-			
+
 		} catch (Exception ex) {
 
 			log.error("connectorregisterManager failed retry attempt: : {}",
@@ -121,9 +124,53 @@ public class ConnectorRegistrationManager {
 			try {
 				Files.deleteIfExists(file);
 			} catch (IOException e) {
-				
-				log.error("Error in deleting cerificate file");			
+
+				log.error("Error in deleting cerificate file");
 			}
+			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
+		}
+
+		return inputData;
+
+	}
+
+	@Retryable(retryFor = {
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+	public Map<String, String> deleteConnector(SelectedTools tool, Map<String, String> inputData,
+			AutoSetupTriggerEntry triger) {
+
+		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
+				.id(UUID.randomUUID().toString()).step("CONNECTOR-DELETE").build();
+
+		try {
+			String packageName = tool.getLabel();
+			String orgName = triger.getOrganizationName();
+
+			log.info(LogUtil.encode(orgName) + "-" + LogUtil.encode(packageName) + "-CONNECTOR-DELETE deleting");
+
+			String connectorId = inputData.get("connectorId");
+			if (connectorId != null) {
+
+				Map<String, String> header = new HashMap<>();
+				header.put("Authorization", "Bearer " + getKeycloakToken());
+
+				log.info(LogUtil.encode(orgName) + "-" + LogUtil.encode(packageName) + "-CONNECTOR-DELETE  deleted");
+				autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
+				portalIntegrationProxy.deleteConnector(connectorRegistrationUrl, header, connectorId);
+
+			} else
+				log.error("Connector Id not found in autosetup result to delete connector from portal");
+
+		} catch (Exception ex) {
+
+			log.error("connectorregisterManager DELETE failed retry attempt: : {}",
+					RetrySynchronizationManager.getContext().getRetryCount() + 1);
+			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
+			autoSetupTriggerDetails.setRemark(ex.getMessage());
+			throw new ServiceException(
+					"ConnectorregisterManager DELETE Oops! We have an exception - " + ex.getMessage());
+
+		} finally {
 			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
 		}
 

@@ -69,7 +69,7 @@ class EDCControlplaneManagerTest {
 
 		SelectedTools selectedTools = SelectedTools.builder().tool(ToolType.DFT).label("DFT").build();
 		mockInputMap = edcControlplaneManager.managePackage(null, AppActions.CREATE, selectedTools, mockInputMap, null);
-		assertEquals(17, mockInputMap.size());
+		assertEquals(20, mockInputMap.size());
 		assertNotNull(mockInputMap.get("controlPlaneEndpoint"));
 	}
 }

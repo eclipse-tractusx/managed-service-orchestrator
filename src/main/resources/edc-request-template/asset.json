@@ -1,0 +1,20 @@
+{
+	"@context": {},
+	"asset": {
+		"@type": "Asset",
+		"@id": "%s",
+		"properties": {
+			"asset:prop:id": "%s",
+			"asset:prop:type": "data.core.digitalTwinRegistry",
+			"asset:prop:name": "Digital Twin Registry Endpoint of provider  %s",
+			"asset:prop:contenttype": "application/json",
+			"asset:prop:policy-id": "use-eu",
+			"asset:prop:publisher": "%s"
+		}
+	},
+	"dataAddress": {
+		"@type": "DataAddress",
+		"type": "HttpData",
+		"baseUrl": "%s"
+	}
+}

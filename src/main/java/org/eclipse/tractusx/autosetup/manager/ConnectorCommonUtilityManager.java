@@ -65,6 +65,10 @@ public class ConnectorCommonUtilityManager {
 
 		String dftAddress = dnsNameURLProtocol + "://" + dnsName + "/dftbackend/api";
 		inputData.put("dftAddress", dftAddress);
+		
+		inputData.put("postgresPassword", "admin@123");
+		inputData.put("username", "admin");
+		inputData.put("appdbpass", "admin@123");
 
 		String edcDb = "jdbc:postgresql://" + packageName + "-postgresdb-postgresql:5432/postgres";
 		inputData.put("edcdatabaseurl", edcDb);

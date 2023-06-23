@@ -31,6 +31,7 @@ import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.testservice.proxy.ConnectorTestRequest;
 import org.eclipse.tractusx.autosetup.testservice.proxy.ConnectorTestServiceProxy;
 import org.eclipse.tractusx.autosetup.testservice.proxy.ConnectorTestServiceResponse;
+import org.eclipse.tractusx.autosetup.utility.WaitingTimeUtility;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
@@ -38,7 +39,6 @@ import org.springframework.retry.support.RetrySynchronizationManager;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -53,7 +53,7 @@ public class TestConnectorServiceManager {
 	@Value("${connector.test.service.url}")
 	private String connectorTestServiceURL;
 
-	@Retryable(value = {
+	@Retryable(retryFor = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
 	public Map<String, String> verifyConnectorTestingThroughTestService(Customer customerDetails,
 			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
@@ -68,7 +68,7 @@ public class TestConnectorServiceManager {
 
 			inputData.put("testServiceURL", connectorTestServiceURL);
 
-			waitingTime();
+			WaitingTimeUtility.waitingTime("Waiting after connector setup to get pod up to test connector as data provider/consumer");
 
 			ConnectorTestServiceResponse testResult = connectorTestServiceProxy
 					.verifyConnectorTestingThroughTestService(connectorTestRequest);
@@ -96,16 +96,5 @@ public class TestConnectorServiceManager {
 		return inputData;
 	}
 
-	@SneakyThrows
-	private void waitingTime() {
-		
-		try {
-			log.info("Waiting after connector setup to get pod up to test connector as data provider/consumer");
-			Thread.sleep(60000);
-		} catch (InterruptedException e) {
-
-			Thread.currentThread().interrupt();
-		}
-	}
 
 }

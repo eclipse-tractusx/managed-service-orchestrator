@@ -1,0 +1,13 @@
+{
+	"@context": {},
+	"@id": "%s",
+	"@type": "ContractDefinition",
+	"accessPolicyId": "%s",
+	"contractPolicyId": "%s",
+	"assetsSelector": {
+		"@type": "CriterionDto",
+		"operandLeft": "https://w3id.org/edc/v0.0.1/ns/id",
+		"operator": "=",
+		"operandRight": "%s"
+	}
+}
