@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022, 2023 T-Systems International GmbH
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023 T-Systems International GmbH
+ * Copyright (c) 2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,23 +18,27 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.autosetup.vault.proxy;
+package org.eclipse.tractusx.autosetup.utility;
 
-import java.net.URI;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
-import org.eclipse.tractusx.autosetup.model.VaultSecreteRequest;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+@Slf4j
+public class WaitingTimeUtility {
 
-@FeignClient(name = "VaultAppManageProxy", url = "placeholder", configuration = VaultConfiguration.class)
-public interface VaultAppManageProxy {
+	private WaitingTimeUtility() {
+	}
 
-	@PostMapping
-    String uploadKeyandValue(URI url, @RequestBody VaultSecreteRequest vaultSecreteRequest);
-	
-	@DeleteMapping
-    String deleteKeyandValue(URI url);
+	@SneakyThrows
+	public static void waitingTime(String msg) {
+
+		try {
+			log.info(msg);
+			Thread.sleep(60000);
+		} catch (InterruptedException e) {
+
+			Thread.currentThread().interrupt();
+		}
+	}
 
 }

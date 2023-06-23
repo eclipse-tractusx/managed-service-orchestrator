@@ -81,7 +81,7 @@ class ConnectorRegistrationManagerTest {
                 .build();
         mockInputMap.put("selfsigncertificate", Certutil.getAsString(cert));
         mockInputMap = connectorRegistrationManager.registerConnector(customer, selectedTools, mockInputMap, null);
-        assertEquals(2, mockInputMap.size());
+        assertEquals(3, mockInputMap.size());
         assertEquals("ACTIVE", mockInputMap.get("connectorstatus"));
     } catch (CertificateException e) {
             throw new RuntimeException(e);

@@ -68,8 +68,6 @@ public class EDCConnectorWorkFlow {
 		inputConfiguration
 				.putAll(certificateManager.createCertificate(customerDetails, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(vaultManager.uploadKeyandValues(customerDetails, tool, inputConfiguration, triger));
-		inputConfiguration.putAll(
-				postgresManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(tractusConnectorManager.managePackage(customerDetails, workflowAction, tool,
 				inputConfiguration, triger));
 		inputConfiguration.putAll(
@@ -88,7 +86,14 @@ public class EDCConnectorWorkFlow {
 	public void deletePackageWorkFlow(SelectedTools tool, Map<String, String> inputConfiguration,
 			AutoSetupTriggerEntry triger) {
 
-		appDeleteManager.deletePackage(POSTGRES_DB, tool, inputConfiguration, triger);
+		vaultManager.deleteAllSecret(tool, inputConfiguration, triger);
+		
+		try {
+			connectorRegistrationManager.deleteConnector(tool, inputConfiguration, triger);
+		} catch (ServiceException ex) {
+			log.error(ex.getMessage());
+		}
+
 		appDeleteManager.deletePackage(EDC_CONNECTOR, tool, inputConfiguration, triger);
 	}
 
@@ -121,6 +126,7 @@ public class EDCConnectorWorkFlow {
 			AutoSetupTriggerEntry triger) {
 
 		appDeleteManager.deletePackage(POSTGRES_DB, tool, inputConfiguration, triger);
+		vaultManager.deleteAllSecret(tool, inputConfiguration, triger);
 		appDeleteManager.deletePackage(EDC_CONTROLPLANE, tool, inputConfiguration, triger);
 		appDeleteManager.deletePackage(EDC_DATAPLANE, tool, inputConfiguration, triger);
 	}

@@ -55,10 +55,15 @@ public class DFTBackendManager {
 
 	@Value("${manual.update}")
 	private boolean manualUpdate;
-	
+
+	@Value("${managed.dt-registry:true}")
+	private boolean managedDtRegistry;
+
 	private final SDEConfigurationProperty sDEConfigurationProperty;
-	
-	@Retryable(value = {
+
+	private Map<String, String> portalDetails = null;
+
+	@Retryable(retryFor = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
 	public Map<String, String> managePackage(Customer customerDetails, AppActions action, SelectedTools tool,
 			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
@@ -80,21 +85,32 @@ public class DFTBackendManager {
 			inputData.put("dftBackEndApiKey", generateRandomPassword);
 			inputData.put("dftBackEndApiKeyHeader", "API_KEY");
 			inputData.put("dftFrontEndUrl", dftfrontend);
-			
-			
+
+			if (managedDtRegistry) {
+				inputData.put("sde.digital-twins.hostname", inputData.get("dtregistryUrl"));
+			} else {
+				inputData.put("sde.digital-twins.hostname", sDEConfigurationProperty.getDigitalTwinsHostname());
+			}
+
+			inputData.put("sde.digital-twins.authentication.url",
+					sDEConfigurationProperty.getDigitalTwinsAuthenticationUrl());
 			inputData.put("sde.resourceServerIssuer", sDEConfigurationProperty.getResourceServerIssuer());
 			inputData.put("sde.keycloak.auth", sDEConfigurationProperty.getKeycloakAuth());
 			inputData.put("sde.keycloak.realm", sDEConfigurationProperty.getKeycloakRealm());
 			inputData.put("sde.partner.pool.hostname", sDEConfigurationProperty.getPartnerPoolHostname());
 			inputData.put("sde.portal.backend.hostname", sDEConfigurationProperty.getPortalBackendHostname());
-			inputData.put("sde.connector.discovery.token-url", sDEConfigurationProperty.getConnectorDiscoveryTokenUrl());
+			inputData.put("sde.connector.discovery.token-url",
+					sDEConfigurationProperty.getConnectorDiscoveryTokenUrl());
 			inputData.put("sde.connector.discovery.clientId", sDEConfigurationProperty.getConnectorDiscoveryClientId());
-			inputData.put("sde.connector.discovery.clientSecret", sDEConfigurationProperty.getConnectorDiscoveryClientSecret());
-			
-			if (!manualUpdate) {
-				Map<String, String> portalDetails = portalIntegrationManager
-						.postServiceInstanceResultAndGetTenantSpecs(inputData);
+			inputData.put("sde.connector.discovery.clientSecret",
+					sDEConfigurationProperty.getConnectorDiscoveryClientSecret());
+
+			if (!manualUpdate && portalDetails == null) {
+				portalDetails = portalIntegrationManager.postServiceInstanceResultAndGetTenantSpecs(inputData);
 				inputData.putAll(portalDetails);
+				log.info("Autosetup recieved new clientId/secret from portal");
+			} else {
+				log.warn("Hope already Autosetup recieved new clientId/secret from portal previous request");
 			}
 
 			String packageName = tool.getLabel();
@@ -112,7 +128,11 @@ public class DFTBackendManager {
 					RetrySynchronizationManager.getContext().getRetryCount() + 1);
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
-			autoSetupTriggerDetails.setRemark(ex.getMessage());
+			if (portalDetails == null)
+				autoSetupTriggerDetails.setRemark(ex.getMessage());
+			else
+				autoSetupTriggerDetails.setRemark(ex.getMessage() + ", portal-details:" + portalDetails.toString());
+
 			throw new ServiceException("DftBackendManager Oops! We have an exception - " + ex.getMessage());
 		} finally {
 			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);

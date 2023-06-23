@@ -28,6 +28,8 @@ import org.eclipse.tractusx.autosetup.portal.model.ServiceInstanceResultRequest;
 import org.eclipse.tractusx.autosetup.portal.model.ServiceInstanceResultResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -46,5 +48,8 @@ public interface PortalIntegrationProxy {
 	@PostMapping("/api/administration/connectors/managed-daps")
 	public String manageConnector(URI url, @RequestHeader Map<String, String> header,
 			@RequestBody MultiValueMap<String, Object> body);
+
+	@DeleteMapping("/api/administration/connectors/{connectorId}")
+	public void deleteConnector(URI url, @RequestHeader Map<String, String> header, @PathVariable String connectorId);
 
 }

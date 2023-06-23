@@ -109,6 +109,9 @@ public class AutoSetupOrchitestratorService {
 	@Value("${manual.update}")
 	private boolean manualUpdate;
 
+	@Value("${managed.dt-registry:true}")
+	private boolean managedDtRegistry;
+
 	public String getAllInstallPackages() {
 		return kubeAppManageProxy.getAllInstallPackages();
 	}
@@ -156,7 +159,6 @@ public class AutoSetupOrchitestratorService {
 
 			Runnable runnable = () -> {
 
-				trigger.setAutosetupResult("");
 				trigger.setTriggerType(DELETE.name());
 				trigger.setStatus(INPROGRESS.name());
 
@@ -315,7 +317,6 @@ public class AutoSetupOrchitestratorService {
 		} catch (Exception e) {
 
 			log.error("Error in package creation " + e.getMessage());
-			trigger.setAutosetupResult("");
 			trigger.setStatus(TriggerStatusEnum.FAILED.name());
 			trigger.setRemark(e.getMessage());
 		}
@@ -383,6 +384,9 @@ public class AutoSetupOrchitestratorService {
 				action, inputConfiguration, trigger);
 		inputConfiguration.putAll(edcOutput);
 
+		String json = autoSetupTriggerMapper.fromMaptoStr(extractEDCResultMap(inputConfiguration));
+		trigger.setAutosetupResult(json);
+
 		dftDeployment(autoSetupRequest, action, trigger, inputConfiguration, customer, selectedTool, label);
 
 	}
@@ -427,18 +431,16 @@ public class AutoSetupOrchitestratorService {
 
 	}
 
-	private void dtDeploymentWithDft(Customer customer, AppActions action, AutoSetupTriggerEntry trigger,
-			Map<String, String> inputConfiguration, SelectedTools selectedTool, String label) {
-
-		selectedTool.setLabel("dt-" + label);
-		dtAppWorkFlow.getWorkFlow(customer, selectedTool, action, inputConfiguration, trigger);
-
-	}
-
 	private void dftDeployment(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
 			Map<String, String> inputConfiguration, Customer customer, SelectedTools selectedTool, String label) {
+		
+		if (managedDtRegistry) {
+			selectedTool.setLabel("dt-" + label);
+			dtAppWorkFlow.getWorkFlow(customer, selectedTool, action, inputConfiguration, trigger);
 
-		dtDeploymentWithDft(customer, action, trigger, inputConfiguration, selectedTool, label);
+			String json = autoSetupTriggerMapper.fromMaptoStr(extractDependantAppResult(inputConfiguration));
+			trigger.setAutosetupResult(json);
+		}
 
 		selectedTool.setLabel("dft-" + label);
 		Map<String, String> map = dftWorkFlow.getWorkFlow(autoSetupRequest.getCustomer(), selectedTool, action,
@@ -507,6 +509,11 @@ public class AutoSetupOrchitestratorService {
 			AppServiceCatalogAndCustomerMapping appCatalogDetails) {
 
 		List<SelectedTools> selectedTools = getToolInfo(appCatalogDetails);
+
+		List<Map<String, String>> autosetupResult = autoSetupTriggerMapper
+				.fromJsonStrToMap(trigger.getAutosetupResult());
+
+		autosetupResult.forEach(inputConfiguration::putAll);
 
 		for (SelectedTools selectedTool : selectedTools) {
 
@@ -638,6 +645,15 @@ public class AutoSetupOrchitestratorService {
 		dft.put(DFT_BACKEND_URL, outputMap.get(DFT_BACKEND_URL));
 		processResult.add(dft);
 
+		processResult.addAll(extractDependantAppResult(outputMap));
+
+		return processResult;
+	}
+
+	private List<Map<String, String>> extractDependantAppResult(Map<String, String> outputMap) {
+
+		List<Map<String, String>> processResult = new ArrayList<>();
+
 		Map<String, String> dt = extractDTResultMap(outputMap).get(0);
 		processResult.add(dt);
 
@@ -658,6 +674,7 @@ public class AutoSetupOrchitestratorService {
 		edc.put("dataPlanePublicEndpoint", outputMap.get("dataPlanePublicEndpoint"));
 		edc.put("edcApiKey", outputMap.get("edcApiKey"));
 		edc.put("edcApiKeyValue", outputMap.get("edcApiKeyValue"));
+		edc.put("connectorId", outputMap.get("connectorId"));
 		processResult.add(edc);
 
 		return processResult;

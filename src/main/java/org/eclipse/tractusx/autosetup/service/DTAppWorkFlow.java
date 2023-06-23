@@ -47,6 +47,11 @@ public class DTAppWorkFlow {
 		inputConfiguration.putAll(
 				dtregistryManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
 
+		Runnable runnable = () -> dtregistryManager.dtRegistryRegistrationInEDC(customerDetails, tool,
+				inputConfiguration, triger);
+
+		new Thread(runnable).start();
+
 		return inputConfiguration;
 	}
 
