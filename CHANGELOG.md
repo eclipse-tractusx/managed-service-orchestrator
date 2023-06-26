@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
  - NA
+ 
+## [1.2.9] - 2023-06-22
+
+### Added
+ - Added support for EDC connector 0.4.1
+ - Added registry base url in asset for consumer reference
+ - Upgrade for DT registry 0.3.2
 
 ## [1.3.0] - 2023-06-22
 
