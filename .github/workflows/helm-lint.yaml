@@ -84,11 +84,6 @@ jobs:
       - name: Run chart-testing (lint)
         run: ct lint --charts charts/orchestrator --config charts/chart-testing-config.yaml
 
-      # Preparing a kind cluster to install and test charts on
-      - name: Create kind cluster
-        uses: helm/kind-action@v1.4.0
-        if: ${{ env.CHART_CHANGED == 'true' }}
-
       # install the chart to the kind cluster and run helm test
       # define charts to test with the --charts parameter
       - name: Run chart-testing (install)
