@@ -94,3 +94,11 @@ jobs:
       - name: Run chart-testing (install)
         run: ct install --charts charts/orchestrator --config charts/chart-testing-config.yaml
         if: ${{ env.CHART_CHANGED == 'true' }}
+        
+      - name: Run helm upgrade
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm install orchestrator tractusx-dev/orchestrator --version ${{ github.event.inputs.upgrade_from || '1.3.0' }}
+          helm dependency update charts/orchestrator
+          helm upgrade orchestrator charts/orchestrator
+        if: github.event_name != 'pull_request' || steps.list-changed.outputs.changed == 'true' 
