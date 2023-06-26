@@ -82,7 +82,7 @@ jobs:
           fi
       # run chart linting 
       - name: Run chart-testing (lint)
-        run: ct lint --charts ccharts/orchestrator --config charts/chart-testing-config.yaml
+        run: ct lint --charts charts/orchestrator --config charts/chart-testing-config.yaml
 
       # Preparing a kind cluster to install and test charts on
       - name: Create kind cluster
