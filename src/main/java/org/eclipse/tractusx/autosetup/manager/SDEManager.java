@@ -76,15 +76,15 @@ public class SDEManager {
 
 			inputData.put("manufacturerId", inputData.get("bpnNumber"));
 
-			String backendurl = dnsNameURLProtocol + "://backend." + dnsName + "/dftbackend/api";
-			String dftfrontend = dnsNameURLProtocol + "://" + dnsName;
+			String backendurl = dnsNameURLProtocol + "://" + dnsName + "/backend/api";
+			String sdefrontend = dnsNameURLProtocol + "://" + dnsName;
 
 			String generateRandomPassword = PasswordGenerator.generateRandomPassword(50);
 
-			inputData.put("dftBackEndUrl", backendurl);
-			inputData.put("dftBackEndApiKey", generateRandomPassword);
-			inputData.put("dftBackEndApiKeyHeader", "API_KEY");
-			inputData.put("dftFrontEndUrl", dftfrontend);
+			inputData.put("sdeBackEndUrl", backendurl);
+			inputData.put("sdeBackEndApiKey", generateRandomPassword);
+			inputData.put("sdeBackEndApiKeyHeader", "API_KEY");
+			inputData.put("sdeFrontEndUrl", sdefrontend);
 			inputData.put("database", "sde");
 
 			if (managedDtRegistry) {
@@ -129,7 +129,7 @@ public class SDEManager {
 
 		} catch (Exception ex) {
 
-			log.error("DftBackendManager failed retry attempt: : {}",
+			log.error("SDEManager failed retry attempt: : {}",
 					RetrySynchronizationManager.getContext().getRetryCount() + 1);
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
@@ -138,7 +138,7 @@ public class SDEManager {
 			else
 				autoSetupTriggerDetails.setRemark(ex.getMessage() + ", portal-details:" + portalDetails.toString());
 
-			throw new ServiceException("DftBackendManager Oops! We have an exception - " + ex.getMessage());
+			throw new ServiceException("SDEManager Oops! We have an exception - " + ex.getMessage());
 		} finally {
 			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
 		}

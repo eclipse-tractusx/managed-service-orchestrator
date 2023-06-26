@@ -75,8 +75,8 @@ public class AutoSetupOrchitestratorService {
 	private static final String TOEMAIL = "toemail";
 	private static final String ORGNAME = "orgname";
 	public static final String TARGET_NAMESPACE = "targetNamespace";
-	public static final String SDE_FRONTEND_URL = "dftFrontEndUrl";
-	public static final String SDE_BACKEND_URL = "dftBackEndUrl";
+	public static final String SDE_FRONTEND_URL = "sdeFrontEndUrl";
+	public static final String SDE_BACKEND_URL = "sdeBackEndUrl";
 
 	private final KubeAppManageProxy kubeAppManageProxy;
 	private final AutoSetupTriggerManager autoSetupTriggerManager;

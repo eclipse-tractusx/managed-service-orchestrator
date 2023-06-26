@@ -21,9 +21,11 @@
 
 DELETE FROM app_tbl WHERE app_name='DFT_BACKEND';
 
+DELETE FROM app_tbl WHERE app_name='DFT_FRONTEND';
+
 DELETE FROM app_tbl WHERE app_name='EDC_CONTROLPLANE';
 
-DELETE FROM app_tbl WHERE app_name='DFT_FRONTEND';
+DELETE FROM app_tbl WHERE app_name='EDC_DATAPLANE';
 
 DELETE FROM app_tbl WHERE app_name='POSTGRES_DB';
 
@@ -68,7 +70,7 @@ VALUES('SDE', 'default', 'kubeapps', '{
 		   "ingresses":[
 		      {
 		         "enabled":true,
-		         "hostname":"backend.$\{dnsName\}",
+		         "hostname":"$\{dnsName\}",
 		         "annotations":{
 		            
 		         },
@@ -78,7 +80,7 @@ VALUES('SDE', 'default', 'kubeapps', '{
 		         ],
 		         "tls":{
 		            "enabled":true,
-		            "secretName":"dftbackend"
+		            "secretName":"sdebackend"
 		         },
 		         "certManager":{
 		            "clusterIssuer":"letsencrypt-prod"
@@ -98,7 +100,7 @@ VALUES('SDE', 'default', 'kubeapps', '{
 							
 							spring.servlet.multipart.max-request-size=215MB
 							
-							server.servlet.context-path=/dftbackend/api
+							server.servlet.context-path=/backend/api
 							
 							spring.flyway.baseline-on-migrate=true
 							
@@ -124,11 +126,11 @@ VALUES('SDE', 'default', 'kubeapps', '{
 							
 							digital-twins.authentication.grantType=client_credentials
 							
-							dft.hostname=$\{dftBackEndUrl\}
+							dft.hostname=$\{sdeBackEndUrl\}
 							
-							dft.apiKeyHeader=$\{dftBackEndApiKeyHeader\}
+							dft.apiKeyHeader=$\{sdeBackEndApiKeyHeader\}
 							
-							dft.apiKey=$\{dftBackEndApiKey\}
+							dft.apiKey=$\{sdeBackEndApiKey\}
 							
 							manufacturerId=$\{manufacturerId\}
 							
@@ -150,13 +152,13 @@ VALUES('SDE', 'default', 'kubeapps', '{
 							
 							edc.consumer.protocol.path=/api/v1/dsp
 							
-							keycloak.clientid=$\{dftbackendkeycloakclientid\}
+							keycloak.clientid=$\{sdebackendkeycloakclientid\}
 							
 							spring.security.oauth2.resourceserver.jwt.issuer-uri=$\{sde.resourceServerIssuer\}
 							
 							springdoc.api-docs.path=/api-docs
 							
-							springdoc.swagger-ui.oauth.client-id=$\{dftbackendkeycloakclientid\}
+							springdoc.swagger-ui.oauth.client-id=$\{sdebackendkeycloakclientid\}
 							
 							partner.pool.hostname=$\{sde.partner.pool.hostname\}
 							
@@ -193,7 +195,7 @@ VALUES('SDE', 'default', 'kubeapps', '{
 		         ],
 		         "tls":{
 		            "enabled":true,
-		            "secretName":"dftfrontend"
+		            "secretName":"sdefrontend"
 		         },
 		         "certManager":{
 		            "clusterIssuer":"letsencrypt-prod"
@@ -201,13 +203,13 @@ VALUES('SDE', 'default', 'kubeapps', '{
 		      }
 		   ],
 		   "configuration":{
-		      "properties":"REACT_APP_API_URL=$\{dftBackEndUrl\}
+		      "properties":"REACT_APP_API_URL=$\{sdeBackEndUrl\}
 
 							REACT_APP_KEYCLOAK_URL=$\{sde.keycloak.auth\}
 							
 							REACT_APP_KEYCLOAK_REALM=$\{sde.keycloak.realm\}
 							
-							REACT_APP_CLIENT_ID=$\{dftfrontendkeycloakclientid\}
+							REACT_APP_CLIENT_ID=$\{sdefrontendkeycloakclientid\}
 							
 							REACT_APP_DEFAULT_COMPANY_BPN=$\{bpnNumber\}
 							
