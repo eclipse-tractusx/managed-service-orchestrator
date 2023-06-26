@@ -21,8 +21,11 @@
 package org.eclipse.tractusx.autosetup.manager;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.net.URI;
 import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,20 +50,19 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class ConnectorRegistrationManagerTest {
 
+	@Mock
+	private AutoSetupTriggerManager autoSetupTriggerManager;
 
-    @Mock
-    private AutoSetupTriggerManager autoSetupTriggerManager;
-    
-    @Mock
-    private PortalIntegrationManager portalIntegrationManager;
-    
-    @Mock
-    private PortalIntegrationProxy portalIntegrationProxy;
-    
-    @InjectMocks
-    private ConnectorRegistrationManager connectorRegistrationManager;
+	@Mock
+	private PortalIntegrationManager portalIntegrationManager;
 
-    @Test
+	@Mock
+	private PortalIntegrationProxy portalIntegrationProxy;
+
+	@InjectMocks
+	private ConnectorRegistrationManager connectorRegistrationManager;
+
+	@Test
     void createClient() throws IOException {
         Map<String, String> mockInputMap = new HashMap<>();
         mockInputMap.put("targetCluster","test");
@@ -79,6 +81,9 @@ class ConnectorRegistrationManagerTest {
                 .contactNumber("Test")
                 .city("DE")
                 .build();
+
+        when(portalIntegrationProxy.manageConnector((URI)any(), any(), any())).thenReturn("CONNECTOR123");
+        
         mockInputMap.put("selfsigncertificate", Certutil.getAsString(cert));
         mockInputMap = connectorRegistrationManager.registerConnector(customer, selectedTools, mockInputMap, null);
         assertEquals(3, mockInputMap.size());
@@ -86,4 +91,5 @@ class ConnectorRegistrationManagerTest {
     } catch (CertificateException e) {
             throw new RuntimeException(e);
         }
-    }}
+    }
+}
