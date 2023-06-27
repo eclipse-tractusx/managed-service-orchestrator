@@ -17,7 +17,6 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-
 package org.eclipse.tractusx.autosetup.manager;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,46 +25,45 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.tractusx.autosetup.constant.AppActions;
+import org.eclipse.tractusx.autosetup.constant.SDEConfigurationProperty;
 import org.eclipse.tractusx.autosetup.constant.ToolType;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-class PostgresDBManagerTest {
+class SDEManagerTest {
 
-    @Mock
-    private KubeAppsPackageManagement appManagement;
+	@InjectMocks
+	private SDEManager sdeManager;
 
-    @Mock
-    private AutoSetupTriggerManager autoSetupTriggerManager;
+	@Mock
+	private KubeAppsPackageManagement appManagement;
 
-    @InjectMocks
-    private PostgresDBManager postgresDBManager;
+	@Mock
+	private PortalIntegrationManager portalIntegrationManager;
 
-    @Test
-    void managePackage() {
-        Map<String, String> mockInputMap = new HashMap<>();
-        mockInputMap.put("targetCluster","test");
-        mockInputMap.put("postgresPassword", "admin@123");
-        mockInputMap.put("username", "admin");
-        mockInputMap.put("appdbpass", "admin@123");
-        mockInputMap.put("database", "postgres");
+	@Mock
+	private AutoSetupTriggerManager autoSetupTriggerManager;
 
-        SelectedTools selectedTools = SelectedTools.builder()
-                .tool(ToolType.DFT)
-                .label("DFT")
-                .build();
+	@Mock
+	private SDEConfigurationProperty sDEConfigurationProperty;
 
-        mockInputMap = postgresDBManager.managePackage(null, AppActions.CREATE,selectedTools,mockInputMap, null);
-        assertEquals("test", mockInputMap.get("targetCluster"));
-    }
+	@Test
+	void managePackage() {
+
+		SelectedTools selectedTools = SelectedTools.builder().tool(ToolType.SDE_WITH_EDC_TRACTUS).label("SDE").build();
+		Map<String, String> mockInputMap = new HashMap<>();
+		mockInputMap.put("dnsName", "test");
+		mockInputMap.put("dnsNameURLProtocol", "https");
+		Map<String, String> resultMap = sdeManager.managePackage(null, AppActions.CREATE, selectedTools,
+				mockInputMap, null);
+		assertEquals(22, resultMap.size());
+		assertEquals("test", mockInputMap.get("dnsName"));
+	}
 }

@@ -75,14 +75,14 @@ public class AutoSetupOrchitestratorService {
 	private static final String TOEMAIL = "toemail";
 	private static final String ORGNAME = "orgname";
 	public static final String TARGET_NAMESPACE = "targetNamespace";
-	public static final String DFT_FRONTEND_URL = "dftFrontEndUrl";
-	public static final String DFT_BACKEND_URL = "dftBackEndUrl";
+	public static final String SDE_FRONTEND_URL = "sdeFrontEndUrl";
+	public static final String SDE_BACKEND_URL = "sdeBackEndUrl";
 
 	private final KubeAppManageProxy kubeAppManageProxy;
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
 
 	private final EDCConnectorWorkFlow edcConnectorWorkFlow;
-	private final DFTAppWorkFlow dftWorkFlow;
+	private final SDEAppWorkFlow sdeWorkFlow;
 	private final DTAppWorkFlow dtAppWorkFlow;
 
 	private final InputConfigurationManager inputConfigurationManager;
@@ -278,27 +278,16 @@ public class AutoSetupOrchitestratorService {
 
 					switch (selectedTool.getTool()) {
 
-					case DFT_WITH_EDC_TRACTUS:
+					case SDE_WITH_EDC_TRACTUS:
 
-						executeDFTWithEDCTractus(autoSetupRequest, action, trigger, inputConfiguration, customer,
-								selectedTool);
-						
-						break;
-
-					case DFT_WITH_EDC:
-
-						executeDFTWithEDC(autoSetupRequest, action, trigger, inputConfiguration, customer,
+						executeSDEWithEDCTractus(autoSetupRequest, action, trigger, inputConfiguration, customer,
 								selectedTool);
 
 						break;
+
 					case EDC_TRACTUS:
 
 						executeEDCTractus(autoSetupRequest, action, trigger, inputConfiguration, selectedTool);
-
-						break;
-					case EDC:
-
-						executeEDC(autoSetupRequest, action, trigger, inputConfiguration, selectedTool);
 
 						break;
 					case DT_REGISTRY:
@@ -340,19 +329,6 @@ public class AutoSetupOrchitestratorService {
 		edcDeployemnt(autoSetupRequest, trigger, edcOutput);
 	}
 
-	private void executeEDC(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
-			Map<String, String> inputConfiguration, SelectedTools selectedTool) {
-
-		String label = selectedTool.getLabel();
-		selectedTool.setLabel("edc-" + label);
-
-		Map<String, String> edcOutput = edcConnectorWorkFlow.getWorkFlowSeparateCPandDP(autoSetupRequest.getCustomer(),
-				selectedTool, action, inputConfiguration, trigger);
-		inputConfiguration.putAll(edcOutput);
-
-		edcDeployemnt(autoSetupRequest, trigger, edcOutput);
-	}
-
 	private void edcDeployemnt(AutoSetupRequest autoSetupRequest, AutoSetupTriggerEntry trigger,
 			Map<String, String> edcOutput) {
 		String json = autoSetupTriggerMapper.fromMaptoStr(extractEDCResultMap(edcOutput));
@@ -373,7 +349,7 @@ public class AutoSetupOrchitestratorService {
 		log.info(EMAIL_SENT_SUCCESSFULLY);
 	}
 
-	private void executeDFTWithEDCTractus(AutoSetupRequest autoSetupRequest, AppActions action,
+	private void executeSDEWithEDCTractus(AutoSetupRequest autoSetupRequest, AppActions action,
 			AutoSetupTriggerEntry trigger, Map<String, String> inputConfiguration, Customer customer,
 			SelectedTools selectedTool) {
 
@@ -387,21 +363,7 @@ public class AutoSetupOrchitestratorService {
 		String json = autoSetupTriggerMapper.fromMaptoStr(extractEDCResultMap(inputConfiguration));
 		trigger.setAutosetupResult(json);
 
-		dftDeployment(autoSetupRequest, action, trigger, inputConfiguration, customer, selectedTool, label);
-
-	}
-
-	private void executeDFTWithEDC(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
-			Map<String, String> inputConfiguration, Customer customer, SelectedTools selectedTool) {
-
-		String label = selectedTool.getLabel();
-		selectedTool.setLabel("edc-" + label);
-
-		Map<String, String> edcOutput = edcConnectorWorkFlow.getWorkFlowSeparateCPandDP(autoSetupRequest.getCustomer(),
-				selectedTool, action, inputConfiguration, trigger);
-		inputConfiguration.putAll(edcOutput);
-
-		dftDeployment(autoSetupRequest, action, trigger, inputConfiguration, customer, selectedTool, label);
+		sdeDeployment(autoSetupRequest, action, trigger, inputConfiguration, customer, selectedTool, label);
 
 	}
 
@@ -431,9 +393,9 @@ public class AutoSetupOrchitestratorService {
 
 	}
 
-	private void dftDeployment(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
+	private void sdeDeployment(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
 			Map<String, String> inputConfiguration, Customer customer, SelectedTools selectedTool, String label) {
-		
+
 		if (managedDtRegistry) {
 			selectedTool.setLabel("dt-" + label);
 			dtAppWorkFlow.getWorkFlow(customer, selectedTool, action, inputConfiguration, trigger);
@@ -442,13 +404,13 @@ public class AutoSetupOrchitestratorService {
 			trigger.setAutosetupResult(json);
 		}
 
-		selectedTool.setLabel("dft-" + label);
-		Map<String, String> map = dftWorkFlow.getWorkFlow(autoSetupRequest.getCustomer(), selectedTool, action,
+		selectedTool.setLabel("sde-" + label);
+		Map<String, String> map = sdeWorkFlow.getWorkFlow(autoSetupRequest.getCustomer(), selectedTool, action,
 				inputConfiguration, trigger);
-		
+
 		Map<String, Object> emailContent = new HashMap<>();
-		emailContent.put(DFT_FRONTEND_URL, map.get(DFT_FRONTEND_URL));
-		emailContent.put(DFT_BACKEND_URL, map.get(DFT_BACKEND_URL));
+		emailContent.put(SDE_FRONTEND_URL, map.get(SDE_FRONTEND_URL));
+		emailContent.put(SDE_BACKEND_URL, map.get(SDE_BACKEND_URL));
 		emailContent.put(CONNECTOR_TEST_RESULT, map.get(CONNECTOR_TEST_RESULT));
 		emailContent.put(TEST_SERVICE_URL, map.get(TEST_SERVICE_URL));
 		emailContent.putAll(map);
@@ -467,7 +429,7 @@ public class AutoSetupOrchitestratorService {
 		} else {
 
 			trigger.setStatus(TriggerStatusEnum.SUCCESS.name());
-			
+
 			// Send an email
 			emailContent.put(ORGNAME, customer.getOrganizationName());
 			emailContent.put(TOEMAIL, customer.getEmail());
@@ -520,7 +482,7 @@ public class AutoSetupOrchitestratorService {
 			String label = "";
 			switch (selectedTool.getTool()) {
 
-			case DFT_WITH_EDC_TRACTUS:
+			case SDE_WITH_EDC_TRACTUS:
 
 				label = selectedTool.getLabel();
 
@@ -530,37 +492,16 @@ public class AutoSetupOrchitestratorService {
 				selectedTool.setLabel("dt-" + label);
 				dtAppWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
 
-				selectedTool.setLabel("dft-" + label);
-				dftWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
+				selectedTool.setLabel("sde-" + label);
+				sdeWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
 
 				break;
 
-			case DFT_WITH_EDC:
-
-				label = selectedTool.getLabel();
-
-				selectedTool.setLabel("edc-" + label);
-				edcConnectorWorkFlow.deletePackageWorkFlowSeparateCPandDP(selectedTool, inputConfiguration, trigger);
-
-				selectedTool.setLabel("dt-" + label);
-				dtAppWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
-
-				selectedTool.setLabel("dft-" + label);
-				dftWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
-
-				break;
 			case EDC_TRACTUS:
 
 				label = selectedTool.getLabel();
 				selectedTool.setLabel("edc-" + label);
 				edcConnectorWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
-
-				break;
-			case EDC:
-
-				label = selectedTool.getLabel();
-				selectedTool.setLabel("edc-" + label);
-				edcConnectorWorkFlow.deletePackageWorkFlowSeparateCPandDP(selectedTool, inputConfiguration, trigger);
 
 				break;
 
@@ -640,9 +581,9 @@ public class AutoSetupOrchitestratorService {
 		List<Map<String, String>> processResult = new ArrayList<>();
 
 		Map<String, String> dft = new ConcurrentHashMap<>();
-		dft.put("name", "DFT");
-		dft.put(DFT_FRONTEND_URL, outputMap.get(DFT_FRONTEND_URL));
-		dft.put(DFT_BACKEND_URL, outputMap.get(DFT_BACKEND_URL));
+		dft.put("name", "SDE");
+		dft.put(SDE_FRONTEND_URL, outputMap.get(SDE_FRONTEND_URL));
+		dft.put(SDE_BACKEND_URL, outputMap.get(SDE_BACKEND_URL));
 		processResult.add(dft);
 
 		processResult.addAll(extractDependantAppResult(outputMap));
@@ -674,10 +615,17 @@ public class AutoSetupOrchitestratorService {
 		edc.put("dataPlanePublicEndpoint", outputMap.get("dataPlanePublicEndpoint"));
 		edc.put("edcApiKey", outputMap.get("edcApiKey"));
 		edc.put("edcApiKeyValue", outputMap.get("edcApiKeyValue"));
-		edc.put("connectorId", outputMap.get("connectorId"));
+		edc.put("connectorId", findValueInMap(outputMap, "connectorId"));
 		processResult.add(edc);
 
 		return processResult;
+	}
+
+	private String findValueInMap(Map<String, String> outputMap, String key) {
+		if (outputMap.get(key) != null) {
+			return outputMap.get(key);
+		}
+		return "";
 	}
 
 	private List<Map<String, String>> extractDTResultMap(Map<String, String> outputMap) {

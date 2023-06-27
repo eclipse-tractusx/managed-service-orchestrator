@@ -25,17 +25,9 @@ import lombok.Getter;
 @Getter
 public enum AppNameConstant {
 
-	EDC_CONTROLPLANE,
-
-	EDC_DATAPLANE,
-	
 	EDC_CONNECTOR,
 
-	POSTGRES_DB,
-	
-	DFT_FRONTEND,
-	
-	DFT_BACKEND,
+	SDE,
 	
 	DT_REGISTRY,
 	

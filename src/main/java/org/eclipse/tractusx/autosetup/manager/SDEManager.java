@@ -20,7 +20,7 @@
 
 package org.eclipse.tractusx.autosetup.manager;
 
-import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DFT_BACKEND;
+import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.SDE;
 
 import java.util.Map;
 import java.util.UUID;
@@ -46,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DFTBackendManager {
+public class SDEManager {
 
 	private final KubeAppsPackageManagement appManagement;
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
@@ -69,22 +69,23 @@ public class DFTBackendManager {
 			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
 
 		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
-				.id(UUID.randomUUID().toString()).step(DFT_BACKEND.name()).build();
+				.id(UUID.randomUUID().toString()).step(SDE.name()).build();
 		try {
 			String dnsName = inputData.get("dnsName");
 			String dnsNameURLProtocol = inputData.get("dnsNameURLProtocol");
 
 			inputData.put("manufacturerId", inputData.get("bpnNumber"));
 
-			String backendurl = dnsNameURLProtocol + "://" + dnsName + "/dftbackend/api";
-			String dftfrontend = dnsNameURLProtocol + "://" + dnsName;
+			String backendurl = dnsNameURLProtocol + "://" + dnsName + "/backend/api";
+			String sdefrontend = dnsNameURLProtocol + "://" + dnsName;
 
 			String generateRandomPassword = PasswordGenerator.generateRandomPassword(50);
 
-			inputData.put("dftBackEndUrl", backendurl);
-			inputData.put("dftBackEndApiKey", generateRandomPassword);
-			inputData.put("dftBackEndApiKeyHeader", "API_KEY");
-			inputData.put("dftFrontEndUrl", dftfrontend);
+			inputData.put("sdeBackEndUrl", backendurl);
+			inputData.put("sdeBackEndApiKey", generateRandomPassword);
+			inputData.put("sdeBackEndApiKeyHeader", "API_KEY");
+			inputData.put("sdeFrontEndUrl", sdefrontend);
+			inputData.put("database", "sde");
 
 			if (managedDtRegistry) {
 				inputData.put("sde.digital-twins.hostname", inputData.get("dtregistryUrl"));
@@ -104,7 +105,11 @@ public class DFTBackendManager {
 			inputData.put("sde.connector.discovery.clientId", sDEConfigurationProperty.getConnectorDiscoveryClientId());
 			inputData.put("sde.connector.discovery.clientSecret",
 					sDEConfigurationProperty.getConnectorDiscoveryClientSecret());
-
+			inputData.put("sde.bpndiscovery.hostname", sDEConfigurationProperty.getBpndiscoveryHostname());
+			inputData.put("sde.discovery.authentication.url", sDEConfigurationProperty.getDiscoveryAuthenticationUrl());
+			inputData.put("sde.discovery.clientId", sDEConfigurationProperty.getDiscoveryClientId());
+			inputData.put("sde.discovery.clientSecret", sDEConfigurationProperty.getDiscoveryClientSecret());
+			
 			if (!manualUpdate && portalDetails == null) {
 				portalDetails = portalIntegrationManager.postServiceInstanceResultAndGetTenantSpecs(inputData);
 				inputData.putAll(portalDetails);
@@ -116,15 +121,15 @@ public class DFTBackendManager {
 			String packageName = tool.getLabel();
 
 			if (AppActions.CREATE.equals(action))
-				appManagement.createPackage(DFT_BACKEND, packageName, inputData);
+				appManagement.createPackage(SDE, packageName, inputData);
 			else
-				appManagement.updatePackage(DFT_BACKEND, packageName, inputData);
+				appManagement.updatePackage(SDE, packageName, inputData);
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
 
 		} catch (Exception ex) {
 
-			log.error("DftBackendManager failed retry attempt: : {}",
+			log.error("SDEManager failed retry attempt: : {}",
 					RetrySynchronizationManager.getContext().getRetryCount() + 1);
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
@@ -133,7 +138,7 @@ public class DFTBackendManager {
 			else
 				autoSetupTriggerDetails.setRemark(ex.getMessage() + ", portal-details:" + portalDetails.toString());
 
-			throw new ServiceException("DftBackendManager Oops! We have an exception - " + ex.getMessage());
+			throw new ServiceException("SDEManager Oops! We have an exception - " + ex.getMessage());
 		} finally {
 			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
 		}

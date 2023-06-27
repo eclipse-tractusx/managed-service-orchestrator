@@ -67,7 +67,7 @@ class AutoSetupOrchitestratorServiceTest {
                 "        \"bpnNumber\": \"BPN12345611\",\n" +
                 "        \"role\": \"recycler\",\n" +
                 "        \"subscriptionId\": \"DAS-D234\",\n" +
-                "        \"serviceId\": \"DFT-WITH-EDC\"\n" +
+                "        \"serviceId\": \"12345\"\n" +
                 "    }\n" +
                 "}";
         try {
