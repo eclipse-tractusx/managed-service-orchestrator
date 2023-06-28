@@ -43,3 +43,11 @@ maven.deps
 
 ### Visual Studio Code ###
 .vscode/
+
+### Helm ###
+# Chart dependencies
+**/charts/*.tgz
+**/Chart.lock
+
+### Visual Studio Code ###
+.vscode/
