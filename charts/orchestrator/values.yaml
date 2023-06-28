@@ -23,7 +23,7 @@ replicaCount: 1
 
 image:
     # -- Image to use for deploying an application
-  repository: ghcr.io/catenax-ng/tx-autosetup-backend/autosetup
+  repository: ghcr.io/catenax-ng/tx-managed-service-orchestrator/autosetup
     # -- Set the Image Pull Policy  
   pullPolicy: Always
     # -- Image tage is defined in chart appVersion  
