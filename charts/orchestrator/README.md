@@ -1,6 +1,6 @@
 # autosetup
 
-![Version: 1.3.1](https://img.shields.io/badge/Version-1.3.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.3.1](https://img.shields.io/badge/AppVersion-1.3.1-informational?style=flat-square)
+![Version: 1.3.2](https://img.shields.io/badge/Version-1.3.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.3.2](https://img.shields.io/badge/AppVersion-1.3.2-informational?style=flat-square)
 
 This service will help service provider to set up DFT/SDE with EDC and EDC as service in service provider environment.
 
@@ -24,7 +24,7 @@ This service will help service provider to set up DFT/SDE with EDC and EDC as se
 | affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].weight | int | `100` |  |
 | autoscaling.enabled | bool | `false` |  |
 | image.pullPolicy | string | `"Always"` | Set the Image Pull Policy   |
-| image.repository | string | `"ghcr.io/catenax-ng/tx-autosetup-backend/autosetup"` | Image to use for deploying an application |
+| image.repository | string | `"ghcr.io/catenax-ng/tx-managed-service-orchestrator/autosetup"` | Image to use for deploying an application |
 | image.tag | string | `""` | Image tage is defined in chart appVersion   |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{"cert-manager.io/cluster-issuer":"letsencrypt-prod","nginx.ingress.kubernetes.io/affinity":"cookie","nginx.ingress.kubernetes.io/backend-protocol":"HTTP","nginx.ingress.kubernetes.io/session-cookie-max-age":"172800"}` | Annotations to add to the ingress |

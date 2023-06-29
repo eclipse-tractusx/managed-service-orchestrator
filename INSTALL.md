@@ -13,4 +13,3 @@ How to install application using helm:  <br />
            helm search repo orchestrator/autosetup
     c.) To install using helm command:   
            helm install orchestrator orchestrator/autosetup
-
