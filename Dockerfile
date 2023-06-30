@@ -1,6 +1,6 @@
-#******************************************************************************
-# Copyright (c) 2022, 2023 T-Systems International GmbH
-# Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+#################################################################################
+# Copyright (c) 2022,2023 T-Systems International GmbH
+# Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
 #
 # See the NOTICE file(s) distributed with this work for additional
 # information regarding copyright ownership.
@@ -16,7 +16,7 @@
 # under the License.
 #
 # SPDX-License-Identifier: Apache-2.0
-#*******************************************************************************
+################################################################################
  
 # our base build image
 FROM maven:3.8.7-eclipse-temurin-17 AS builder

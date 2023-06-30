@@ -1,6 +1,6 @@
-#******************************************************************************
-# Copyright (c) 2022, 2023 T-Systems International GmbH
-# Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+#################################################################################
+# Copyright (c) 2022,2023 T-Systems International GmbH
+# Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
 #
 # See the NOTICE file(s) distributed with this work for additional
 # information regarding copyright ownership.
@@ -16,7 +16,7 @@
 # under the License.
 #
 # SPDX-License-Identifier: Apache-2.0
-#*******************************************************************************
+################################################################################
 
     # -- Number of Replicas for pods
 replicaCount: 1
@@ -24,13 +24,12 @@ replicaCount: 1
 image:
     # -- Image to use for deploying an application
   repository: ghcr.io/catenax-ng/tx-managed-service-orchestrator/autosetup
-    # -- Set the Image Pull Policy  
+    # -- Set the Image Pull Policy
   pullPolicy: Always
-    # -- Image tage is defined in chart appVersion  
+    # -- Image tage is defined in chart appVersion
   tag: ""
-  
-imagePullSecrets: []
 
+imagePullSecrets: []
 
 serviceAccount:
     # -- Specifies whether a service account should be created
@@ -45,14 +44,14 @@ portContainer: 9999
 
 podSecurityContext:
   fsGroup: 2000
-  
+
 securityContext:
     # -- Controls whether a process can gain more privilege
   allowPrivilegeEscalation: false
   runAsUser: 1000
 probe:
   endpoint: "/api/healthz"
-  
+
 service:
     # -- Type of service
   type: ClusterIP
@@ -60,7 +59,7 @@ service:
   port: 9999
   # -- Container Port details for sevice
   portContainer: 9999
-  
+
 ingress:
     # -- If you want to enable or disable the ingress
   enabled: false
@@ -72,10 +71,10 @@ ingress:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/affinity: "cookie"
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
-    
+
     # -- Host of the application on which application runs
   host: ""
-  
+
 resources:
   limits:
     # -- set a maximum amount of allows CPU utilization by specifying a limit on the container.
@@ -87,7 +86,7 @@ resources:
     cpu: 600m
     # -- set a minimum amount of allows memory utilization by specifying a limit on the container.
     memory: 2Gi
-    
+
 autoscaling:
   enabled: false
 nodeSelector: {}
@@ -116,7 +115,6 @@ readinessProbe:
   periodSeconds: 10
   successThreshold: 1
   timeoutSeconds: 1
-
 
 secretRef: "autosetup-int-secret"
 
