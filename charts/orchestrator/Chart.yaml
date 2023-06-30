@@ -17,7 +17,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 ################################################################################
- 
+
 apiVersion: v2
 name: autosetup
 description: This service will help service provider to set up DFT/SDE with EDC and EDC as service in service provider environment.
@@ -34,7 +34,7 @@ type: application
 
 sources:
   - https://github.com/eclipse-tractusx/managed-service-orchestrator
-  
+ 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
