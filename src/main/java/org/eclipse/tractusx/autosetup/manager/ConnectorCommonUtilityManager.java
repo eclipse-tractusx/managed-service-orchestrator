@@ -63,7 +63,7 @@ public class ConnectorCommonUtilityManager {
 		inputData.put("dataplaneendpoint", controlplaneurl);
 		inputData.put("dataPlanePublicEndpoint", controlplaneurl + "/public");
 
-		String dftAddress = dnsNameURLProtocol + "://" + dnsName + "/dftbackend/api";
+		String dftAddress = dnsNameURLProtocol + "://" + dnsName + "/backend/api";
 		inputData.put("dftAddress", dftAddress);
 		
 		inputData.put("postgresPassword", "admin@123");
