@@ -1,6 +1,6 @@
-#******************************************************************************
-# Copyright (c) 2022, 2023 T-Systems International GmbH
-# Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+#################################################################################
+# Copyright (c) 2022,2023 T-Systems International GmbH
+# Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
 #
 # See the NOTICE file(s) distributed with this work for additional
 # information regarding copyright ownership.
@@ -16,8 +16,8 @@
 # under the License.
 #
 # SPDX-License-Identifier: Apache-2.0
-#*******************************************************************************
- 
+################################################################################
+
 apiVersion: v2
 name: autosetup
 description: This service will help service provider to set up DFT/SDE with EDC and EDC as service in service provider environment.
@@ -34,22 +34,20 @@ type: application
 
 sources:
   - https://github.com/eclipse-tractusx/managed-service-orchestrator
-  
+
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 1.3.1
-
+version: 1.3.2
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "1.3.1"
+appVersion: "1.3.2"
 
 dependencies:
   - condition: postgresql.enabled
     name: postgresql
     repository: https://charts.bitnami.com/bitnami
     version: 11.x.x
-
