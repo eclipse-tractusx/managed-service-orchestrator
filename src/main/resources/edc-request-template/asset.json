@@ -4,16 +4,15 @@
 		"@type": "Asset",
 		"@id": "%s",
 		"properties": {
-			"asset:prop:id": "%s",
-			"asset:prop:type": "data.core.digitalTwinRegistry",
-			"asset:prop:name": "Digital Twin Registry Endpoint of provider  %s",
-			"asset:prop:contenttype": "application/json",
-			"asset:prop:policy-id": "use-eu",
-			"asset:prop:publisher": "%s"
+			"id": "%s",
+			"type": "data.core.digitalTwinRegistry",
+			"name": "Digital Twin Registry Endpoint of provider  %s",
+			"contenttype": "application/json",
+			"policy-id": "use-eu",
+			"publisher": "%s"
 		}
 	},
 	"dataAddress": {
-		"@type": "DataAddress",
 		"type": "HttpData",
 		"baseUrl": "%s"
 	}

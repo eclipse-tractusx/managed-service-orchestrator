@@ -20,7 +20,6 @@
 
 update app_tbl set expected_input_data= '{
     "install": {
-  		"daps": false,
         "postgresql": true,
   		"vault": false
   	},
@@ -29,14 +28,6 @@ update app_tbl set expected_input_data= '{
   	},
     "backendService": {
         "httpProxyTokenReceiverUrl": "$\{dftAddress\}"
-    },
-    "daps": {
-        "url": "$\{dapsurl\}",
-        "clientId": "$\{dapsclientid\}",
-        "paths": {
-            "jwks": "/jwks.json",
-            "token": "/token"
-        }
     },
     "postgresql": {
         "enabled": true,
@@ -58,7 +49,7 @@ update app_tbl set expected_input_data= '{
 	        "token": "$\{vaulttoken\}",
 	        "timeout": 30,
             "healthCheck": {
-                "enabled": true,
+                "enabled": false,
                 "standbyOk": false
             },
             "paths": {
@@ -81,6 +72,25 @@ update app_tbl set expected_input_data= '{
                 "path": "/data",
                 "port": "8081"
             }
+        },
+		"service": {
+		    "type": "NodePort"
+		},
+		"securityContext": {
+		   "readOnlyRootFilesystem": false
+		},
+        "ssi" : {
+          "miw" :{
+             "authorityId" : "$\{authorityId\}",
+             "url": "$\{edcMiwUrl\}"
+          },
+          "oauth": {
+             "client" :{
+                "id" :"$\{keycloakAuthenticationClientId\}",
+                "secretAlias": "client-secret"
+             },
+             "tokenurl": "$\{keycloakAuthTokenURL\}"
+          }
         },
         "ingresses": [
             {
@@ -124,7 +134,7 @@ update app_tbl set expected_input_data= '{
             }
         ]
     }
-}', package_version='0.4.1', package_identifier='tx-all-repo/tractusx-connector' where app_name='EDC_CONNECTOR';
+}', package_version='0.5.0-rc4', package_identifier='tx-all-repo/tractusx-connector' where app_name='EDC_CONNECTOR';
 
 update app_tbl set expected_input_data= '{
     "enablePostgres": true,
@@ -168,6 +178,6 @@ update app_tbl set expected_input_data= '{
                 "tls": true
             }
     }
-}', package_version='0.3.2' where app_name='DT_REGISTRY';
+}', package_version='0.3.7' where app_name='DT_REGISTRY';
 
 update app_tbl set expected_input_data= replace(replace(expected_input_data,'\{','{'),'\}','}'), required_yaml_configuration=replace(replace(required_yaml_configuration,'\{','{'),'\}','}');

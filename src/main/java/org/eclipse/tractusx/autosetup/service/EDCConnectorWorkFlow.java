@@ -30,6 +30,7 @@ import org.eclipse.tractusx.autosetup.exception.ServiceException;
 import org.eclipse.tractusx.autosetup.manager.AppDeleteManager;
 import org.eclipse.tractusx.autosetup.manager.CertificateManager;
 import org.eclipse.tractusx.autosetup.manager.ConnectorRegistrationManager;
+import org.eclipse.tractusx.autosetup.manager.PortalIntegrationManager;
 import org.eclipse.tractusx.autosetup.manager.TestConnectorServiceManager;
 import org.eclipse.tractusx.autosetup.manager.TractusConnectorManager;
 import org.eclipse.tractusx.autosetup.manager.VaultManager;
@@ -53,8 +54,13 @@ public class EDCConnectorWorkFlow {
 
 	private final AppDeleteManager appDeleteManager;
 
+	private final PortalIntegrationManager portalIntegrationManager;
+
 	public Map<String, String> getWorkFlow(Customer customerDetails, SelectedTools tool, AppActions workflowAction,
 			Map<String, String> inputConfiguration, AutoSetupTriggerEntry triger) {
+
+		portalIntegrationManager.postServiceInstanceResultAndGetTenantSpecs(customerDetails, tool, inputConfiguration,
+				triger);
 
 		inputConfiguration
 				.putAll(certificateManager.createCertificate(customerDetails, tool, inputConfiguration, triger));
@@ -78,7 +84,7 @@ public class EDCConnectorWorkFlow {
 			AutoSetupTriggerEntry triger) {
 
 		vaultManager.deleteAllSecret(tool, inputConfiguration, triger);
-		
+
 		try {
 			connectorRegistrationManager.deleteConnector(tool, inputConfiguration, triger);
 		} catch (ServiceException ex) {
@@ -88,5 +94,4 @@ public class EDCConnectorWorkFlow {
 		appDeleteManager.deletePackage(EDC_CONNECTOR, tool, inputConfiguration, triger);
 	}
 
-	
 }
