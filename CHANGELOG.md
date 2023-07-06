@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
  - NA
  
+## [1.3.3] - 2023-07-06
+
+### Changed
+ - Support EDC SSI
+
 ## [1.3.2] - 2023-06-30
 
 ### Added
