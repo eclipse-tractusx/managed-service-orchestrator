@@ -50,6 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class VaultManager {
 
+	private static final String CLIENT_SECRET = "client-secret";
 	private static final String V1_SECRET_DATA = "/v1/secret/data/";
 	public static final String ENCRYPTIONKEYS = "encryptionkeys";
 	public static final String CONTENT = "content";
@@ -93,6 +94,10 @@ public class VaultManager {
 			tenantVaultSecret = new HashMap<>();
 			tenantVaultSecret.put(CONTENT, inputData.get("selfsigncertificateprivatekey"));
 			uploadSecrete(tenantNameNamespace, CERTIFICATE_PRIVATE_KEY, tenantVaultSecret);
+			
+			tenantVaultSecret = new HashMap<>();
+			tenantVaultSecret.put(CONTENT, inputData.get("keycloakAuthenticationClientSecret"));
+			uploadSecrete(tenantNameNamespace, CLIENT_SECRET, tenantVaultSecret);
 
 			String encryptionkeysalias = openSSLClientManager.executeCommand("openssl rand -base64 16");
 			tenantVaultSecret = new HashMap<>();
@@ -105,6 +110,7 @@ public class VaultManager {
 			inputData.put("vaulturl", valutURL);
 			inputData.put("vaulttoken", vaulttoken);
 			inputData.put("vaulttimeout", vaulttimeout);
+			inputData.put(CLIENT_SECRET, CLIENT_SECRET);
 			inputData.put(ENCRYPTIONKEYS, ENCRYPTIONKEYS);
 			inputData.put("certificate-data-plane-private-key", CERTIFICATE_PRIVATE_KEY);
 			inputData.put("certificate-data-plane-public-key", CERTIFICATE_PRIVATE_KEY);
@@ -156,6 +162,8 @@ public class VaultManager {
 			deleteSecret(tenantNameNamespace, DAPS_CERT);
 			deleteSecret(tenantNameNamespace, CERTIFICATE_PRIVATE_KEY);
 			deleteSecret(tenantNameNamespace, ENCRYPTIONKEYS);
+			deleteSecret(tenantNameNamespace, CLIENT_SECRET);
+			
 			log.info(LogUtil.encode(orgName) + "-" + LogUtil.encode(packageName) + "-Vault deleted");
 
 		} catch (Exception ex) {

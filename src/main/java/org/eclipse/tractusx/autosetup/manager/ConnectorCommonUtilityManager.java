@@ -22,8 +22,9 @@ package org.eclipse.tractusx.autosetup.manager;
 
 import java.util.Map;
 
-import org.eclipse.tractusx.autosetup.constant.DAPsConfigurationProperty;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.tractusx.autosetup.utility.PasswordGenerator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ConnectorCommonUtilityManager {
 
-	
-	private final DAPsConfigurationProperty dAPsConfigurationProperty;
+	@Value("${edc.miwUrl:default}")
+	private String edcMiwUrl;
+
+	@Value("${sde.keycloak-tokenUrl:default}")
+	private String sdeKeycloakTokenUrl;
+
+	@Value("${edc.ssi.authorityId:}")
+	private String authorityId;
 
 	public Map<String, String> prepareConnectorInput(String packageName, Map<String, String> inputData) {
 
@@ -42,10 +49,6 @@ public class ConnectorCommonUtilityManager {
 		String dnsNameURLProtocol = inputData.get("dnsNameURLProtocol");
 
 		String controlplaneurl = dnsNameURLProtocol + "://" + dnsName;
-
-		inputData.put("dapsurl", dAPsConfigurationProperty.getUrl());
-		inputData.put("dapsjsksurl", dAPsConfigurationProperty.getJskUrl());
-		inputData.put("dapstokenurl", dAPsConfigurationProperty.getTokenUrl());
 
 		inputData.put("dataPlanePublicUrl",
 				dnsNameURLProtocol + "://" + packageName + "-edcdataplane-edc-dataplane:8185/api/public");
@@ -65,7 +68,15 @@ public class ConnectorCommonUtilityManager {
 
 		String dftAddress = dnsNameURLProtocol + "://" + dnsName + "/backend/api";
 		inputData.put("dftAddress", dftAddress);
-		
+
+		inputData.put("keycloakAuthTokenURL", sdeKeycloakTokenUrl);
+		inputData.put("edcMiwUrl", edcMiwUrl);
+
+		if (StringUtils.isBlank(authorityId))
+			inputData.put("authorityId", inputData.get("bpnNumber"));
+		else
+			inputData.put("authorityId", authorityId);
+
 		inputData.put("postgresPassword", "admin@123");
 		inputData.put("username", "admin");
 		inputData.put("appdbpass", "admin@123");

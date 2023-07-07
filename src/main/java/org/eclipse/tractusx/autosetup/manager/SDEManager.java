@@ -51,17 +51,10 @@ public class SDEManager {
 	private final KubeAppsPackageManagement appManagement;
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
 
-	private final PortalIntegrationManager portalIntegrationManager;
-
-	@Value("${manual.update}")
-	private boolean manualUpdate;
-
 	@Value("${managed.dt-registry:true}")
 	private boolean managedDtRegistry;
 
 	private final SDEConfigurationProperty sDEConfigurationProperty;
-
-	private Map<String, String> portalDetails = null;
 
 	@Retryable(retryFor = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
@@ -87,6 +80,13 @@ public class SDEManager {
 			inputData.put("sdeFrontEndUrl", sdefrontend);
 			inputData.put("database", "sde");
 
+			inputData.put("digital-twins.authentication.clientId", inputData.get("keycloakAuthenticationClientId"));
+			inputData.put("digital-twins.authentication.clientSecret",
+					inputData.get("keycloakAuthenticationClientSecret"));
+
+			inputData.put("dftbackendkeycloakclientid", inputData.get("keycloakResourceClient"));
+			inputData.put("dftfrontendkeycloakclientid", inputData.get("keycloakResourceClient"));
+
 			if (managedDtRegistry) {
 				inputData.put("sde.digital-twins.hostname", inputData.get("dtregistryUrl"));
 			} else {
@@ -109,14 +109,6 @@ public class SDEManager {
 			inputData.put("sde.discovery.authentication.url", sDEConfigurationProperty.getDiscoveryAuthenticationUrl());
 			inputData.put("sde.discovery.clientId", sDEConfigurationProperty.getDiscoveryClientId());
 			inputData.put("sde.discovery.clientSecret", sDEConfigurationProperty.getDiscoveryClientSecret());
-			
-			if (!manualUpdate && portalDetails == null) {
-				portalDetails = portalIntegrationManager.postServiceInstanceResultAndGetTenantSpecs(inputData);
-				inputData.putAll(portalDetails);
-				log.info("Autosetup recieved new clientId/secret from portal");
-			} else {
-				log.warn("Hope already Autosetup recieved new clientId/secret from portal previous request");
-			}
 
 			String packageName = tool.getLabel();
 
@@ -133,10 +125,7 @@ public class SDEManager {
 					RetrySynchronizationManager.getContext().getRetryCount() + 1);
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
-			if (portalDetails == null)
-				autoSetupTriggerDetails.setRemark(ex.getMessage());
-			else
-				autoSetupTriggerDetails.setRemark(ex.getMessage() + ", portal-details:" + portalDetails.toString());
+			autoSetupTriggerDetails.setRemark(ex.getMessage());
 
 			throw new ServiceException("SDEManager Oops! We have an exception - " + ex.getMessage());
 		} finally {
