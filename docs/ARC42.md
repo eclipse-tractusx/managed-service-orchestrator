@@ -95,7 +95,7 @@ The portal will provide this interface to register the SDEwith an SME-individual
 3. **Manage Tenant Namespace:**
 This interface includes Manage SDE, Digital twin Registray and Managed EDC connector.
 4. **Connector Registration process:**
-Portal provides anAPI to Autosetup process for connector registration
+Portal provides an API to Autosetup process for connector registration
 5. **Auto Setup Creation:**
 Auto setup create data.core,digitalTwinRegistry type Asset for managed twin registry information
 
