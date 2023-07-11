@@ -59,9 +59,8 @@ VALUES('SDE', 'default', 'kubeapps', '{
          "size":"1Gi"
       },
       "auth":{
-         "secretKeys":{
-            "password":"$\{postgresPassword\}"
-         },
+	     "postgresPassword":"$\{postgresPassword\}",
+         "password":"$\{postgresPassword\}",
          "username":"$\{username\}",
          "database":"$\{database\}"
       }

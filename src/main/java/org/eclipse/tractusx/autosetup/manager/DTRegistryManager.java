@@ -119,12 +119,11 @@ public class DTRegistryManager {
 			}
 
 		} catch (Exception e) {
-			log.error(customerDetails.getOrganizationName()
+			String errorMsg = customerDetails.getOrganizationName()
 					+ ":It looks EDC connector is not up for DT asset creation, Oops! We have an exception - "
-					+ e.getMessage());
-			throw new ServiceException(customerDetails.getOrganizationName()
-					+ ":It looks EDC connector is not up for DT asset creation, Oops! We have an exception - "
-					+ e.getMessage());
+					+ e.getMessage();
+			log.error(errorMsg);
+			throw new ServiceException(errorMsg);
 		}
 
 	}
