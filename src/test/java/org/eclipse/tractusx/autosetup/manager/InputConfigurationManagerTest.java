@@ -59,7 +59,7 @@ class InputConfigurationManagerTest {
                 "        \"bpnNumber\": \"BPN12345611\",\n" +
                 "        \"role\": \"recycler\",\n" +
                 "        \"subscriptionId\": \"DAS-D234\",\n" +
-                "        \"serviceId\": \"T-SYSTEM-DFT-EDC\"\n" +
+                "        \"serviceId\": \"T-SYSTEM-SDE-EDC\"\n" +
                 "    }\n" +
                 "}";
         String uuID = UUID.randomUUID().toString();

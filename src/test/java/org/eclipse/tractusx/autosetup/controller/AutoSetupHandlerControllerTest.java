@@ -25,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.eclipse.tractusx.autosetup.manager.AutoSetupTriggerManager;
 import org.eclipse.tractusx.autosetup.model.AutoSetupRequest;
 import org.eclipse.tractusx.autosetup.model.AutoSetupResponse;
-import org.eclipse.tractusx.autosetup.model.DFTUpdateRequest;
 import org.eclipse.tractusx.autosetup.service.AutoSetupOrchitestratorService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -61,30 +60,6 @@ class AutoSetupHandlerControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Test
-    void updateDftPackage() throws Exception {
-        String request = "{\n" +
-                "    \"keycloakUrl\": \"https://keycloak.cx.dih-cloud.com\",\n" +
-                "    \"keycloakRealm\": \"orchestrator\",\n" +
-                "    \"keycloakFrontendClientId\": \"orchestratorservice\",\n" +
-                "    \"keycloakBackendClientId\": \"orchestratorservice\",\n" +
-                "    \"digitalTwinUrl\": \"https://semantics.dev.demo.catena-x.net/registry\",\n" +
-                "    \"digitalTwinAuthUrl\": \"https://centralidp.dev.demo.catena-x.net/auth/realms/CX-Central/protocol/openid-connect/token\",\n" +
-                "    \"digitalTwinClientId\": \"sa-cl6-cx-17\",\n" +
-                "    \"digitalTwinClientSecret\": \"T8yxHEoPdluIQkPwJi3KSGf3mcSTWoij\"\n" +
-                "}";
-        String response = "1ca680dc-8947-4afa-9621-2a72a31f9bb9";
-        Mockito.when(appHandlerService.updateDftPackage(Mockito.anyString(),Mockito.any(DFTUpdateRequest.class))).thenReturn(response);
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/internal/update-package/1ca680dc-8947-4afa-9621-2a72a31f9bb9")
-                .accept(MediaType.APPLICATION_JSON).content(request)
-                .contentType(MediaType.APPLICATION_JSON);
-        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-
-        MockHttpServletResponse apiResponse = result.getResponse();
-
-        assertEquals(HttpStatus.OK.value(), apiResponse.getStatus());
-    }
 
     @Test
     void createPackage() throws Exception {
@@ -100,7 +75,7 @@ class AutoSetupHandlerControllerTest {
                 "        \"bpnNumber\": \"BPN12345611\",\n" +
                 "        \"role\": \"recycler\",\n" +
                 "        \"subscriptionId\": \"DAS-D234\",\n" +
-                "        \"serviceId\": \"T-SYSTEM-DFT-EDC\"\n" +
+                "        \"serviceId\": \"T-SYSTEM-SDE-EDC\"\n" +
                 "    }\n" +
                 "}";
         String response = "1ca680dc-8947-4afa-9621-2a72a31f9bb9";
@@ -130,7 +105,7 @@ class AutoSetupHandlerControllerTest {
                 "        \"bpnNumber\": \"BPN12345611\",\n" +
                 "        \"role\": \"recycler\",\n" +
                 "        \"subscriptionId\": \"DAS-D234\",\n" +
-                "        \"serviceId\": \"T-SYSTEM-DFT-EDC\"\n" +
+                "        \"serviceId\": \"T-SYSTEM-SDE-EDC\"\n" +
                 "    }\n" +
                 "}";
         String response = "1ca680dc-8947-4afa-9621-2a72a31f9bb9";
@@ -160,7 +135,7 @@ class AutoSetupHandlerControllerTest {
                 "        \"bpnNumber\": \"BPN12345611\",\n" +
                 "        \"role\": \"recycler\",\n" +
                 "        \"subscriptionId\": \"DAS-D234\",\n" +
-                "        \"serviceId\": \"T-SYSTEM-DFT-EDC\"\n" +
+                "        \"serviceId\": \"T-SYSTEM-SDE-EDC\"\n" +
                 "    }\n" +
                 "}";
         String response = "1ca680dc-8947-4afa-9621-2a72a31f9bb9";
@@ -193,7 +168,7 @@ class AutoSetupHandlerControllerTest {
                 "        \"properties\": {\n" +
                 "            \"bpnNumber\": \"BPN12345611\",\n" +
                 "            \"subscriptionId\": \"DAS-D234\",\n" +
-                "            \"serviceId\": \"T-SYSTEM-DFT-EDC\",\n" +
+                "            \"serviceId\": \"T-SYSTEM-SDE-EDC\",\n" +
                 "            \"role\": \"recycler\"\n" +
                 "        }\n" +
                 "    },\n" +
