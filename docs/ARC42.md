@@ -30,6 +30,7 @@ Onboarding:
 
 Onboard SME/Company in third-party. (what data are necessary to  be able to do this without interaction of SME/Company)
 Customers will only have access to SDEFrontend, but not any access to managed data space itself
+
 Auto-Setup:
 
 1. deploy EDC
@@ -91,12 +92,12 @@ Alternatively (or additionally) you can use a table. The title of the table is t
 This interface will be provided by the third service provider (T-systems for blueprint), and will be called from a portal once the customer pushes the "get managed SDEservice" button. This a push-interface, where the portal can push the needed information to the third-party service provider
 2. **SDEregistration interface:**
 The portal will provide this interface to register the SDEwith an SME-individual user credentials
-3. **SD-HUB Registration Service:**
-This interface has to be provided by the portal. The owner of connectors has to use this interface to create the SD-Document for the connector.
-4. **Digital Registry Registration Service:**
-This service has to be provided by the digital twin team and will be used by SDE to register the metadata of the provided data
-5. **DAPS Registration Service:**
-This interface will be implemented by T-Systems. This interface has to provide for the registration of connectors to the DAPS
+3. **Manage Tenant Namespace:**
+This interface includes Manage SDE, Digital twin Registray and Managed EDC connector.
+4. **Connector Registration process:**
+Portal provides an API to Autosetup process for connector registration
+5. **Auto Setup Creation:**
+Auto setup create data.core,digitalTwinRegistry type Asset for managed twin registry information
 
 ## ![](images/pic5.png)
 
@@ -141,22 +142,6 @@ The third-party service provider has to provide the service bill to the customer
 ### SD-Factory API:
 SD-Factory has only one endpoint - POST /selfdescription  with the generic request body, which should contain mandatory fields holder  and issuer. The response body is dependent on a request.
 
-### DAPS Registration API:
-To register a Certificate to the DAPS an authenticated client (known client with an appropriate role, a concrete role can be configured in configuration file) sends POST multipart request to the DAPS registration service endpoint
-
-Media Type: multipart/form-data
-
-POST /api/v1/daps
-
-here are interface definition in java:
-
-public void createClient(
-@RequestParam String clientName,
-@RequestParam(required = false) String securityProfile,
-@RequestParam(required = false) String referringConnector,
-@RequestPart("file") MultipartFile file)
-parameters securityProfile and referringConnector are optional, for securityProfile the default value is used, if referringConnector is missed than it is not included in DAT
-
 ### Auto Setup API:
 **The description of API here** Auto Setup API information
 
@@ -183,14 +168,6 @@ Swagger API info as below:
 
 - **SD-HUB Registration Service:**
   - SD-Hub have only one endpoint - POST /selfdescription  with the generic request body, that should contain mandatory fields holder  and issuer .
-
-- **DAPS Registration Service:**
-  - DAPS registration service provides CRUD operations for maintaining a client in DAPS service for an authenticated user (keycloak) with appropriate roles. The operations are:
-        
-    - creating a client and registering its certificate
-    - updating client and changing its attributes in DAT
-    - retrieving client information
-    - deleting a client
 
 - **Digital Twin Registry Registration Service:**
   - See API Documentation of Digital Twin documentation
