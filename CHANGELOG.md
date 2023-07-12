@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
  - NA
  
+## [1.3.4] - 2023-07-11
+
+### Changed
+ - Updated the ARC42 document
+ 
 ## [1.3.3] - 2023-07-06
 
 ### Changed
