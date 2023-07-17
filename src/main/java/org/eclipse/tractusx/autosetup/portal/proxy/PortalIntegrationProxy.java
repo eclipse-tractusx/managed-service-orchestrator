@@ -41,11 +41,18 @@ public interface PortalIntegrationProxy {
 	KeycloakTokenResponse readAuthToken(URI url, @RequestBody MultiValueMap<String, Object> body);
 
 	@PostMapping("/api/Apps/autoSetup")
+	public ServiceInstanceResultResponse postAppInstanceResultAndGetTenantSpecs(URI url,
+			@RequestHeader Map<String, String> header,
+			@RequestBody ServiceInstanceResultRequest serviceInstanceResultRequest);
+
+	
+	@PostMapping("/api/Services/autoSetup")
 	public ServiceInstanceResultResponse postServiceInstanceResultAndGetTenantSpecs(URI url,
 			@RequestHeader Map<String, String> header,
 			@RequestBody ServiceInstanceResultRequest serviceInstanceResultRequest);
 
-	@PostMapping("/api/administration/connectors/managed-daps")
+	
+	@PostMapping("/api/administration/connectors/managed")
 	public String manageConnector(URI url, @RequestHeader Map<String, String> header,
 			@RequestBody MultiValueMap<String, Object> body);
 

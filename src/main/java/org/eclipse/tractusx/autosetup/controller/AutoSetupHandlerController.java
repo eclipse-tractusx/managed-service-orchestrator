@@ -22,12 +22,9 @@ package org.eclipse.tractusx.autosetup.controller;
 
 import java.util.UUID;
 
-import jakarta.validation.Valid;
-
 import org.eclipse.tractusx.autosetup.manager.AutoSetupTriggerManager;
 import org.eclipse.tractusx.autosetup.model.AutoSetupRequest;
 import org.eclipse.tractusx.autosetup.model.AutoSetupResponse;
-import org.eclipse.tractusx.autosetup.model.DFTUpdateRequest;
 import org.eclipse.tractusx.autosetup.service.AutoSetupOrchitestratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,6 +41,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @Tag(name = "AutoSetup", description = "Auto setup controller to perform all operation")
@@ -59,18 +57,6 @@ public class AutoSetupHandlerController {
 	@GetMapping("/internal")
 	public String getAllInstallPackages() {
 		return appHandlerService.getAllInstallPackages();
-	}
-
-	/// internal access
-	// update dft packages input: keycloack details for frontend and backend,
-	// digital twin details
-	@Operation(summary = "Update DFT only packages", description = "This will update only DFT packages")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Created", content = @Content(schema = @Schema(implementation = UUID.class))) })
-	@PutMapping("/internal/update-package/{executionId}")
-	public String updateDftPackage(@PathVariable("executionId") UUID executionId,
-			@RequestBody DFTUpdateRequest dftUpdateRequest) {
-		return appHandlerService.updateDftPackage(executionId.toString(), dftUpdateRequest);
 	}
 
 	// portal access

@@ -37,7 +37,6 @@ import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.eclipse.tractusx.autosetup.portal.proxy.PortalIntegrationProxy;
 import org.eclipse.tractusx.autosetup.utility.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.retry.support.RetrySynchronizationManager;
@@ -90,13 +89,10 @@ public class ConnectorRegistrationManager {
 			file = getTestFile(inputData.get("selfsigncertificate"));
 
 			MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-
 			body.add("name", customerDetails.getOrganizationName());
 			body.add("connectorUrl", inputData.get("controlPlaneEndpoint"));
-			body.add("status", ACTIVE);
 			body.add("location", customerDetails.getCountry());
-			body.add("providerBpn", inputData.get("bpnNumber"));
-			body.add("certificate", new FileSystemResource(file.toFile()));
+			body.add("subscriptionId", inputData.get("subscriptionId"));
 			Map<String, String> header = new HashMap<>();
 			header.put("Authorization", "Bearer " + getKeycloakToken());
 

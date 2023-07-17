@@ -34,6 +34,8 @@ import lombok.NoArgsConstructor;
 public class SelectedTools {
 
 	private ToolType tool;
+	
+	private String type;
 
 	private String label;
 

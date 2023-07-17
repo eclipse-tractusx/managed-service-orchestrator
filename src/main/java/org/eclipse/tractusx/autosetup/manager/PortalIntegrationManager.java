@@ -91,9 +91,13 @@ public class PortalIntegrationManager {
 
 			ServiceInstanceResultRequest serviceInstanceResultRequest = ServiceInstanceResultRequest.builder()
 					.requestId(subscriptionId).offerUrl(applicationURL).build();
-
-			serviceInstanceResultResponse = portalIntegrationProxy.postServiceInstanceResultAndGetTenantSpecs(portalUrl,
-					header, serviceInstanceResultRequest);
+			
+			if ("app".equalsIgnoreCase(tool.getType()))
+				serviceInstanceResultResponse = portalIntegrationProxy.postAppInstanceResultAndGetTenantSpecs(portalUrl,
+						header, serviceInstanceResultRequest);
+			else
+				serviceInstanceResultResponse = portalIntegrationProxy
+						.postServiceInstanceResultAndGetTenantSpecs(portalUrl, header, serviceInstanceResultRequest);
 
 			if (serviceInstanceResultResponse != null) {
 
