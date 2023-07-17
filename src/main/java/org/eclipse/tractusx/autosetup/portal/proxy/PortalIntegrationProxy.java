@@ -52,7 +52,7 @@ public interface PortalIntegrationProxy {
 			@RequestBody ServiceInstanceResultRequest serviceInstanceResultRequest);
 
 	
-	@PostMapping("/api/administration/connectors/managed-daps")
+	@PostMapping("/api/administration/connectors/managed")
 	public String manageConnector(URI url, @RequestHeader Map<String, String> header,
 			@RequestBody MultiValueMap<String, Object> body);
 

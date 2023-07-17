@@ -63,7 +63,7 @@ class SDEManagerTest {
 		mockInputMap.put("dnsNameURLProtocol", "https");
 		Map<String, String> resultMap = sdeManager.managePackage(null, AppActions.CREATE, selectedTools,
 				mockInputMap, null);
-		assertEquals(22, resultMap.size());
+		assertEquals(26, resultMap.size());
 		assertEquals("test", mockInputMap.get("dnsName"));
 	}
 }
