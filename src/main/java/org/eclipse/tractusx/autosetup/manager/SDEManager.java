@@ -80,6 +80,8 @@ public class SDEManager {
 			inputData.put("sdeFrontEndUrl", sdefrontend);
 			inputData.put("database", "sde");
 
+			inputData.put("sde.digital-twins.authentication.url",
+					sDEConfigurationProperty.getDigitalTwinsAuthenticationUrl());
 			inputData.put("digital-twins.authentication.clientId", inputData.get("keycloakAuthenticationClientId"));
 			inputData.put("digital-twins.authentication.clientSecret",
 					inputData.get("keycloakAuthenticationClientSecret"));
@@ -93,18 +95,23 @@ public class SDEManager {
 				inputData.put("sde.digital-twins.hostname", sDEConfigurationProperty.getDigitalTwinsHostname());
 			}
 
-			inputData.put("sde.digital-twins.authentication.url",
-					sDEConfigurationProperty.getDigitalTwinsAuthenticationUrl());
 			inputData.put("sde.resourceServerIssuer", sDEConfigurationProperty.getResourceServerIssuer());
 			inputData.put("sde.keycloak.auth", sDEConfigurationProperty.getKeycloakAuth());
 			inputData.put("sde.keycloak.realm", sDEConfigurationProperty.getKeycloakRealm());
+			inputData.put("sde.keycloak.tokenUrl", sDEConfigurationProperty.getKeycloakTokenUrl());
+			
 			inputData.put("sde.partner.pool.hostname", sDEConfigurationProperty.getPartnerPoolHostname());
+			inputData.put("sde.partner.pool.authentication.url",
+					sDEConfigurationProperty.getPartnerPoolAuthenticationUrl());
+			inputData.put("sde.partner.pool.clientId", sDEConfigurationProperty.getPartnerPoolClientId());
+			inputData.put("sde.partner.pool.clientSecret", sDEConfigurationProperty.getPartnerPoolClientSecret());
+
 			inputData.put("sde.portal.backend.hostname", sDEConfigurationProperty.getPortalBackendHostname());
-			inputData.put("sde.connector.discovery.token-url",
-					sDEConfigurationProperty.getConnectorDiscoveryTokenUrl());
-			inputData.put("sde.connector.discovery.clientId", sDEConfigurationProperty.getConnectorDiscoveryClientId());
-			inputData.put("sde.connector.discovery.clientSecret",
-					sDEConfigurationProperty.getConnectorDiscoveryClientSecret());
+			inputData.put("sde.portal.backend.authentication.url",
+					sDEConfigurationProperty.getPortalBackendAuthenticationUrl());
+			inputData.put("sde.portal.backend.clientId", sDEConfigurationProperty.getPortalBackendClientId());
+			inputData.put("sde.portal.backend.clientSecret", sDEConfigurationProperty.getPortalBackendClientSecret());
+
 			inputData.put("sde.bpndiscovery.hostname", sDEConfigurationProperty.getBpndiscoveryHostname());
 			inputData.put("sde.discovery.authentication.url", sDEConfigurationProperty.getDiscoveryAuthenticationUrl());
 			inputData.put("sde.discovery.clientId", sDEConfigurationProperty.getDiscoveryClientId());
