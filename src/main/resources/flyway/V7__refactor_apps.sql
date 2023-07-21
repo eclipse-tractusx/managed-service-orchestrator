@@ -119,6 +119,8 @@ VALUES('SDE', 'default', 'kubeapps', '{
 							
 							digital-twins.authentication.url=$\{sde.digital-twins.authentication.url\}
 							
+							digital-twins.api=/api/v3.0
+							
 							digital-twins.authentication.clientId=$\{digital-twins.authentication.clientId\}
 								
 							digital-twins.authentication.clientSecret=$\{digital-twins.authentication.clientSecret\}
@@ -161,13 +163,23 @@ VALUES('SDE', 'default', 'kubeapps', '{
 							
 							partner.pool.hostname=$\{sde.partner.pool.hostname\}
 							
+							partner.pool.authentication.url=$\{sde.partner.pool.authentication.url\}
+							
+						    partner.pool.clientId=$\{sde.partner.pool.clientId\}
+						    
+						    partner.pool.clientSecret=$\{sde.partner.pool.clientSecret\}
+						    
+						    partner.pool.grantType=client_credentials
+							
 							portal.backend.hostname=$\{sde.portal.backend.hostname\}
 							
-							connector.discovery.token-url=$\{sde.connector.discovery.token-url\}
-							
-							connector.discovery.clientId=$\{sde.connector.discovery.clientId\}
-							
-							connector.discovery.clientSecret=$\{sde.connector.discovery.clientSecret\}
+							portal.backend.authentication.url=$\{sde.portal.backend.authentication.url\}
+ 							
+ 							portal.backend.clientId=$\{sde.portal.backend.clientId\}
+ 							
+ 							portal.backend.clientSecret=$\{sde.portal.backend.clientSecret\}
+ 							
+ 							portal.backend.grantType=client_credentials
 							
 							bpndiscovery.hostname=$\{sde.bpndiscovery.hostname\}
 							
