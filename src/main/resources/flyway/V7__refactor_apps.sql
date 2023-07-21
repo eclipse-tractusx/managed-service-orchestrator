@@ -33,15 +33,15 @@ DELETE FROM app_service_catalog_tbl;
 
 INSERT INTO app_service_catalog_tbl
 (canonical_service_id, ct_name, service_tools, workflow)
-VALUES('SDE-WITH-EDC-TX', 'SDE-WITH-EDC-TX', '[{"tool": "SDE_WITH_EDC_TRACTUS","label": "sdeedctx"}]', 'EDC_TX_SDE');
+VALUES('SDE-WITH-EDC-TX', 'SDE-WITH-EDC-TX', '[{"tool": "SDE_WITH_EDC_TRACTUS","label": "sdeedctx", "type": "app"}]', 'EDC_TX_SDE');
 
 INSERT INTO app_service_catalog_tbl
 (canonical_service_id, ct_name, service_tools, workflow)
-VALUES('EDC-TX', 'EDC-TX', '[{"tool": "EDC_TRACTUS","label": "edctx"}]', 'EDC_TX');
+VALUES('EDC-TX', 'EDC-TX', '[{"tool": "EDC_TRACTUS","label": "edctx", "type": "service"}]', 'EDC_TX');
 
 INSERT INTO app_service_catalog_tbl
 (canonical_service_id, ct_name, service_tools, workflow)
-VALUES('DT-REGISTRY', 'DT-REGISTRY', '[{"tool": "DT_REGISTRY","label": "dt"}]', 'DT_REGISTRY');
+VALUES('DT-REGISTRY', 'DT-REGISTRY', '[{"tool": "DT_REGISTRY","label": "dt", "type": "app"}]', 'DT_REGISTRY');
 
 update app_tbl set package_version='0.3.5' where app_name='DT_REGISTRY';
 

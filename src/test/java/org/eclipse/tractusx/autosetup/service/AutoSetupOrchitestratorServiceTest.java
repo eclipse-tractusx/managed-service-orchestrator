@@ -24,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.eclipse.tractusx.autosetup.kubeapps.proxy.KubeAppManageProxy;
 import org.eclipse.tractusx.autosetup.mapper.AutoSetupRequestMapper;
 import org.eclipse.tractusx.autosetup.model.AutoSetupRequest;
+import org.eclipse.tractusx.autosetup.portal.proxy.PortalIntegrationProxy;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,9 @@ class AutoSetupOrchitestratorServiceTest {
     //@Spy
     @Autowired
     private AutoSetupOrchitestratorService autoSetupOrchitestratorService;
+    
+    @MockBean
+    private PortalIntegrationProxy portalIntegrationProxy;
 
 
     @MockBean

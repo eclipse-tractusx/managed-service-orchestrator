@@ -45,12 +45,10 @@ import org.eclipse.tractusx.autosetup.kubeapps.proxy.KubeAppManageProxy;
 import org.eclipse.tractusx.autosetup.manager.AutoSetupTriggerManager;
 import org.eclipse.tractusx.autosetup.manager.EmailManager;
 import org.eclipse.tractusx.autosetup.manager.InputConfigurationManager;
-import org.eclipse.tractusx.autosetup.manager.ManualDFTPackageUpdateManager;
 import org.eclipse.tractusx.autosetup.mapper.AutoSetupRequestMapper;
 import org.eclipse.tractusx.autosetup.mapper.AutoSetupTriggerMapper;
 import org.eclipse.tractusx.autosetup.model.AutoSetupRequest;
 import org.eclipse.tractusx.autosetup.model.Customer;
-import org.eclipse.tractusx.autosetup.model.DFTUpdateRequest;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.eclipse.tractusx.autosetup.repository.AutoSetupTriggerEntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +59,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -86,7 +83,6 @@ public class AutoSetupOrchitestratorService {
 	private final DTAppWorkFlow dtAppWorkFlow;
 
 	private final InputConfigurationManager inputConfigurationManager;
-	private final ManualDFTPackageUpdateManager manualDFTPackageUpdateManager;
 
 	private final AutoSetupTriggerMapper autoSetupTriggerMapper;
 	private final AutoSetupRequestMapper autoSetupRequestMapper;
@@ -422,7 +418,7 @@ public class AutoSetupOrchitestratorService {
 			emailContent.put(TOEMAIL, portalEmail);
 
 			// End of email sending code
-			emailManager.sendEmail(emailContent, "SDE/DFT Application Deployed Successfully", "success.html");
+			emailManager.sendEmail(emailContent, "SDE Application Deployed Successfully", "success.html");
 			log.info(EMAIL_SENT_SUCCESSFULLY);
 			trigger.setStatus(TriggerStatusEnum.MANUAL_UPDATE_PENDING.name());
 
@@ -435,7 +431,7 @@ public class AutoSetupOrchitestratorService {
 			emailContent.put(TOEMAIL, customer.getEmail());
 			emailContent.put("ccemail", portalEmail);
 
-			emailManager.sendEmail(emailContent, "SDE/DFT Application Activited Successfully", "success_activate.html");
+			emailManager.sendEmail(emailContent, "SDE Application Activited Successfully", "success_activate.html");
 			log.info(EMAIL_SENT_SUCCESSFULLY);
 			// End of email sending code
 
@@ -524,57 +520,6 @@ public class AutoSetupOrchitestratorService {
 		log.info("All Packages deleted successfully!!!!");
 	}
 
-	@SneakyThrows
-	public String updateDftPackage(String triggerId, DFTUpdateRequest dftUpdateRequest) {
-
-		AutoSetupTriggerEntry trigger = autoSetupTriggerEntryRepository.findAllByTriggerId(triggerId);
-
-		if (trigger != null && TriggerStatusEnum.MANUAL_UPDATE_PENDING.name().equals(trigger.getStatus())) {
-
-			AutoSetupRequest autosetupRequest = autoSetupRequestMapper.fromStr(trigger.getAutosetupRequest());
-
-			List<AppServiceCatalogAndCustomerMapping> appCatalogDetails = verifyIsServiceValid(autosetupRequest);
-
-			Map<String, String> inputConfiguration = inputConfigurationManager
-					.prepareInputConfiguration(autosetupRequest, triggerId);
-
-			Runnable runnable = () -> {
-
-				try {
-					trigger.setTriggerType(UPDATE.name());
-					trigger.setStatus(INPROGRESS.name());
-					autoSetupTriggerManager.saveTriggerUpdate(trigger);
-
-					Map<String, String> output = manualDFTPackageUpdateManager.manualPackageUpdate(autosetupRequest,
-							dftUpdateRequest, inputConfiguration, trigger, appCatalogDetails);
-
-					String json = autoSetupTriggerMapper.fromMaptoStr(extractResultMap(output));
-
-					trigger.setAutosetupResult(json);
-
-					trigger.setStatus(TriggerStatusEnum.SUCCESS.name());
-
-				} catch (Exception e) {
-
-					log.error("Error in manual package updation " + e.getMessage());
-					trigger.setStatus(TriggerStatusEnum.FAILED.name());
-					trigger.setRemark(e.getMessage());
-					trigger.setAutosetupResult("");
-				}
-
-				LocalDateTime now = LocalDateTime.now();
-				trigger.setModifiedTimestamp(now.toString());
-				autoSetupTriggerManager.saveTriggerUpdate(trigger);
-
-			};
-			new Thread(runnable).start();
-
-			return trigger.getTriggerId();
-		} else {
-			throw new NoDataFoundException("Autosetup entry not present for manual update");
-		}
-
-	}
 
 	private List<Map<String, String>> extractResultMap(Map<String, String> outputMap) {
 
