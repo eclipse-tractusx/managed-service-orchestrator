@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
  - NA
+ 
+## [1.3.7] - 2023-07-24
+
+### Changed
+ - Veracode security issue fixed
 
 ## [1.3.6] - 2023-07-17
 
