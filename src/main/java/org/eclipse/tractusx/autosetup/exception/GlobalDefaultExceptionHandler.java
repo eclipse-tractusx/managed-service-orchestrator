@@ -68,6 +68,11 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
 																  HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 		
 		Map<String, String> errors = new HashMap<>();
+		
+		Object inputRequest = ex.getBindingResult().getTarget();
+		if (inputRequest != null)
+			log.error(inputRequest.toString());
+		
 		ex.getBindingResult().getAllErrors().forEach(error -> {
 			String fieldName = ((FieldError) error).getField();
 			Object fieldValue = ((FieldError) error).getRejectedValue();

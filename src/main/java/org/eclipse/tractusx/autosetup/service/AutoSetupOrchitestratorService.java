@@ -77,7 +77,7 @@ public class AutoSetupOrchitestratorService {
 
 	private final KubeAppManageProxy kubeAppManageProxy;
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
-
+	private final AutoSetupRequestMapper customerDetailsMapper;
 	private final EDCConnectorWorkFlow edcConnectorWorkFlow;
 	private final SDEAppWorkFlow sdeWorkFlow;
 	private final DTAppWorkFlow dtAppWorkFlow;
@@ -116,93 +116,112 @@ public class AutoSetupOrchitestratorService {
 
 	public String createPackage(AutoSetupRequest autoSetupRequest) {
 
-		List<AppServiceCatalogAndCustomerMapping> appCatalogDetails = verifyIsServiceValid(autoSetupRequest);
-
 		String uuID = UUID.randomUUID().toString();
 
-		Runnable runnable = () -> {
+		Map<String, String> inputConfiguration = inputConfigurationManager.prepareInputConfiguration(autoSetupRequest,
+				uuID);
 
-			Map<String, String> inputConfiguration = inputConfigurationManager
-					.prepareInputConfiguration(autoSetupRequest, uuID);
+		String targetNamespace = inputConfiguration.get(TARGET_NAMESPACE);
 
-			String targetNamespace = inputConfiguration.get(TARGET_NAMESPACE);
+		AutoSetupTriggerEntry trigger = autoSetupTriggerManager.createTrigger(autoSetupRequest, CREATE, uuID,
+				targetNamespace);
+		try {
+			List<AppServiceCatalogAndCustomerMapping> appCatalogDetails = verifyIsServiceValid(autoSetupRequest);
 
-			AutoSetupTriggerEntry trigger = autoSetupTriggerManager.createTrigger(autoSetupRequest, CREATE, uuID,
-					targetNamespace);
+			Runnable runnable = () -> {
 
-			if (!checkNamespaceisExist(targetNamespace)) {
-				kubeAppManageProxy.createNamespace(targetCluster, targetNamespace);
-			}
+				if (!checkNamespaceisExist(targetNamespace)) {
+					kubeAppManageProxy.createNamespace(targetCluster, targetNamespace);
+				}
 
-			proceessTrigger(autoSetupRequest, CREATE, trigger, inputConfiguration, appCatalogDetails);
-		};
+				proceessTrigger(autoSetupRequest, CREATE, trigger, inputConfiguration, appCatalogDetails);
+			};
 
-		new Thread(runnable).start();
-
+			new Thread(runnable).start();
+		} catch (Exception e) {
+			log.error("Error in package creation process start: " + e.getMessage());
+			trigger.setStatus(TriggerStatusEnum.FAILED.name());
+			trigger.setRemark(e.getMessage());
+			autoSetupTriggerManager.saveTriggerUpdate(trigger);
+			throw e;
+		}
 		return uuID;
 	}
 
 	public String updatePackage(AutoSetupRequest autoSetupRequest, String triggerId) {
 
-		List<AppServiceCatalogAndCustomerMapping> appCatalogDetails = verifyIsServiceValid(autoSetupRequest);
-
 		AutoSetupTriggerEntry trigger = autoSetupTriggerEntryRepository.findAllByTriggerId(triggerId);
 
 		if (trigger != null) {
 
-			Map<String, String> inputConfiguration = inputConfigurationManager
-					.prepareInputConfiguration(autoSetupRequest, triggerId);
+			try {
+				List<AppServiceCatalogAndCustomerMapping> appCatalogDetails = verifyIsServiceValid(autoSetupRequest);
 
-			Runnable runnable = () -> {
+				Map<String, String> inputConfiguration = inputConfigurationManager
+						.prepareInputConfiguration(autoSetupRequest, triggerId);
 
-				trigger.setTriggerType(DELETE.name());
-				trigger.setStatus(INPROGRESS.name());
+				Runnable runnable = () -> {
 
-				autoSetupTriggerManager.saveTriggerUpdate(trigger);
+					trigger.setTriggerType(DELETE.name());
+					trigger.setStatus(INPROGRESS.name());
 
-				String targetNamespace = inputConfiguration.get(TARGET_NAMESPACE);
+					autoSetupTriggerManager.saveTriggerUpdate(trigger);
 
-				String existingNamespace = trigger.getAutosetupTenantName();
+					String targetNamespace = inputConfiguration.get(TARGET_NAMESPACE);
 
-				if (checkNamespaceisExist(existingNamespace)) {
+					String existingNamespace = trigger.getAutosetupTenantName();
 
-					inputConfiguration.put(TARGET_NAMESPACE, existingNamespace);
+					if (checkNamespaceisExist(existingNamespace)) {
 
-					processDeleteTrigger(trigger, inputConfiguration);
+						updateSubmethod(trigger, inputConfiguration, targetNamespace, existingNamespace);
 
-					inputConfiguration.put(TARGET_NAMESPACE, targetNamespace);
-					trigger.setAutosetupTenantName(targetNamespace);
-
-					if (!existingNamespace.equals(targetNamespace) && !checkNamespaceisExist(targetNamespace)) {
+					} else {
+						trigger.setAutosetupTenantName(targetNamespace);
 						kubeAppManageProxy.createNamespace(targetCluster, targetNamespace);
 					}
-					try {
-						log.info("Waiting after deleteing all package for recreate");
-						Thread.sleep(15000);
-					} catch (InterruptedException e) {
 
-						Thread.currentThread().interrupt();
-					}
+					AutoSetupTriggerEntry updatedtrigger = autoSetupTriggerManager
+							.updateTriggerAutoSetupRequest(autoSetupRequest, trigger, UPDATE);
 
-				} else {
-					trigger.setAutosetupTenantName(targetNamespace);
-					kubeAppManageProxy.createNamespace(targetCluster, targetNamespace);
-				}
+					proceessTrigger(autoSetupRequest, CREATE, updatedtrigger, inputConfiguration, appCatalogDetails);
 
-				AutoSetupTriggerEntry updatedtrigger = autoSetupTriggerManager
-						.updateTriggerAutoSetupRequest(autoSetupRequest, trigger, UPDATE);
+				};
 
-				proceessTrigger(autoSetupRequest, CREATE, updatedtrigger, inputConfiguration, appCatalogDetails);
-
-			};
-
-			new Thread(runnable).start();
+				new Thread(runnable).start();
+			} catch (Exception e) {
+				log.error("Error in package update process start :" + e.getMessage());
+				trigger.setStatus(TriggerStatusEnum.FAILED.name());
+				trigger.setRemark(e.getMessage());
+				trigger.setAutosetupRequest(customerDetailsMapper.fromCustomer(autoSetupRequest));
+				autoSetupTriggerManager.saveTriggerUpdate(trigger);
+				throw e;
+			}
 
 		} else {
 			throw new NoDataFoundException("No Valid Auto setup found for " + triggerId + " to update");
 		}
 
 		return triggerId;
+	}
+
+	private void updateSubmethod(AutoSetupTriggerEntry trigger, Map<String, String> inputConfiguration,
+			String targetNamespace, String existingNamespace) {
+		inputConfiguration.put(TARGET_NAMESPACE, existingNamespace);
+
+		processDeleteTrigger(trigger, inputConfiguration);
+
+		inputConfiguration.put(TARGET_NAMESPACE, targetNamespace);
+		trigger.setAutosetupTenantName(targetNamespace);
+
+		if (!existingNamespace.equals(targetNamespace) && !checkNamespaceisExist(targetNamespace)) {
+			kubeAppManageProxy.createNamespace(targetCluster, targetNamespace);
+		}
+		try {
+			log.info("Waiting after deleteing all package for recreate");
+			Thread.sleep(15000);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 	}
 
 	private List<AppServiceCatalogAndCustomerMapping> verifyIsServiceValid(AutoSetupRequest autoSetupRequest) {
@@ -519,7 +538,6 @@ public class AutoSetupOrchitestratorService {
 
 		log.info("All Packages deleted successfully!!!!");
 	}
-
 
 	private List<Map<String, String>> extractResultMap(Map<String, String> outputMap) {
 
