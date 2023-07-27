@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
  - NA
  
+## [1.3.8] - 2023-07-27
+
+### Changed
+ - Update DEPENDENCIES and Log 400 bad request in db and log file
+ 
 ## [1.3.7] - 2023-07-24
 
 ### Changed
