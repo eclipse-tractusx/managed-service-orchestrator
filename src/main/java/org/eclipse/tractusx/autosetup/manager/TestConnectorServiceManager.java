@@ -54,7 +54,7 @@ public class TestConnectorServiceManager {
 	private String connectorTestServiceURL;
 
 	@Retryable(retryFor = {
-			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
 	public Map<String, String> verifyConnectorTestingThroughTestService(Customer customerDetails,
 			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
 

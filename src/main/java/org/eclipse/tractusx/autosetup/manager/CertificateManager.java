@@ -52,7 +52,7 @@ public class CertificateManager {
 
 	@SneakyThrows
 	@Retryable(value = {
-			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
 	public Map<String, String> createCertificate(Customer customerDetails, SelectedTools tool, Map<String, String> inputData,
 			AutoSetupTriggerEntry triger) {
 

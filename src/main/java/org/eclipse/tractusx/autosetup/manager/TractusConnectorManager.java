@@ -51,7 +51,7 @@ public class TractusConnectorManager {
 	private final ConnectorCommonUtilityManager connectorCommonUtilityManager;
 
 	@Retryable(value = {
-			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
 	public Map<String, String> managePackage(Customer customerDetails, AppActions action, SelectedTools tool,
 			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
 
