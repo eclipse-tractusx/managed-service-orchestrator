@@ -56,7 +56,7 @@ public class DTRegistryManager {
 	private final EDCProxyService eDCProxyService;
 
 	@Retryable(retryFor = {
-			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
 	public Map<String, String> managePackage(Customer customerDetails, AppActions action, SelectedTools tool,
 			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
 
@@ -104,7 +104,7 @@ public class DTRegistryManager {
 	}
 
 	@Retryable(retryFor = {
-			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
 	public void dtRegistryRegistrationInEDC(Customer customerDetails, SelectedTools tool, Map<String, String> inputData,
 			AutoSetupTriggerEntry triger) {
 		try {
@@ -138,7 +138,7 @@ public class DTRegistryManager {
 	}
 
 	@Retryable(retryFor = {
-			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
 	private void createEDCAsset(Customer customerDetails, SelectedTools tool, Map<String, String> inputData,
 			AutoSetupTriggerEntry triger) {
 
@@ -167,7 +167,7 @@ public class DTRegistryManager {
 	}
 
 	@Retryable(retryFor = {
-			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
 	private void createEDCPolicy(Customer customerDetails, SelectedTools tool, Map<String, String> inputData,
 			AutoSetupTriggerEntry triger) {
 		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
@@ -196,7 +196,7 @@ public class DTRegistryManager {
 	}
 
 	@Retryable(retryFor = {
-			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
 	private void createContractDefination(Customer customerDetails, SelectedTools tool, Map<String, String> inputData,
 			AutoSetupTriggerEntry triger) {
 		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()

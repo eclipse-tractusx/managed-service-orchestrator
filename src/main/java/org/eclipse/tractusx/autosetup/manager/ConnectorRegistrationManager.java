@@ -44,6 +44,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -71,7 +72,7 @@ public class ConnectorRegistrationManager {
 	private final PortalIntegrationProxy portalIntegrationProxy;
 
 	@Retryable(retryFor = {
-			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
 	public Map<String, String> registerConnector(Customer customerDetails, SelectedTools tool,
 			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
 
@@ -108,6 +109,17 @@ public class ConnectorRegistrationManager {
 			inputData.remove("selfsigncertificateprivatekey");
 			inputData.remove("selfsigncertificate");
 
+		} catch (FeignException e) {
+
+			log.error("ConnectorregisterManager failed retry attempt: : {}",
+					RetrySynchronizationManager.getContext().getRetryCount() + 1);
+			log.error("RequestBody: " + e.request());
+			log.error("ResponseBody: " + e.contentUTF8());
+
+			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
+			autoSetupTriggerDetails.setRemark(e.contentUTF8());
+			throw new ServiceException("ConnectorregisterManager Oops! We have an exception - " + e.contentUTF8());
+
 		} catch (Exception ex) {
 
 			log.error("ConnectorregisterManager failed retry attempt: : {}",
@@ -131,7 +143,7 @@ public class ConnectorRegistrationManager {
 	}
 
 	@Retryable(retryFor = {
-			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
 	public Map<String, String> deleteConnector(SelectedTools tool, Map<String, String> inputData,
 			AutoSetupTriggerEntry triger) {
 

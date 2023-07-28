@@ -44,7 +44,7 @@ public class AppDeleteManager {
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
 
 	@Retryable(value = {
-			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
 	public Map<String, String> deletePackage(AppNameConstant app, SelectedTools tool, Map<String, String> inputData,
 			AutoSetupTriggerEntry triger) {
 

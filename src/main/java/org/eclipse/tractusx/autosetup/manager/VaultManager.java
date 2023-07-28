@@ -73,7 +73,7 @@ public class VaultManager {
 
 	@SneakyThrows
 	@Retryable(retryFor = {
-			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
 	public Map<String, String> uploadKeyandValues(Customer customerDetails, SelectedTools tool,
 			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
 
@@ -146,7 +146,7 @@ public class VaultManager {
 
 	@SneakyThrows
 	@Retryable(retryFor = {
-			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
 	public void deleteAllSecret(SelectedTools tool, Map<String, String> inputData, AutoSetupTriggerEntry triger) {
 
 		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
