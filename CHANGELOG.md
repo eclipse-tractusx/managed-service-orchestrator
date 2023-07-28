@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  - NA
  
 
+## [1.3.8] - 2023-07-28
+
+### Added
+ - Added a flag to skip portal interaction API
+
+### Changed
+ - Improvement in portal interaction error log
+ 
 ## [1.3.7] - 2023-07-27
 
 ### Changed
