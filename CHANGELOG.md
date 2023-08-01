@@ -7,6 +7,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
  - NA
 
+## [1.3.7] - 2023-08-01
+
+### Added
+ - Added flag to skip portal integration API point
+
+### Changed
+ - Improvement in portal failure logs
+ - Security issue fix
+ - Latest DEPENDENCIES file
+
 ## [1.3.6] - 2023-07-17
 
 ### Added
