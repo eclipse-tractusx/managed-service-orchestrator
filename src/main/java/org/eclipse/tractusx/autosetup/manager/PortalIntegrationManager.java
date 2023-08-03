@@ -36,6 +36,7 @@ import org.eclipse.tractusx.autosetup.portal.model.ServiceInstanceResultRequest;
 import org.eclipse.tractusx.autosetup.portal.model.ServiceInstanceResultResponse;
 import org.eclipse.tractusx.autosetup.portal.model.TechnicalUserInfo;
 import org.eclipse.tractusx.autosetup.portal.proxy.PortalIntegrationProxy;
+import org.eclipse.tractusx.autosetup.utility.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
@@ -80,6 +81,11 @@ public class PortalIntegrationManager {
 		ServiceInstanceResultResponse serviceInstanceResultResponse = null;
 		try {
 
+			String packageName = tool.getLabel();
+			String tenantName = customerDetails.getOrganizationName();
+
+			log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName)
+					+ "-PostServiceInstanceResultAndGetTenantSpecs creating");
 			String dnsName = inputData.get("dnsName");
 			String dnsNameURLProtocol = inputData.get("dnsNameURLProtocol");
 			String subscriptionId = inputData.get("subscriptionId");
@@ -92,7 +98,7 @@ public class PortalIntegrationManager {
 
 			ServiceInstanceResultRequest serviceInstanceResultRequest = ServiceInstanceResultRequest.builder()
 					.requestId(subscriptionId).offerUrl(applicationURL).build();
-			
+
 			if ("app".equalsIgnoreCase(tool.getType()))
 				serviceInstanceResultResponse = portalIntegrationProxy.postAppInstanceResultAndGetTenantSpecs(portalUrl,
 						header, serviceInstanceResultRequest);
@@ -112,6 +118,8 @@ public class PortalIntegrationManager {
 				if (clientInfo != null) {
 					inputData.put("keycloakResourceClient", clientInfo.getClientId());
 				}
+				log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName)
+						+ "-PostServiceInstanceResultAndGetTenantSpecs created");
 			} else {
 				log.error("Error in request process with portal");
 			}

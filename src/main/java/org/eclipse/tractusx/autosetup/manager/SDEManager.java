@@ -91,8 +91,8 @@ public class SDEManager {
 				inputData.put("digital-twins.authentication.clientSecret",
 						inputData.get("keycloakAuthenticationClientSecret"));
 
-				inputData.put("dftbackendkeycloakclientid", inputData.get("keycloakResourceClient"));
-				inputData.put("dftfrontendkeycloakclientid", inputData.get("keycloakResourceClient"));
+				inputData.put("sdebackendkeycloakclientid", inputData.get("keycloakResourceClient"));
+				inputData.put("sdefrontendkeycloakclientid", inputData.get("keycloakResourceClient"));
 			}
 			
 			if (managedDtRegistry) {
