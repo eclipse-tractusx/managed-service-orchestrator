@@ -36,6 +36,7 @@ import org.eclipse.tractusx.autosetup.manager.TractusConnectorManager;
 import org.eclipse.tractusx.autosetup.manager.VaultManager;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -56,23 +57,33 @@ public class EDCConnectorWorkFlow {
 
 	private final PortalIntegrationManager portalIntegrationManager;
 
+	@Value("${manual.update:false}")
+	private boolean manualUpdate;
+	
+	@Value("${manual.connector.registration:false}")
+	private boolean manualConnectorRegistration;
+
 	public Map<String, String> getWorkFlow(Customer customerDetails, SelectedTools tool, AppActions workflowAction,
 			Map<String, String> inputConfiguration, AutoSetupTriggerEntry triger) {
 
-		portalIntegrationManager.postServiceInstanceResultAndGetTenantSpecs(customerDetails, tool, inputConfiguration,
-				triger);
+		if (!manualUpdate)
+			portalIntegrationManager.postServiceInstanceResultAndGetTenantSpecs(customerDetails, tool,
+					inputConfiguration, triger);
 
 		inputConfiguration
 				.putAll(certificateManager.createCertificate(customerDetails, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(vaultManager.uploadKeyandValues(customerDetails, tool, inputConfiguration, triger));
 		inputConfiguration.putAll(tractusConnectorManager.managePackage(customerDetails, workflowAction, tool,
 				inputConfiguration, triger));
-		inputConfiguration.putAll(
-				connectorRegistrationManager.registerConnector(customerDetails, tool, inputConfiguration, triger));
+		
+		if (!manualConnectorRegistration)
+			inputConfiguration.putAll(
+					connectorRegistrationManager.registerConnector(customerDetails, tool, inputConfiguration, triger));
 
 		try {
-			inputConfiguration.putAll(testConnectorServiceManager
-					.verifyConnectorTestingThroughTestService(customerDetails, inputConfiguration, triger));
+			if (!manualUpdate)
+				inputConfiguration.putAll(testConnectorServiceManager
+						.verifyConnectorTestingThroughTestService(customerDetails, inputConfiguration, triger));
 		} catch (ServiceException ex) {
 			log.warn(ex.getMessage());
 		}

@@ -30,6 +30,7 @@ import org.eclipse.tractusx.autosetup.manager.AppDeleteManager;
 import org.eclipse.tractusx.autosetup.manager.DTRegistryManager;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -41,16 +42,21 @@ public class DTAppWorkFlow {
 	private final DTRegistryManager dtregistryManager;
 	private final AppDeleteManager appDeleteManager;
 
+	@Value("${manual.update:false}")
+	private boolean manualUpdate;
+
 	public Map<String, String> getWorkFlow(Customer customerDetails, SelectedTools tool, AppActions workflowAction,
 			Map<String, String> inputConfiguration, AutoSetupTriggerEntry triger) {
 
 		inputConfiguration.putAll(
 				dtregistryManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
 
-		Runnable runnable = () -> dtregistryManager.dtRegistryRegistrationInEDC(customerDetails, tool,
-				inputConfiguration, triger);
+		if (!manualUpdate) {
+			Runnable runnable = () -> dtregistryManager.dtRegistryRegistrationInEDC(customerDetails, tool,
+					inputConfiguration, triger);
 
-		new Thread(runnable).start();
+			new Thread(runnable).start();
+		}
 
 		return inputConfiguration;
 	}

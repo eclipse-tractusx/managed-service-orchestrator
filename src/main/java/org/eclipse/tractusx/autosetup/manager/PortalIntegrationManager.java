@@ -36,6 +36,7 @@ import org.eclipse.tractusx.autosetup.portal.model.ServiceInstanceResultRequest;
 import org.eclipse.tractusx.autosetup.portal.model.ServiceInstanceResultResponse;
 import org.eclipse.tractusx.autosetup.portal.model.TechnicalUserInfo;
 import org.eclipse.tractusx.autosetup.portal.proxy.PortalIntegrationProxy;
+import org.eclipse.tractusx.autosetup.utility.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
@@ -44,6 +45,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +72,7 @@ public class PortalIntegrationManager {
 	private URI tokenURI;
 
 	@Retryable(retryFor = {
-			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "${retry.backOffDelay}"))
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
 	public Map<String, String> postServiceInstanceResultAndGetTenantSpecs(Customer customerDetails, SelectedTools tool,
 			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
 
@@ -79,6 +81,11 @@ public class PortalIntegrationManager {
 		ServiceInstanceResultResponse serviceInstanceResultResponse = null;
 		try {
 
+			String packageName = tool.getLabel();
+			String tenantName = customerDetails.getOrganizationName();
+
+			log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName)
+					+ "-PostServiceInstanceResultAndGetTenantSpecs creating");
 			String dnsName = inputData.get("dnsName");
 			String dnsNameURLProtocol = inputData.get("dnsNameURLProtocol");
 			String subscriptionId = inputData.get("subscriptionId");
@@ -91,7 +98,7 @@ public class PortalIntegrationManager {
 
 			ServiceInstanceResultRequest serviceInstanceResultRequest = ServiceInstanceResultRequest.builder()
 					.requestId(subscriptionId).offerUrl(applicationURL).build();
-			
+
 			if ("app".equalsIgnoreCase(tool.getType()))
 				serviceInstanceResultResponse = portalIntegrationProxy.postAppInstanceResultAndGetTenantSpecs(portalUrl,
 						header, serviceInstanceResultRequest);
@@ -111,20 +118,33 @@ public class PortalIntegrationManager {
 				if (clientInfo != null) {
 					inputData.put("keycloakResourceClient", clientInfo.getClientId());
 				}
+				log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName)
+						+ "-PostServiceInstanceResultAndGetTenantSpecs created");
 			} else {
 				log.error("Error in request process with portal");
 			}
+		} catch (FeignException e) {
+
+			log.error("PortalIntegrationManager FeignException failed retry attempt: : {}",
+					RetrySynchronizationManager.getContext().getRetryCount() + 1);
+			log.error("RequestBody: " + e.request());
+			log.error("ResponseBody: " + e.contentUTF8());
+
+			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
+			autoSetupTriggerDetails.setRemark(e.contentUTF8());
+			throw new ServiceException("PortalIntegrationManager Oops! We have an FeignException - " + e.contentUTF8());
+
 		} catch (Exception ex) {
 
-			log.error("PortalIntegrationManager failed retry attempt: : {}",
+			log.error("PortalIntegrationManager Exception failed retry attempt: : {}",
 					RetrySynchronizationManager.getContext().getRetryCount() + 1);
 
 			if (serviceInstanceResultResponse != null) {
-				String msg = "PortalIntegrationManager failed with details:" + serviceInstanceResultResponse.toJsonString();
+				String msg = "PortalIntegrationManager failed with details:"
+						+ serviceInstanceResultResponse.toJsonString();
 				log.error(msg);
 				autoSetupTriggerDetails.setRemark(msg);
-			}
-			else
+			} else
 				autoSetupTriggerDetails.setRemark(ex.getMessage());
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
