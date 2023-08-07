@@ -26,17 +26,17 @@ Requirements:
 
 SDE must be a selectable item in marketspace of third-party
 (providing an instance of EDC, SDEbackend, SDEFrontend, and storage as a in the third-party service provider tenant)
-Onboarding:
 
+Onboarding:
 Onboard SME/Company in third-party. (what data are necessary to  be able to do this without interaction of SME/Company)
 Customers will only have access to SDEFrontend, but not any access to managed data space itself
 
 Auto-Setup:
 
 1. deploy EDC
-2. register EDC instance at DAPS
-3. deploy SDE(Frontend, backend, and storage in one pod?)
-4. configure the SDEbackend to get access to Digital Twin Registry
+2. register EDC instance at Managed Identity Wallet through Portal
+3. deploy SDE(Frontend, backend, and storage as 3 different pods)
+4. configure the  SDEbackend to get access to Digital Twin Registry, BPDM, Connector discovery, BPN discovery service
 5. configure SDEFrontend to be accessed via oidc token vom Portal
 6. configure the SDEbackend to provide the correct link in Digital Twin Registry to its EDC instance
 7. configure EDC to allow authorized requests to request data registered in Digital Twin Registry
@@ -119,24 +119,26 @@ The third-party service provider has to provide the service bill to the customer
 - Organization Name
 - Organizational Unit Name
 
-## Information needed for Connector registration in DAPS:
-
-- The endpoint of the DAPS registration service
-- Public Key of the connector certificate
-- The endpoint of the connector
-- The BPN of the connector
-
-## Information needed for Connector registration in Factory:
-
-**see Arc42 for SD-Factory**
-- The endpoint of the SD-Hub registration service
-- User credential for accessing the SD-Hub registration service
-
 ## Information needed for registering the metadata in Digital-Registry-Service
 
 **See Arc42 for Digital Twin Registry**
 - User credential for accessing the Digital-Registry-Service
 - The endpoint of Digital-Registry-Service
+
+## Information needed for registering the connector in CX-Portal
+- connector registration in CX-Portal network
+- Request Body:
+  {
+  "name", “String - Company Name”
+  "connectorUrl", “String- connector URL”;
+  "location", ” String – country code”,
+  "subscriptionId ", “String – received in auto setup request body”
+  }
+- Response:
+  {
+  “UUID”
+  }
+
 
 ## API Specification:
 ### SD-Factory API:
