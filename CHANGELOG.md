@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
  - NA
 
+## [1.3.9] - 2023-08-14
+
+### Added
+ - Added interface document
+ 
 ## [1.3.8] - 2023-08-04
 
 ### Changed
