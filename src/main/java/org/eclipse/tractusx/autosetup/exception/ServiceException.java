@@ -20,6 +20,8 @@
 
 package org.eclipse.tractusx.autosetup.exception;
 
+import org.eclipse.tractusx.autosetup.utility.LogUtil;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -32,6 +34,6 @@ public class ServiceException extends RuntimeException {
 
 	public ServiceException(String exceptionstr) {
 		super(exceptionstr);
-		log.error(exceptionstr);
+		log.error(LogUtil.encode(exceptionstr));
 	}
 }

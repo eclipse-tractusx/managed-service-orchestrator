@@ -1,4 +1,5 @@
 /********************************************************************************
+
  * Copyright (c) 2023 T-Systems International GmbH
  * Copyright (c) 2023 Contributors to the Eclipse Foundation
  *
@@ -34,6 +35,7 @@ import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
 import org.eclipse.tractusx.autosetup.exception.ServiceException;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
+import org.eclipse.tractusx.autosetup.utility.LogUtil;
 import org.eclipse.tractusx.autosetup.utility.WaitingTimeUtility;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
@@ -107,10 +109,10 @@ public class DTRegistryManager {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
 	public void dtRegistryRegistrationInEDC(Customer customerDetails, SelectedTools tool, Map<String, String> inputData,
 			AutoSetupTriggerEntry triger) {
+		String tenantName = LogUtil.encode(customerDetails.getOrganizationName());
 		try {
-
-			WaitingTimeUtility.waitingTime(customerDetails.getOrganizationName()
-					+ ": Waiting for EDC asset creation after DT setup to get connector pod up");
+			WaitingTimeUtility.waitingTime(
+					tenantName + ": Waiting for EDC asset creation after DT setup to get connector pod up");
 
 			String asset = eDCProxyService.getAssets(customerDetails, inputData);
 
@@ -119,7 +121,7 @@ public class DTRegistryManager {
 			}
 
 		} catch (Exception e) {
-			String errorMsg = customerDetails.getOrganizationName()
+			String errorMsg = tenantName
 					+ ":It looks EDC connector is not up for DT asset creation, Oops! We have an exception - "
 					+ e.getMessage();
 			log.error(errorMsg);
@@ -144,22 +146,22 @@ public class DTRegistryManager {
 
 		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
 				.id(UUID.randomUUID().toString()).step("DT_CreateEDCAsset").build();
-		log.info(customerDetails.getOrganizationName() + ":DT createEDCAsset creating");
+		String tenantName = LogUtil.encode(customerDetails.getOrganizationName());
+
+		log.info(tenantName + ":DT createEDCAsset creating");
 		try {
 
 			String assetId = eDCProxyService.createAsset(customerDetails, inputData);
-			log.info(customerDetails.getOrganizationName() + ":DT createEDCAsset created " + assetId);
+			log.info(tenantName + ":DT createEDCAsset created " + assetId);
 			inputData.put("assetId", assetId);
 
 		} catch (Exception ex) {
-			log.error(
-					customerDetails.getOrganizationName()
-							+ ":DTRegistryManager createEDCAsset failed retry attempt: : {}",
+			log.error(tenantName + ":DTRegistryManager createEDCAsset failed retry attempt: : {}",
 					RetrySynchronizationManager.getContext().getRetryCount() + 1);
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
 			autoSetupTriggerDetails.setRemark(ex.getMessage());
-			throw new ServiceException(customerDetails.getOrganizationName()
-					+ ":DTRegistryManager createEDCAsset Oops! We have an exception - " + ex.getMessage());
+			throw new ServiceException(
+					tenantName + ":DTRegistryManager createEDCAsset Oops! We have an exception - " + ex.getMessage());
 		} finally {
 			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
 		}
@@ -172,24 +174,23 @@ public class DTRegistryManager {
 			AutoSetupTriggerEntry triger) {
 		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
 				.id(UUID.randomUUID().toString()).step("DT_CreateEDCPolicy").build();
-		log.info(customerDetails.getOrganizationName() + ":DT CreateEDCPolicy creating");
+		String tenantName = LogUtil.encode(customerDetails.getOrganizationName());
+		log.info(tenantName + ":DT CreateEDCPolicy creating");
 		try {
 
 			String policyId = eDCProxyService.createPolicy(customerDetails, inputData);
-			log.info(customerDetails.getOrganizationName() + ":DT createEDCPolicy created :" + policyId);
+			log.info(tenantName + ":DT createEDCPolicy created :" + policyId);
 			inputData.put("policyId", policyId);
 
 		} catch (Exception ex) {
 
-			log.error(
-					customerDetails.getOrganizationName()
-							+ ":DTRegistryManager CreateEDCPolicy failed retry attempt: : {}",
+			log.error(tenantName + ":DTRegistryManager CreateEDCPolicy failed retry attempt: : {}",
 					RetrySynchronizationManager.getContext().getRetryCount() + 1);
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
 			autoSetupTriggerDetails.setRemark(ex.getMessage());
-			throw new ServiceException(customerDetails.getOrganizationName()
-					+ ":DTRegistryManager CreateEDCPolicy Oops! We have an exception - " + ex.getMessage());
+			throw new ServiceException(
+					tenantName + ":DTRegistryManager CreateEDCPolicy Oops! We have an exception - " + ex.getMessage());
 		} finally {
 			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
 		}
@@ -201,7 +202,8 @@ public class DTRegistryManager {
 			AutoSetupTriggerEntry triger) {
 		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
 				.id(UUID.randomUUID().toString()).step("DT_CreateContractDefination").build();
-		log.info(customerDetails.getOrganizationName() + ":DT createContractDefination creating");
+		String tenantName = LogUtil.encode(customerDetails.getOrganizationName());
+		log.info(tenantName + ":DT createContractDefination creating");
 		try {
 
 			String assetId = inputData.get("assetId");
@@ -212,19 +214,16 @@ public class DTRegistryManager {
 
 			inputData.put("contractPolicyId", contractPolicyId);
 
-			log.info(
-					customerDetails.getOrganizationName() + ":DT CreateContractDefination created " + contractPolicyId);
+			log.info(tenantName + ":DT CreateContractDefination created " + contractPolicyId);
 
 		} catch (Exception ex) {
 
-			log.error(
-					customerDetails.getOrganizationName()
-							+ ":DTRegistryManager CreateContractDefination failed retry attempt: : {}",
+			log.error(tenantName + ":DTRegistryManager CreateContractDefination failed retry attempt: : {}",
 					RetrySynchronizationManager.getContext().getRetryCount() + 1);
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
 			autoSetupTriggerDetails.setRemark(ex.getMessage());
-			throw new ServiceException(customerDetails.getOrganizationName()
+			throw new ServiceException(tenantName
 					+ ":DTRegistryManager CreateContractDefination Oops! We have an exception - " + ex.getMessage());
 		} finally {
 			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
