@@ -71,7 +71,7 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
 		
 		Object inputRequest = ex.getBindingResult().getTarget();
 		if (inputRequest != null)
-			log.error(inputRequest.toString());
+			log.error(LogUtil.encode(inputRequest.toString()));
 		
 		ex.getBindingResult().getAllErrors().forEach(error -> {
 			String fieldName = ((FieldError) error).getField();
