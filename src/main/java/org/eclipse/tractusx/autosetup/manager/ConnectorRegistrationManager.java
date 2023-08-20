@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.tractusx.autosetup.constant.TriggerStatusEnum;
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerDetails;
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
@@ -158,17 +159,17 @@ public class ConnectorRegistrationManager {
 			String packageName = tool.getLabel();
 			String orgName = triger.getOrganizationName();
 
-			log.info(LogUtil.encode(orgName) + "-" + LogUtil.encode(packageName) + "-CONNECTOR-DELETE deleting");
-
 			String connectorId = inputData.get("connectorId");
-			if (connectorId != null) {
+			if (!StringUtils.isBlank(connectorId)) {
+				log.info(LogUtil.encode(orgName) + "-" + LogUtil.encode(packageName) + "-CONNECTOR-DELETE deleting");
 
 				Map<String, String> header = new HashMap<>();
 				header.put("Authorization", "Bearer " + getKeycloakToken());
 
-				log.info(LogUtil.encode(orgName) + "-" + LogUtil.encode(packageName) + "-CONNECTOR-DELETE  deleted");
 				autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
 				portalIntegrationProxy.deleteConnector(connectorRegistrationUrl, header, connectorId);
+				
+				log.info(LogUtil.encode(orgName) + "-" + LogUtil.encode(packageName) + "-CONNECTOR-DELETE  deleted");
 
 			} else
 				log.error("Connector Id not found in autosetup result to delete connector from portal");

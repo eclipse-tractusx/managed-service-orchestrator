@@ -90,6 +90,9 @@ public class AutoSetupTriggerEntry {
 
 	@Column(name = "remark", columnDefinition = "TEXT")
 	private String remark;
+	
+	@Column(name = "input_configuration", columnDefinition = "TEXT")
+	private String inputConfiguration;
 
 	public void addTriggerDetails(AutoSetupTriggerDetails autoSetupTriggerDetails) {
 		if (autosetupTriggerDetails == null)
