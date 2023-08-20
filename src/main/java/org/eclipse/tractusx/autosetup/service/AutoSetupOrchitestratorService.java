@@ -59,6 +59,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -327,6 +328,7 @@ public class AutoSetupOrchitestratorService {
 			log.error("Error in package creation " + e.getMessage());
 			trigger.setStatus(TriggerStatusEnum.FAILED.name());
 			trigger.setRemark(e.getMessage());
+			generateNotification(autoSetupRequest.getCustomer(), "Error in autosetup execution - "+trigger.getTriggerId());
 		}
 
 		LocalDateTime now = LocalDateTime.now();
@@ -336,6 +338,7 @@ public class AutoSetupOrchitestratorService {
 		autoSetupTriggerManager.saveTriggerUpdate(trigger);
 	}
 
+	
 	private void executeEDCTractus(AutoSetupRequest autoSetupRequest, AppActions action, AutoSetupTriggerEntry trigger,
 			Map<String, String> inputConfiguration, SelectedTools selectedTool) {
 
@@ -372,17 +375,12 @@ public class AutoSetupOrchitestratorService {
 			emailContent.put(TOEMAIL, customer.getEmail());
 			emailContent.put(CCEMAIL, portalEmail);
 			emailManager.sendEmail(emailContent, "EDC Application Activited Successfully", "edc_success_activate.html");
-			
-		}else {
-			emailContent.put(TOEMAIL, mailReplytoAddress);
-			emailContent.put(CCEMAIL, portalEmail);
-			emailContent.put(ORGNAME, customer.getOrganizationName());
-			emailManager.sendEmail(emailContent, "EDC Application Deployed Successfully", "success.html");
 			log.info(EMAIL_SENT_SUCCESSFULLY);
+		}else {
+			generateNotification(customer, "EDC Application Deployed Successfully");
 		}
-
 		
-		log.info(EMAIL_SENT_SUCCESSFULLY);
+		
 	}
 
 	private void executeSDEWithEDCTractus(AutoSetupRequest autoSetupRequest, AppActions action,
@@ -455,14 +453,8 @@ public class AutoSetupOrchitestratorService {
 		boolean isTestConnectivityTestSuccess = connectivityTestStr!=null && connectivityTestStr.contains("consumer and provider");
 		
 		if (manualUpdate || !isTestConnectivityTestSuccess) {
-			// Send an email
-			emailContent.put("helloto", "Team");
-			emailContent.put(ORGNAME, customer.getOrganizationName());
-			emailContent.put(TOEMAIL, mailReplytoAddress);
-
-			// End of email sending code
-			emailManager.sendEmail(emailContent, "SDE Application Deployed Successfully", "success.html");
-			log.info(EMAIL_SENT_SUCCESSFULLY);
+			
+			generateNotification(customer, "SDE Application Deployed Successfully");
 			trigger.setStatus(TriggerStatusEnum.MANUAL_UPDATE_PENDING.name());
 
 		} else {
@@ -484,7 +476,19 @@ public class AutoSetupOrchitestratorService {
 
 		trigger.setAutosetupResult(json);
 	}
+	
+	@SneakyThrows
+	private void generateNotification(Customer customer, String emailSubject) {
+		
+		Map<String, Object> emailContent = new HashMap<>();
+		emailContent.put(ORGNAME, customer.getOrganizationName());
+		emailContent.put(TOEMAIL, mailReplytoAddress);
+		emailContent.put(CCEMAIL, portalEmail);
+		emailManager.sendEmail(emailContent, emailSubject, "success.html");
+		log.info(EMAIL_SENT_SUCCESSFULLY);
+	}
 
+	
 	private void processDeleteTrigger(AutoSetupTriggerEntry trigger, Map<String, String> inputConfiguration) {
 
 		if (trigger != null && trigger.getAutosetupRequest() != null) {
