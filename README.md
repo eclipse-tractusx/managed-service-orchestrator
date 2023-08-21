@@ -12,8 +12,8 @@ This service will help service provider to set up DFT/SDE with EDC and EDC as se
 ### Software Version
 
 ```shell
-Application version: 1.4.0
-Helm release version: 1.4.0
+Application version: 1.4.1
+Helm release version: 1.4.1
 ```
 
 ### Container images
