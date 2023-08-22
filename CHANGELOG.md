@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
  - NA
+ 
+## [1.4.2] - 2023-08-22
+
+### Changed
+ - Image creation on docker hub
+ - Image update for Trivy workflow
+ - Updated the deployment to take the image from tractusx
+ - Name change for the image
+ 
+### Fixed
+ - Security issue fix
 
 ## [1.4.1] - 2023-08-21
 
