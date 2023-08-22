@@ -52,10 +52,8 @@ public class DTAppWorkFlow {
 				dtregistryManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
 
 		if (!manualUpdate) {
-			Runnable runnable = () -> dtregistryManager.dtRegistryRegistrationInEDC(customerDetails, tool,
+			dtregistryManager.dtRegistryRegistrationInEDC(customerDetails, tool,
 					inputConfiguration, triger);
-
-			new Thread(runnable).start();
 		}
 
 		return inputConfiguration;
