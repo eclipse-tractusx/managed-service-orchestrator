@@ -39,7 +39,7 @@ on:
   
 env:
   IMAGE_NAMESPACE: "tractusx"
-  IMAGE_NAME: "autosetup"
+  IMAGE_NAME: "managed-service-orchestrator"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:

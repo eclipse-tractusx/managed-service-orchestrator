@@ -74,7 +74,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           # Path to Docker image
-          image-ref: "tractusx/autosetup:latest"
+          image-ref: "tractusx/managed-service-orchestrator:latest"
           format: "sarif"
           output: "trivy-results.sarif"
           exit-code: "1"

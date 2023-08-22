@@ -2,7 +2,7 @@
 
 ## Description
 
-This repository is part of the overarching eclipse-tractusx project. It contains the Backend for the autoset up service.
+This repository is part of the overarching eclipse-tractusx project. It contains the Backend for the autosetup service.
 
 It is a standalone service which can be self-hosted. 
 It is prototype implementation for Service provider.
@@ -22,7 +22,7 @@ This application provides container images for demonstration purposes. The base 
 
 ## Notice for Docker image
 
-DockerHub: [https://hub.docker.com/r/tractusx/autosetup](https://hub.docker.com/r/tractusx/autosetup)  <br />
+DockerHub: [https://hub.docker.com/r/tractusx/managed-service-orchestrator](https://hub.docker.com/r/tractusx/managed-service-orchestrator)  <br />
 Eclipse Tractus-X product(s) installed within the image:
 
 __Autosetup__
