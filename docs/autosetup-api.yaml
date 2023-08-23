@@ -17,8 +17,8 @@
 
 openapi: 3.0.1
 info:
-  title: Auto setup API information
-  description: This Service handles all auto setup related operations
+  title: Managed Service Orchestrator API information
+  description: This Service handles all Managed Service Orchestrator related operations
   version: '1.0'
 servers:
 - url: https://orchestrator.int.cx.dih-cloud.com
@@ -26,15 +26,15 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: AutoSetup
-  description: Auto setup controller to perform all operation
+- name: Managed Service Orchestrator
+  description: Managed Service Orchestrator controller to perform all operation
 paths:
   /autosetup/{executionId}:
     get:
       tags:
       - AutoSetup
-      summary: Check Auto setup execution status
-      description: This API will use to check/verify Auto setup process execution status
+      summary: Check Managed Service Orchestrator execution status
+      description: This API will use to check/verify Managed Service Orchestrator process execution status
       operationId: getCheckDetails
       parameters:
       - name: executionId
@@ -53,8 +53,8 @@ paths:
     put:
       tags:
       - AutoSetup
-      summary: Update existing autosetup packages
-      description: This API will use to update the existing packages created by the Auto setup process
+      summary: Update existing Managed Service Orchestrator packages
+      description: This API will use to update the existing packages created by the Managed Service Orchestrator process
       operationId: updatePackage
       parameters:
       - name: executionId
@@ -154,8 +154,8 @@ paths:
     post:
       tags:
       - app-details-controller
-      summary: This will create catalog service mapping with customer in auto setup database for auto setup
-      description: This will create catalog service mapping with customer in auto setup database for auto setup
+      summary: This will create catalog service mapping with customer in Managed Service Orchestrator database for Managed Service Orchestrator
+      description: This will create catalog service mapping with customer in Managed Service Orchestrator database for Managed Service Orchestrator
       operationId: createCatalogServiceMapping
       requestBody:
         content:
@@ -210,8 +210,8 @@ paths:
     post:
       tags:
       - AutoSetup
-      summary: Start autosetup process
-      description: This API will use to start the Auto setup process
+      summary: Start Managed Service Orchestrator process
+      description: This API will use to start the Managed Service Orchestrator process
       operationId: createPackage
       requestBody:
         content:
