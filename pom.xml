@@ -31,10 +31,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.eclipse.tractusx</groupId>
-	<artifactId>auto-setup</artifactId>
+	<artifactId>managed-service-orchestrator</artifactId>
 	<version>1.4.2</version>
-	<name>auto-setup</name>
-	<description>auto-setup</description>
+	<name>managed-service-orchestrator</name>
+	<description>managed-service-orchestrator</description>
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.3</spring-cloud.version>

@@ -1,8 +1,8 @@
-## Auto setup Service
+## Managed Service Orchestrator Service
 
 ## Description
 
-This repository is part of the overarching eclipse-tractusx project. It contains the Backend for the autosetup service.
+This repository is part of the overarching eclipse-tractusx project. It contains the Backend for the Managed Service Orchestrator service.
 
 It is a standalone service which can be self-hosted. 
 It is prototype implementation for Service provider.
@@ -13,7 +13,7 @@ This service will help service provider to set up DFT/SDE with EDC and EDC as se
 
 ```shell
 Application version: 1.4.2
-Helm release version: 1.4.2
+Helm release version: 1.4.3
 ```
 
 # Container images
@@ -25,7 +25,7 @@ This application provides container images for demonstration purposes. The base 
 DockerHub: [https://hub.docker.com/r/tractusx/managed-service-orchestrator](https://hub.docker.com/r/tractusx/managed-service-orchestrator)  <br />
 Eclipse Tractus-X product(s) installed within the image:
 
-__Autosetup__
+__Managed Service Orchestrator__
 
 - GitHub: https://github.com/eclipse-tractusx/managed-service-orchestrator
 - Project home: https://projects.eclipse.org/projects/automotive.tractusx
@@ -51,7 +51,7 @@ As for any pre-built image usage, it is the image user's responsibility to ensur
 
 ### How to run
 
-Auto setup is a SpringBoot Java software project managed by Maven.
+Managed Service Orchestrator is a SpringBoot Java software project managed by Maven.
 
 When running, the project requires a postgresql database to be available to connect to. Per default configuration the application expects postgres to run on localhost on port 5432.
 
