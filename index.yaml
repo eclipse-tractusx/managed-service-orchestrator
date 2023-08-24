@@ -514,4 +514,23 @@ entries:
     urls:
     - https://github.com/eclipse-tractusx/autosetup-backend/releases/download/dftfrontend-1.4.7/dftfrontend-1.4.7.tgz
     version: 1.4.7
-generated: "2023-08-22T13:25:41.195838195Z"
+  managed-service-orchestrator:
+  - apiVersion: v2
+    appVersion: 1.4.2
+    created: "2023-08-24T11:02:59.863136514Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.x.x
+    description: This service will help service provider to set up DFT/SDE with EDC
+      and EDC as service in service provider environment.
+    digest: 16552ba111b84cef9ab813986d201b7c7a337db868f4d710725d352269089e61
+    name: managed-service-orchestrator
+    sources:
+    - https://github.com/eclipse-tractusx/managed-service-orchestrator
+    type: application
+    urls:
+    - https://github.com/eclipse-tractusx/managed-service-orchestrator/releases/download/managed-service-orchestrator-1.4.3/managed-service-orchestrator-1.4.3.tgz
+    version: 1.4.3
+generated: "2023-08-24T11:02:59.863198014Z"
