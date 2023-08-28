@@ -51,6 +51,7 @@ public class SDEConfigurationProperty {
 	private String dtregistryidpClientId;
 	private String dtregistrytenantId;
 	private String dtregistryUrlPrefix;
+	private String dtregistryApiUri;
 	
 	private String bpndiscoveryHostname;
 	private String discoveryAuthenticationUrl;
