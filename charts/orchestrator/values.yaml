@@ -49,6 +49,7 @@ securityContext:
     # -- Controls whether a process can gain more privilege
   allowPrivilegeEscalation: false
   runAsUser: 1000
+  runAsNonRoot: true
 probe:
   endpoint: "/api/healthz"
 
@@ -78,12 +79,12 @@ ingress:
 resources:
   limits:
     # -- set a maximum amount of allows CPU utilization by specifying a limit on the container.
-    cpu: 600m
+    cpu: 900m
     # -- set a maximum amount of allows memory utilization by specifying a limit on the container.
     memory: 2Gi
   requests:
     # -- sets the minimum amount of CPU required for the container
-    cpu: 600m
+    cpu: 400m
     # -- set a minimum amount of allows memory utilization by specifying a limit on the container.
     memory: 2Gi
 
@@ -116,7 +117,7 @@ readinessProbe:
   successThreshold: 1
   timeoutSeconds: 1
 
-secretRef: "autosetup-int-secret"
+secretRef: "managed-service-orchestrator-int-secret"
 
 postgresql:
     # -- Enable the dependency postgres database
@@ -127,7 +128,7 @@ postgresql:
   auth:
     username: "orchdbuser"
     database: "orchdb"
-    existingSecret: "autosetup-int-secret"
+    existingSecret: "managed-service-orchestrator-int-secret"
     secretKeys:
       adminPasswordKey: "postgres-password"
       userPasswordKey: "password"
