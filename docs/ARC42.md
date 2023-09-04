@@ -9,6 +9,14 @@ Template Revision: 7.0 EN (based on asciidoc), January 2017
 © We acknowledge that this document uses material from the arc 42 architecture template, http://www.arc42.de. Created by Dr. Peter Hruschka & Dr. Gernot Starke.
 This version of the template contains some help and explanations. It is used for familiarization with arc42 and the understanding of the concepts. For documentation of your own system you use better the plain version.
 
+## NOTICE
+
+This work is licensed under the [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
+- SPDX-License-Identifier: Apache-2.0
+- SPDX-FileCopyrightText: 2022, 2023 T-Systems International GmbH
+- SPDX-FileCopyrightText: 2022, 2023 Contributors to the Eclipse Foundation
+- Source URL: https://github.com/eclipse-tractusx/managed-service-orchestrator
 
 ## Introduction and Goals
 
