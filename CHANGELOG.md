@@ -16,6 +16,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  - Updated the deployment to take the image from tractusx
  - Name change for the image
  - Updated the product name
+ - Updated Dockerfile image to point to the overarching package
+ - Updated the Helm lint file
+ - CPU/Memory updated in values file
+ - Updated documentation
+ - Updated Security file
  
 ### Fixed
  - Security issue fix

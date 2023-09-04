@@ -21,14 +21,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "autosetup.fullname" . }}
+  name: {{ include "managed-service-orchestrator.fullname" . }}
   labels:
-    {{- include "autosetup.labels" . | nindent 4 }}
+    {{- include "managed-service-orchestrator.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "autosetup.fullname" . }}
+    name: {{ include "managed-service-orchestrator.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

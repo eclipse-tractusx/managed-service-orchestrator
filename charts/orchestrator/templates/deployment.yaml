@@ -21,16 +21,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "autosetup.fullname" . }}
+  name: {{ include "managed-service-orchestrator.fullname" . }}
   labels:
-    {{- include "autosetup.labels" . | nindent 4 }}
+    {{- include "managed-service-orchestrator.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "autosetup.selectorLabels" . | nindent 6 }}
+      {{- include "managed-service-orchestrator.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}          
@@ -38,7 +38,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "autosetup.selectorLabels" . | nindent 8 }}
+        {{- include "managed-service-orchestrator.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -67,20 +67,6 @@ spec:
               value: "3"
             - name: RETRY_BACKOFFDELAY
               value: "500"
-
-            #- name: MAIL_SMTP_HOST
-            #  value: "mailauth.telekom.de"
-            #- name: MAIL_SMTP_PORT
-            #  value: "587"
-            #- name: MAIL_FROM_ADDRESS
-            #  value: "Auto Setup technical team<tech@telekom.de>"
-            #- name: MAIL_REPLYTO_ADDRESS
-            #  value: "sachin.argade@t-systems.com,ADITYA.GAJBHIYE@t-systems.com"
-            #- name: MAIL_SMTP_STARTTLS_ENABLE
-            #  value: "true"
-            #- name: MAIL_SMTP_AUTH
-            #  value: "true"
-
 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

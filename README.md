@@ -34,7 +34,7 @@ __Managed Service Orchestrator__
 
 **Used base image**
 
-- 17-jdk-alpine(https://hub.docker.com/layers/library/eclipse-temurin/17.0.6_10-jdk-alpine/images/sha256-c093675e143dc8023fb218c144e06491154491a7965d0664a93f99ada5259ec7?context=explore)
+- 17-jdk-alpine(https://hub.docker.com/layers/library/eclipse-temurin/17-jdk-alpine/images/sha256-f4766a483f0754930109771aebccb93c6e7a228b1977cf2e3fd49285270a2eb3?context=explore)
 - Official Eclipse Temurin DockerHub page: https://hub.docker.com/_/eclipse-temurin
 - Eclipse Temurin Project: https://projects.eclipse.org/projects/adoptium.temurin
 - Additional information about the Eclipse Temurin images: https://github.com/docker-library/repo-info/tree/master/repos/eclipse-temurin

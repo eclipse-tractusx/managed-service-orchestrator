@@ -33,16 +33,22 @@ COPY ./src ./src
 # build for release
 RUN mvn clean install -Dmaven.test.skip=true 
 
+FROM eclipse-temurin:17-jdk-alpine
 
-FROM eclipse-temurin:17.0.6_10-jdk
+ENV USER=autosetupuser
+ENV UID=1000
+ENV GID=1000
 
-ARG USERNAME=autosetupuser
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+RUN addgroup --gid $GID $USER
 
-# Create the user
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME 
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "$(pwd)" \
+    --ingroup "$USER" \
+    --no-create-home \
+    --uid "$UID" \
+    "$USER"
 
 USER $USERNAME
 

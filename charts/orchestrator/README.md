@@ -41,7 +41,7 @@ This service will help service provider to set up DFT/SDE with EDC and EDC as se
 | podSecurityContext.fsGroup | int | `2000` |  |
 | portContainer | int | `9999` |  |
 | postgresql.auth.database | string | `"orchdb"` |  |
-| postgresql.auth.existingSecret | string | `"autosetup-int-secret"` |  |
+| postgresql.auth.existingSecret | string | `"managed-service-orchestrator-int-secret"` |  |
 | postgresql.auth.secretKeys.adminPasswordKey | string | `"postgres-password"` |  |
 | postgresql.auth.secretKeys.userPasswordKey | string | `"password"` |  |
 | postgresql.auth.username | string | `"orchdbuser"` |  |
@@ -54,12 +54,13 @@ This service will help service provider to set up DFT/SDE with EDC and EDC as se
 | readinessProbe.successThreshold | int | `1` |  |
 | readinessProbe.timeoutSeconds | int | `1` |  |
 | replicaCount | int | `1` | Number of Replicas for pods |
-| resources.limits.cpu | string | `"600m"` | set a maximum amount of allows CPU utilization by specifying a limit on the container. |
+| resources.limits.cpu | string | `"900m"` | set a maximum amount of allows CPU utilization by specifying a limit on the container. |
 | resources.limits.memory | string | `"2Gi"` | set a maximum amount of allows memory utilization by specifying a limit on the container. |
-| resources.requests.cpu | string | `"600m"` | sets the minimum amount of CPU required for the container |
+| resources.requests.cpu | string | `"400m"` | sets the minimum amount of CPU required for the container |
 | resources.requests.memory | string | `"2Gi"` | set a minimum amount of allows memory utilization by specifying a limit on the container. |
-| secretRef | string | `"autosetup-int-secret"` |  |
+| secretRef | string | `"managed-service-orchestrator-int-secret"` |  |
 | securityContext.allowPrivilegeEscalation | bool | `false` | Controls whether a process can gain more privilege |
+| securityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.runAsUser | int | `1000` |  |
 | service.port | int | `9999` | Port details for sevice |
 | service.portContainer | int | `9999` | Container Port details for sevice |
