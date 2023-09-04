@@ -26,6 +26,7 @@ import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DT_REGISTR
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.tractusx.autosetup.apiproxy.EDCProxyService;
 import org.eclipse.tractusx.autosetup.constant.AppActions;
 import org.eclipse.tractusx.autosetup.constant.SDEConfigurationProperty;
@@ -70,8 +71,10 @@ public class DTRegistryManager {
 			String dnsName = inputData.get("dnsName");
 			String dnsNameURLProtocol = inputData.get("dnsNameURLProtocol");
 
+			String dturi = sDEConfigurationProperty.getDtregistryApiUri();
+			dturi = StringUtils.isAllEmpty(dturi) ? "/api/v3.0" : dturi;
 			String dtregistryUrl = dnsNameURLProtocol + "://" + dnsName + "/"
-					+ sDEConfigurationProperty.getDtregistryUrlPrefix();
+					+ sDEConfigurationProperty.getDtregistryUrlPrefix() + dturi;
 
 			inputData.put("rgdatabase", "registry");
 			inputData.put("rgdbpass", "admin@123");
