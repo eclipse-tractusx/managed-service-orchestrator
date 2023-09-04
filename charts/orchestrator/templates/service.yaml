@@ -21,9 +21,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "autosetup.fullname" . }}
+  name: {{ include "managed-service-orchestrator.fullname" . }}
   labels:
-    {{- include "autosetup.labels" . | nindent 4 }}
+    {{- include "managed-service-orchestrator.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -32,4 +32,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "autosetup.selectorLabels" . | nindent 4 }}
+    {{- include "managed-service-orchestrator.selectorLabels" . | nindent 4 }}

@@ -22,9 +22,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "autosetup.fullname" . }}
+  name: {{ include "managed-service-orchestrator.fullname" . }}
   labels:
-    {{- include "autosetup.labels" . | nindent 4 }}
+    {{- include "managed-service-orchestrator.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -34,7 +34,7 @@ spec:
   tls:
     - hosts:
         - {{ .Values.ingress.host }}
-      secretName: {{ include "autosetup.fullname" . }}-tls
+      secretName: {{ include "managed-service-orchestrator.fullname" . }}-tls
   rules:
       - host: {{ .Values.ingress.host }}
         http:
@@ -43,7 +43,7 @@ spec:
               pathType: Prefix
               backend:
                 service:
-                  name: {{ include "autosetup.fullname" . }}
+                  name: {{ include "managed-service-orchestrator.fullname" . }}
                   port:
                     number: {{ .Values.service.port }}
 {{- end }}
