@@ -67,11 +67,7 @@ ingress:
     # -- a reference to an Ingress Class resource that contains additional configuration including the name of the controller that should implement the class
   className: nginx
     # -- Annotations to add to the ingress
-  annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: HTTP
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/affinity: "cookie"
-    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+  annotations: {}
 
     # -- Host of the application on which application runs
   host: ""
@@ -117,7 +113,7 @@ readinessProbe:
   successThreshold: 1
   timeoutSeconds: 1
 
-secretRef: "managed-service-orchestrator-int-secret"
+secretRef: ""
 
 postgresql:
     # -- Enable the dependency postgres database
@@ -126,9 +122,9 @@ postgresql:
     containerSecurityContext:
       enabled: false
   auth:
-    username: "orchdbuser"
-    database: "orchdb"
-    existingSecret: "managed-service-orchestrator-int-secret"
+    username: ""
+    database: ""
+    existingSecret: ""
     secretKeys:
-      adminPasswordKey: "postgres-password"
-      userPasswordKey: "password"
+      adminPasswordKey: ""
+      userPasswordKey: ""
