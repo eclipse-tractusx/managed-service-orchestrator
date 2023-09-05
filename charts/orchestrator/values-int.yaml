@@ -18,52 +18,9 @@
 # SPDX-License-Identifier: Apache-2.0
 ################################################################################
 
-    # -- Number of Replicas for pods
-replicaCount: 1
-
-image:
-    # -- Image to use for deploying an application
-  repository: tractusx/managed-service-orchestrator
-    # -- Set the Image Pull Policy
-  pullPolicy: Always
-    # -- Image tage is defined in chart appVersion
-  tag: ""
-
-imagePullSecrets: []
-
-serviceAccount:
-    # -- Specifies whether a service account should be created
-  create: true
-    # -- Annotations to add to the service account
-  annotations: {}
-    # -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
-  name: ""
-podAnnotations: {}
-
-portContainer: 9999
-
-podSecurityContext:
-  fsGroup: 2000
-
-securityContext:
-    # -- Controls whether a process can gain more privilege
-  allowPrivilegeEscalation: false
-  runAsUser: 1000
-  runAsNonRoot: true
-probe:
-  endpoint: "/api/healthz"
-
-service:
-    # -- Type of service
-  type: ClusterIP
-    # -- Port details for sevice
-  port: 9999
-  # -- Container Port details for sevice
-  portContainer: 9999
-
 ingress:
     # -- If you want to enable or disable the ingress
-  enabled: false
+  enabled: true
     # -- a reference to an Ingress Class resource that contains additional configuration including the name of the controller that should implement the class
   className: nginx
     # -- Annotations to add to the ingress
@@ -74,48 +31,7 @@ ingress:
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
 
     # -- Host of the application on which application runs
-  host: ""
-
-resources:
-  limits:
-    # -- set a maximum amount of allows CPU utilization by specifying a limit on the container.
-    cpu: 900m
-    # -- set a maximum amount of allows memory utilization by specifying a limit on the container.
-    memory: 2Gi
-  requests:
-    # -- sets the minimum amount of CPU required for the container
-    cpu: 400m
-    # -- set a minimum amount of allows memory utilization by specifying a limit on the container.
-    memory: 2Gi
-
-autoscaling:
-  enabled: false
-nodeSelector: {}
-tolerations: []
-
-affinity:
-  podAntiAffinity:
-    preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: DoesNotExist
-          topologyKey: kubernetes.io/hostname
-
-livenessProbe:
-  failureThreshold: 3
-  initialDelaySeconds: 60
-  periodSeconds: 10
-  successThreshold: 1
-  timeoutSeconds: 1
-readinessProbe:
-  failureThreshold: 3
-  initialDelaySeconds: 60
-  periodSeconds: 10
-  successThreshold: 1
-  timeoutSeconds: 1
+  host: "orchestrator.int.cx.dih-cloud.com"
 
 secretRef: "managed-service-orchestrator-int-secret"
 
