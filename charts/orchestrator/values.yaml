@@ -114,14 +114,13 @@ readinessProbe:
   timeoutSeconds: 1
 
 secretRef: "managed-service-orchestrator"
-  
+
 postgresql:
   enabled: true
   fullnameOverride: "postgresql"
   auth:
-    postgresPassword: "default"
-    username: "default"
+    username: "postgres"
     password: "default"
-    database: "default"
+    database: "postgres"
     port: 5432
     existingSecret: ""
