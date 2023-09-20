@@ -22,10 +22,14 @@ package org.eclipse.tractusx.autosetup.apiproxy;
 
 import java.io.InputStream;
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.text.StringSubstitutor;
 import org.eclipse.tractusx.autosetup.exception.ServiceException;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.springframework.stereotype.Component;
@@ -43,6 +47,7 @@ import lombok.SneakyThrows;
 public class EDCProxyService {
 
 	private static final String CONTROL_PLANE_DATA_ENDPOINT = "controlPlaneDataEndpoint";
+	  private static final String DATE_FORMATTER = "dd/MM/yyyy HH:mm:ss";
 
 	private final EDCApiProxy eDCApiProxy;
 
@@ -53,9 +58,11 @@ public class EDCProxyService {
 	}
 
 	@SneakyThrows
-	public String getAssets(Customer customerDetails, Map<String, String> inputData) {
+	public List<Object> getAssets(Customer customerDetails, Map<String, String> inputData) {
 		String dataURL = inputData.get(CONTROL_PLANE_DATA_ENDPOINT);
-		return eDCApiProxy.getAssets(new URI(dataURL), requestHeader(inputData));
+		String readValueAsTree = getSchemaFromFile("/edc-request-template/asset-request-filter.json");
+		ObjectNode requestBody = (ObjectNode) new ObjectMapper().readTree(readValueAsTree);
+		return eDCApiProxy.getAssets(new URI(dataURL), requestHeader(inputData), requestBody);
 	}
 
 	@SneakyThrows
@@ -63,12 +70,13 @@ public class EDCProxyService {
 
 		String dataURL = inputData.get(CONTROL_PLANE_DATA_ENDPOINT);
 		String uId = UUID.randomUUID().toString();
-		String orgName = customerDetails.getOrganizationName();
-		String baseUrl = inputData.get("dtregistryUrl");
-
+		inputData.put("assetId", uId);
+		LocalDateTime localdate = LocalDateTime.now();
+		String date = localdate.format(DateTimeFormatter.ofPattern(DATE_FORMATTER));
+		inputData.put("createdDate", date);
+		inputData.put("updateDate", date);
 		String readValueAsTree = getSchemaFromFile("/edc-request-template/asset.json");
-		String jsonString = String.format(readValueAsTree, uId, uId, orgName, baseUrl, baseUrl);
-
+		String jsonString = valueReplacer(readValueAsTree, inputData);
 		ObjectNode json = (ObjectNode) new ObjectMapper().readTree(jsonString);
 		eDCApiProxy.createAsset(new URI(dataURL), requestHeader(inputData), json);
 
@@ -77,26 +85,22 @@ public class EDCProxyService {
 
 	@SneakyThrows
 	public String createPolicy(Customer customerDetails, Map<String, String> inputData) {
-
 		String uId = UUID.randomUUID().toString();
-
-		String readValueAsTree = getSchemaFromFile("/edc-request-template/policy.json");
-		String jsonString = String.format(readValueAsTree, uId);
-
+		inputData.put("policyId", uId);
 		String dataURL = inputData.get(CONTROL_PLANE_DATA_ENDPOINT);
+		String readValueAsTree = getSchemaFromFile("/edc-request-template/policy.json");
+		String jsonString = valueReplacer(readValueAsTree, inputData);
 		ObjectNode json = (ObjectNode) new ObjectMapper().readTree(jsonString);
 		eDCApiProxy.createPolicy(new URI(dataURL), requestHeader(inputData), json);
 		return uId;
 	}
 
 	@SneakyThrows
-	public String createContractDefination(Customer customerDetails, Map<String, String> inputData, String assetId,
-			String policyId) {
+	public String createContractDefination(Customer customerDetails, Map<String, String> inputData) {
 		String uId = UUID.randomUUID().toString();
-
+		inputData.put("contractPolicyId", uId);
 		String readValueAsTree = getSchemaFromFile("/edc-request-template/contract-defination.json");
-		String jsonString = String.format(readValueAsTree, uId, policyId, policyId, assetId);
-
+		String jsonString = valueReplacer(readValueAsTree, inputData);
 		String dataURL = inputData.get(CONTROL_PLANE_DATA_ENDPOINT);
 		ObjectNode json = (ObjectNode) new ObjectMapper().readTree(jsonString);
 		eDCApiProxy.createContractDefination(new URI(dataURL), requestHeader(inputData), json);
@@ -126,6 +130,11 @@ public class EDCProxyService {
 			if (createParser != null)
 				createParser.close();
 		}
+	}
+
+	private String valueReplacer(String requestTemplate, Map<String, String> inputData) {
+		StringSubstitutor stringSubstitutor1 = new StringSubstitutor(inputData);
+		return stringSubstitutor1.replace(requestTemplate);
 	}
 
 }
