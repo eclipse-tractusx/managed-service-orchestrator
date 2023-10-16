@@ -23,6 +23,7 @@ package org.eclipse.tractusx.autosetup.manager;
 
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DT_REGISTRY;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -117,9 +118,9 @@ public class DTRegistryManager {
 			WaitingTimeUtility.waitingTime(
 					tenantName + ": Waiting for EDC asset creation after DT setup to get connector pod up");
 
-			String asset = eDCProxyService.getAssets(customerDetails, inputData);
+			List<Object> asset = eDCProxyService.getAssets(customerDetails, inputData);
 
-			if (asset != null) {
+			if (asset != null && asset.isEmpty()) {
 				createEDCDTAsset(customerDetails, tool, inputData, triger);
 			}
 
@@ -156,8 +157,6 @@ public class DTRegistryManager {
 
 			String assetId = eDCProxyService.createAsset(customerDetails, inputData);
 			log.info(tenantName + ":DT createEDCAsset created " + assetId);
-			inputData.put("assetId", assetId);
-
 		} catch (Exception ex) {
 			log.error(tenantName + ":DTRegistryManager createEDCAsset failed retry attempt: : {}",
 					RetrySynchronizationManager.getContext().getRetryCount() + 1);
@@ -183,7 +182,6 @@ public class DTRegistryManager {
 
 			String policyId = eDCProxyService.createPolicy(customerDetails, inputData);
 			log.info(tenantName + ":DT createEDCPolicy created :" + policyId);
-			inputData.put("policyId", policyId);
 
 		} catch (Exception ex) {
 
@@ -209,14 +207,7 @@ public class DTRegistryManager {
 		log.info(tenantName + ":DT createContractDefination creating");
 		try {
 
-			String assetId = inputData.get("assetId");
-			String policyId = inputData.get("policyId");
-
-			String contractPolicyId = eDCProxyService.createContractDefination(customerDetails, inputData, assetId,
-					policyId);
-
-			inputData.put("contractPolicyId", contractPolicyId);
-
+			String contractPolicyId = eDCProxyService.createContractDefination(customerDetails, inputData);
 			log.info(tenantName + ":DT CreateContractDefination created " + contractPolicyId);
 
 		} catch (Exception ex) {
