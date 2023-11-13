@@ -47,7 +47,7 @@ import lombok.SneakyThrows;
 public class EDCProxyService {
 
 	private static final String CONTROL_PLANE_DATA_ENDPOINT = "controlPlaneDataEndpoint";
-	  private static final String DATE_FORMATTER = "dd/MM/yyyy HH:mm:ss";
+	private static final String DATE_FORMATTER = "dd/MM/yyyy HH:mm:ss";
 
 	private final EDCApiProxy eDCApiProxy;
 
