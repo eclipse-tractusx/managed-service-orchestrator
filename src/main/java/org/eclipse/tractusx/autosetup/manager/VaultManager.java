@@ -101,6 +101,7 @@ public class VaultManager {
 
 			String encryptionkeysalias = openSSLClientManager.executeCommand("openssl rand -base64 16");
 			tenantVaultSecret = new HashMap<>();
+			encryptionkeysalias = encryptionkeysalias.replace("\n", "");
 			tenantVaultSecret.put(CONTENT, encryptionkeysalias);
 			uploadSecrete(tenantNameNamespace, ENCRYPTIONKEYS, tenantVaultSecret);
 

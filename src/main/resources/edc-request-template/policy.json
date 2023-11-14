@@ -3,7 +3,7 @@
 		"odrl": "http://www.w3.org/ns/odrl/2/"
 	},
 	"@type": "PolicyDefinitionRequestDto",
-	"@id": "%s",
+	"@id": "${policyId}",
 	"policy": {
 		"@type": "Policy",
 		"odrl:permission": []

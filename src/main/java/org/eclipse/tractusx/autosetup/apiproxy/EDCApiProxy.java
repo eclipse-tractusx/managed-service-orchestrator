@@ -21,6 +21,7 @@
 package org.eclipse.tractusx.autosetup.apiproxy;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.tractusx.autosetup.portal.model.ServiceInstanceResultResponse;
@@ -37,8 +38,9 @@ import feign.Headers;
 @FeignClient(name = "EDCApiProxy", url = "placeholder")
 public interface EDCApiProxy {
 
-	@PostMapping(value ="/v2/assets/request", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public String getAssets(URI url, @RequestHeader Map<String, String> header);
+	@PostMapping(value = "/v2/assets/request", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public List<Object> getAssets(URI url, @RequestHeader Map<String, String> header,
+			@RequestBody ObjectNode requestBody);
 
 	@PostMapping("/v2/assets")
 	@Headers("Content-Type: application/json")
