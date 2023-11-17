@@ -6,8 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
- 
-## [1.5.1] - 2023-11-16
+
+## [1.5.1] - 2023-11-17
 ### Changed
  - Update DT asset creation for oauth secret information
  - Updated trivy workflow
@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
  - Support DDTR 3.2 for external subject id
- 
+
 ## [1.4.2] - 2023-08-22
 
 ### Changed
@@ -31,7 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  - CPU/Memory updated in values file
  - Updated documentation
  - Updated Security file
- 
+
 ### Fixed
  - Security issue fix
 
@@ -41,22 +41,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  - Corrected image for Trviy workflow
  - Email notification only on successful component connetcivity test
  - Corrected email template
- 
+
 ## [1.4.0] - 2023-08-17
 
 ### Fixed
  - Security issue fixed
- 
+
 ## [1.3.9] - 2023-08-14
 
 ### Added
  - Added interface document
- 
+
 ## [1.3.8] - 2023-08-04
 
 ### Changed
  - Updated the document
- 
+
 ## [1.3.7] - 2023-08-01
 
 ### Added
@@ -70,18 +70,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [1.3.6] - 2023-07-17
 
 ### Added
- - Refactor technical user use for bpdm and portal backend for SDE 
+ - Refactor technical user use for bpdm and portal backend for SDE
 
 ## [1.3.5] - 2023-07-12
 
 ### Added
  - Support for tool app/service type in autosetup
- 
+
 ## [1.3.4] - 2023-07-11
 
 ### Changed
  - Updated the ARC42 document
- 
+
 ## [1.3.3] - 2023-07-06
 
 ### Changed
@@ -99,7 +99,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
  - Updated SDE to combine frontend & backend helm charts
- 
+
 ## [1.3.0] - 2023-06-23
 
 ### Fixed
@@ -116,7 +116,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
  - Fixed spring core security issue
- 
+
 ### Changed
  - Changed name of repository
 
@@ -124,15 +124,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
  - Added header to the files
- 
+
 ### Changed
  - Changed default ingress to false
- 
+
 ## [1.2.6] - 2023-05-10
 
 ### Added
  - Added .tractusx file
- 
+
 ### Fixed
  - Veracode security issue fixes
  - Fixed DEPENDENCIES file issue
@@ -189,7 +189,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
  - Supports EDC connector 0.1.6
  - Changed base image to eclipse-temurin
- 
+
 
 ## [1.1.5] - 2023-03-02
 
@@ -213,10 +213,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  - Added semantic versioing
  - Update bounce crystel lib version
  - Organisation name with more special character support
- - Hot fix of Multi requesting of Managed SDE 
- - update tomcat, spring security version 
- 
-### Removed 
+ - Hot fix of Multi requesting of Managed SDE
+ - update tomcat, spring security version
+
+### Removed
  - Removed tag from values.yaml
 
 ## [1.1.0] - 2023-02-01
@@ -225,7 +225,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  - Addded Daps wrapper service
  - test issue fix and update dft package as deployment
  - Added .helmignore
- 
+
 ### Changed
 - Moved helm charts from `helm/` to `charts`
 
@@ -235,7 +235,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  - Added helm release
  - Added versioning
  - Added tagging
- - Move ARC42.md to docs directory 
+ - Move ARC42.md to docs directory
 
 ## [1.0.0] - 2022-10-21
 
@@ -248,7 +248,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Autosetup process is based on KubeApps
 
 ### Changed
-- Integration to Catena-X Portal 
+- Integration to Catena-X Portal
 
 ### Known knowns
 - Cross side scripting (XSS) shall be mitigated (low risk)
