@@ -113,18 +113,14 @@ readinessProbe:
   successThreshold: 1
   timeoutSeconds: 1
 
-secretRef: ""
+secretRef: "managed-service-orchestrator"
 
 postgresql:
-    # -- Enable the dependency postgres database
   enabled: true
-  metrics:
-    containerSecurityContext:
-      enabled: false
+  fullnameOverride: "postgresql"
   auth:
-    username: ""
-    database: ""
+    username: "postgres"
+    password: "default"
+    database: "postgres"
+    port: 5432
     existingSecret: ""
-    secretKeys:
-      adminPasswordKey: ""
-      userPasswordKey: ""
