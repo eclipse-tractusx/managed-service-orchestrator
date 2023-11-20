@@ -4,7 +4,7 @@
 
 This repository is part of the overarching eclipse-tractusx project. It contains the Backend for the Managed Service Orchestrator service.
 
-It is a standalone service which can be self-hosted. 
+It is a standalone service which can be self-hosted.
 It is prototype implementation for Service provider.
 This service will help service provider to set up DFT/SDE with EDC and EDC as service in service provider environment.
 
@@ -13,7 +13,7 @@ This service will help service provider to set up DFT/SDE with EDC and EDC as se
 
 ```shell
 Application version: 1.5.1
-Helm release version: 1.5.1
+Helm release version: 1.5.2
 ```
 
 # Container images
@@ -39,7 +39,7 @@ __Managed Service Orchestrator__
 - Eclipse Temurin Project: https://projects.eclipse.org/projects/adoptium.temurin
 - Additional information about the Eclipse Temurin images: https://github.com/docker-library/repo-info/tree/master/repos/eclipse-temurin
 
-As with all Docker images, these likely also contain other software which may be under other licenses 
+As with all Docker images, these likely also contain other software which may be under other licenses
 (such as Bash, etc. from the base distribution, along with any direct or indirect dependencies of the primary software being contained).
 
 As for any pre-built image usage, it is the image user's responsibility to ensure that any use of this image complies with any relevant licenses for all software contained within.
@@ -49,7 +49,7 @@ As for any pre-built image usage, it is the image user's responsibility to ensur
 To update the [DEPENDENCIES](./DEPENDENCIES) declarations, run:
 
 ```shell
-mvn org.eclipse.dash:license-tool-plugin:license-check 
+mvn org.eclipse.dash:license-tool-plugin:license-check
 ```
 
 ### For installation guide:
@@ -85,7 +85,7 @@ The scripts are in the folder: resources/flyway.<p>
 File naming: <b>Vx__script_name.sql</b>, where x is the version number. <p>
 When there is a need to change the last script, it is necessary to create a new script with the changes.
 
-Link to flyway documentation: [Documentation](https://flywaydb.org/documentation/) 
+Link to flyway documentation: [Documentation](https://flywaydb.org/documentation/)
 
 ## API authentication
 Authentication for the backend is handled via an Keycloak. This can be set in the configuration file.
