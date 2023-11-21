@@ -56,9 +56,6 @@ class VaultManagerTest {
     @MockBean
     private AutoSetupTriggerManager autoSetupTriggerManager;
 
-    @MockBean
-    private OpenSSLClientManager openSSLClientManager;
-
     @Autowired
     private VaultManager vaultManager;
 
