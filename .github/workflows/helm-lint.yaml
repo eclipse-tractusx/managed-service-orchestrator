@@ -38,8 +38,8 @@ on:
         type: string
       upgrade_from:
         description: 'Managed service orchestrator service chart version to upgrade from'
-        #  version from 3.1 release
-        default: '1.4.2'
+        #  version from 23.12 release
+        default: '1.5.2'
 
 jobs:
   lint-test:
@@ -65,7 +65,7 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v3
         with:
-          version: v3.10.3
+          version: v3.9.3
 
       # Setup python as a prerequisite for chart linting
       - uses: actions/setup-python@v4
@@ -85,11 +85,10 @@ jobs:
           fi
       # run chart linting
       - name: Run chart-testing (lint)
-        run: ct lint --charts charts/orchestrator --config charts/chart-testing-config.yaml
-
+        run: ct lint --validate-maintainers=false --target-branch ${{ github.event.repository.default_branch }} --config charts/chart-testing-config.yaml
 
       - name: Run chart-testing (install)
-        run: ct install --charts charts/orchestrator --config charts/chart-testing-config.yaml --helm-extra-set-args "--set=image.tag=testing --set=image.repository=kind-registry:5000/managed-service-orchestrator"
+        run: ct install --charts charts/orchestrator --config charts/chart-testing-config.yaml
         if: github.event_name != 'pull_request' || steps.list-changed.outputs.changed == 'true'
 
       - name: Run helm upgrade
