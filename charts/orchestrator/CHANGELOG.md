@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  - Updated Notice for Docker image
  - Updated Helm lint 
  - Updated Installation steps
+ - Veracode security issue fix
 
 ## [1.5.2] - 2023-11-20
 
