@@ -38,8 +38,8 @@ on:
         type: string
       upgrade_from:
         description: 'Managed service orchestrator service chart version to upgrade from'
-        #  version from 3.1 release
-        default: '1.4.2'
+        #  version from 23.12 release
+        default: '1.5.2'
 
 jobs:
   lint-test:
