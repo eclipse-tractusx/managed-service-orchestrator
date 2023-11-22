@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  - Updated notice for docker in Readme
  - Veracode workflow fix
 
+
 ## [1.5.1] - 2023-11-17
 ### Changed
  - Update DT asset creation for oauth secret information
