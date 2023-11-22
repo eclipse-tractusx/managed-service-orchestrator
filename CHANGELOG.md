@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
  - Update in installation steps
+ - Updated notice for docker in `README.md`
 
 ## [1.5.1] - 2023-11-17
 ### Changed
