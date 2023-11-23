@@ -96,6 +96,6 @@ jobs:
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo add tractusx-dev https://eclipse-tractusx.github.io/charts/dev
-          helm install orchestrator tractusx-dev/orchestrator --version ${{ github.event.inputs.upgrade_from || '1.5.1' }}
-          helm upgrade orchestrator charts/orchestrator
+          helm install orchestrator tractusx-dev/managed-service-orchestrator --version ${{ github.event.inputs.upgrade_from || '1.5.1' }}
+          helm upgrade orchestrator tractusx-dev/managed-service-orchestrator
         if: github.event_name != 'pull_request' || steps.list-changed.outputs.changed == 'true'
