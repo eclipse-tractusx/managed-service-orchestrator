@@ -39,7 +39,7 @@ on:
       upgrade_from:
         description: 'Managed service orchestrator service chart version to upgrade from'
         #  version from 3.1 release
-        default: '1.5.1'
+        default: '1.5.2'
 
 jobs:
   lint-test:
@@ -96,6 +96,6 @@ jobs:
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo add tractusx-dev https://eclipse-tractusx.github.io/charts/dev
-          helm install orchestrator tractusx-dev/managed-service-orchestrator --version ${{ github.event.inputs.upgrade_from || '1.5.1' }}
+          helm install orchestrator tractusx-dev/managed-service-orchestrator --version ${{ github.event.inputs.upgrade_from || '1.5.2' }}
           helm upgrade orchestrator charts/orchestrator
         if: github.event_name != 'pull_request' || steps.list-changed.outputs.changed == 'true'
