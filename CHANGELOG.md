@@ -15,12 +15,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 
 ## [1.5.1] - 2023-11-17
+
+[App release 1.5.0](https://github.com/eclipse-tractusx/managed-service-orchestrator/releases/tag/v1.5.1)
+
 ### Changed
  - Update DT asset creation for oauth secret information
  - Updated trivy workflow
  - Changed the base image for security issue
 
 ## [1.5.0] - 2023-09-04
+
+[App release 1.5.0](https://github.com/eclipse-tractusx/managed-service-orchestrator/releases/tag/v1.5.0)
 
 ### Changed
  - Support DDTR 3.2 for external subject id
