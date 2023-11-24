@@ -4,19 +4,28 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
-## [Unreleased]
- - Update in installation steps
- - Updated notice for docker in `README.md`
- - Veracode workflow fix
- - Fixed linting of charts
+## [1.5.2] - 2023-11-24
+
+### Fixes
+
+- Fix helm repo name in `INSTALL.md` (#89)
+- Fix link to temurin repository in "Notice for Docker images" (#90)
+- Remove default connection test, that prevented helm test to succeed (#92)
+- Fix Chart names in helm test step (#95)
+
 
 ## [1.5.1] - 2023-11-17
+
+[App release 1.5.0](https://github.com/eclipse-tractusx/managed-service-orchestrator/releases/tag/v1.5.1)
+
 ### Changed
  - Update DT asset creation for oauth secret information
  - Updated trivy workflow
  - Changed the base image for security issue
 
 ## [1.5.0] - 2023-09-04
+
+[App release 1.5.0](https://github.com/eclipse-tractusx/managed-service-orchestrator/releases/tag/v1.5.0)
 
 ### Changed
  - Support DDTR 3.2 for external subject id
