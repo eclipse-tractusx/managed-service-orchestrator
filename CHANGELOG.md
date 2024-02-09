@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Fix link to temurin repository in "Notice for Docker images" (#90)
 - Remove default connection test, that prevented helm test to succeed (#92)
 - Fix Chart names in helm test step (#95)
+- Fixed veracode workflow by upgrading version
 
 
 ## [1.5.1] - 2023-11-17
