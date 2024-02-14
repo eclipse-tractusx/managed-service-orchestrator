@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 /********************************************************************************
- * Copyright (c) 2023 T-Systems International GmbH
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023, 2024 T-Systems International GmbH
+ * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -27,7 +27,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.0</version>
+		<version>3.1.6</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.eclipse.tractusx</groupId>
@@ -67,7 +67,27 @@
 					<groupId>org.yaml</groupId>
 					<artifactId>snakeyaml</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.4.14</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>1.4.14</version>
 		</dependency>
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
