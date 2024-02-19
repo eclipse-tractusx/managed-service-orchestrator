@@ -1,6 +1,6 @@
 # managed-service-orchestrator
 
-![Version: 1.5.1](https://img.shields.io/badge/Version-1.5.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.5.1](https://img.shields.io/badge/AppVersion-1.5.1-informational?style=flat-square)
+![Version: 1.5.3](https://img.shields.io/badge/Version-1.5.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.5.3](https://img.shields.io/badge/AppVersion-1.5.3-informational?style=flat-square)
 
 This service will help service provider to set up DFT/SDE with EDC and EDC as service in service provider environment.
 
@@ -40,13 +40,13 @@ This service will help service provider to set up DFT/SDE with EDC and EDC as se
 | podAnnotations | object | `{}` |  |
 | podSecurityContext.fsGroup | int | `2000` |  |
 | portContainer | int | `9999` |  |
-| postgresql.auth.database | string | `""` |  |
+| postgresql.auth.database | string | `"postgres"` |  |
 | postgresql.auth.existingSecret | string | `""` |  |
-| postgresql.auth.secretKeys.adminPasswordKey | string | `""` |  |
-| postgresql.auth.secretKeys.userPasswordKey | string | `""` |  |
-| postgresql.auth.username | string | `""` |  |
-| postgresql.enabled | bool | `true` | Enable the dependency postgres database |
-| postgresql.metrics.containerSecurityContext.enabled | bool | `false` |  |
+| postgresql.auth.password | string | `"default"` |  |
+| postgresql.auth.port | int | `5432` |  |
+| postgresql.auth.username | string | `"postgres"` |  |
+| postgresql.enabled | bool | `true` |  |
+| postgresql.fullnameOverride | string | `"postgresql"` |  |
 | probe.endpoint | string | `"/api/healthz"` |  |
 | readinessProbe.failureThreshold | int | `3` |  |
 | readinessProbe.initialDelaySeconds | int | `60` |  |
@@ -58,7 +58,7 @@ This service will help service provider to set up DFT/SDE with EDC and EDC as se
 | resources.limits.memory | string | `"2Gi"` | set a maximum amount of allows memory utilization by specifying a limit on the container. |
 | resources.requests.cpu | string | `"400m"` | sets the minimum amount of CPU required for the container |
 | resources.requests.memory | string | `"2Gi"` | set a minimum amount of allows memory utilization by specifying a limit on the container. |
-| secretRef | string | `""` |  |
+| secretRef | string | `"managed-service-orchestrator"` |  |
 | securityContext.allowPrivilegeEscalation | bool | `false` | Controls whether a process can gain more privilege |
 | securityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.runAsUser | int | `1000` |  |
