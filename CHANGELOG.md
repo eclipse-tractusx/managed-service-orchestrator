@@ -5,13 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
+
+## [1.5.3] - 2024-02-19
 ### Fixed
 - Fixed trivy security issues CVE-2023-34053, CVE-2023-46589, CVE-2023-6378
 
 
 ## [1.5.2] - 2023-11-24
 
-### Fixes
+### Fixed
 
 - Fix helm repo name in `INSTALL.md` (#89)
 - Fix link to temurin repository in "Notice for Docker images" (#90)
