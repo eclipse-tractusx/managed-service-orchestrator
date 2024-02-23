@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
+### Fixed
+- Fixed trivy security issue CVE-2024-1597
+- Fixed spring-security-core issue CVE-2024-22234
 
 ## [1.5.3] - 2024-02-19
 ### Fixed
