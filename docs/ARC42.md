@@ -1,5 +1,7 @@
 # SDE - User Guide
 
+## ![](images/pic1.png)
+
 ## About arc42
 arc42, the Template for documentation of software and system architecture.
 By Dr. Gernot Starke, Dr. Peter Hruschka and contributors.
