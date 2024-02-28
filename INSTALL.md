@@ -13,3 +13,20 @@ How to install application using helm:  <br />
            helm search repo tractusx/managed-service-orchestrator
     c.) To install using helm command:   
            helm install orchestrator tractusx/managed-service-orchestrator
+
+
+Local installation:
+
+1. Install Kubeapps on your local Kubernetes cluster
+
+2. Add Package repository in Kubeapps https://eclipse-tractusx.github.io/charts/dev/
+
+3. Create namespace through Kubeapps
+
+4. Select the Package Repository which was added in step 2
+
+5. Select managed-service-orchestrator from the Catalog
+
+6. Deploy it
+
+   
