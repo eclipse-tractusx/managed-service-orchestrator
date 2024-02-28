@@ -1,7 +1,5 @@
 # SDE - User Guide
 
-## ![](images/pic1.png)
-
 ## About arc42
 arc42, the Template for documentation of software and system architecture.
 By Dr. Gernot Starke, Dr. Peter Hruschka and contributors.
@@ -26,7 +24,7 @@ The SDE is a simple component provided by Simple data exchanger. Its purpose is 
 
 ## Requirements Overview
 
-## ![](images/pic0.png)
+## ![](images/pic0.svg)
 
 What is necessary to enable third-party platform to provide SDE as a managed service by third-party for an SME?
 
@@ -68,7 +66,7 @@ The process has to comply with IDSA, GAIA-X, and principles.
 # System Scope and Context
 ## Auto setup Process in third-party domain
 
-## ![](images/pic3.png)
+## ![](images/pic3.svg)
 
 ## Business Context
 **Contents.**
@@ -93,7 +91,7 @@ Alternatively (or additionally) you can use a table. The title of the table is t
 
 ### **APIs for exchanging the data between The Portal and Auto-Setup process**
 
-## ![](images/pic4.png)
+## ![](images/pic4.svg)
 
 ### Interfaces:
 1. **Third-PartyAuto Setup process:**
@@ -107,7 +105,7 @@ Portal provides an API to Autosetup process for connector registration
 5. **Auto Setup Creation:**
 Auto setup create data.core,digitalTwinRegistry type Asset for managed twin registry information
 
-## ![](images/pic5.png)
+## ![](images/pic5.svg)
 
 ### Initial attributes needed from Portal to start the Auto setup process:
 
@@ -200,11 +198,11 @@ To hide all complexity from the participant, a third-party service provider prov
 
 ## Needed Dialog for Auto Setup Process:
 
-## ![](images/pic6.png)
+## ![](images/pic6.svg)
 
 ### Deployment View
 
-## ![](images/pic7.png)
+## ![](images/pic7.svg)
 
 
 <br>
