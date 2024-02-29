@@ -121,6 +121,80 @@ postgresql:
   auth:
     username: "postgres"
     password: "default"
+    postgresPassword: "default"
     database: "postgres"
     port: 5432
     existingSecret: ""
+
+properties:
+  connectorTestServiceUrl: default
+  connectorregisterUrl: default
+  connectorregisterkeycloakclientId: default
+  connectorregisterkeycloakclientSecret: default
+  connectorregisterkeycloaktokenURI: default
+  dapsJksUrl: default
+  dapsTokenUrl: default
+  dapsUrl: default
+  #dbUrl: jdbc:postgresql://postgresql:5432/postgres
+  #dbpassword: default
+  #dbuser: postgres
+  dnsname: default
+  dnsnameProtocol: default
+  edc_miwUrl: default
+  edc_ssi_authorityId: default
+  emailpassword: default
+  emailuser: default
+  keycloakAuthserverUrl: default
+  keycloakBearerOnly: "true"
+  keycloakClientid: default
+  keycloakRealm: default
+  keycloakResource: default
+  keycloakSslRequired: external
+  keycloakUseResourceRoleMappings: "true"
+  kubeappsToken: default
+  kubeappsUrl: default
+  mail_from: default
+  mail_to: default
+  manual-connector-registration: "false"
+  manualupdate: "true"
+  password: default
+  portalclientid: default
+  portalclientsecret: default
+  portalemail: default
+  portaltokenurl: default
+  portalurl: default
+  postgres-password: default
+  resourceServerIssuer:  default
+  sde_bpndiscovery-hostname: default
+  sde_connector-discovery-clientId: default
+  sde_connector-discovery-clientSecret: default
+  sde_connector-discovery-token-url: default
+  sde_digital-twins-authentication-url: default
+  sde_digital-twins-hostname: default
+  sde_discovery-authentication-url: default
+  sde_discovery-clientId: default
+  sde_discovery-clientSecret: default
+  sde_discovery-grantType: default
+  sde_dtregistry-url-prefix: default
+  sde_dtregistryidp-client-id: default
+  sde_dtregistrytenant-id: default
+  sde_keycloak-auth: default
+  sde_keycloak-realm: default
+  sde_keycloak-tokenUrl: default
+  sde_partner-pool-clientId: default
+  sde_partner-pool-clientSecret: default
+  sde_partner-pool-hostname: default
+  sde_portal-backend-authentication-url: default
+  sde_portal-backend-clientId: default
+  sde_portal-backend-clientSecret: default
+  sde_portal-backend-hostname: default
+  sde_resource-server-issuer: default
+  smtp_auth: "true"
+  smtp_host: default
+  smtp_port: default
+  smtp_tls_enable: "true"
+  targetCluster: default
+  targetNamesapce: default
+  vaultToken: default
+  vaultUrl: default
+  

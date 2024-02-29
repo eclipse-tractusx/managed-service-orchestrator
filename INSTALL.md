@@ -17,7 +17,8 @@ How to install application using helm:  <br />
 
 Local installation:
 
-1. Install Kubeapps on your local Kubernetes cluster
+1. Install Kubeapps on your local Kubernetes cluster. 
+   Installation for kubeapps can be taken from reference https://docs.bitnami.com/tutorials/install-use-kubeapps/
 
 2. Add Package repository in Kubeapps https://eclipse-tractusx.github.io/charts/dev/
 
@@ -27,6 +28,8 @@ Local installation:
 
 5. Select managed-service-orchestrator from the Catalog
 
-6. Deploy it
+6. To set your own configuration and secret values in values file
+
+7. Deploy the application
 
    
