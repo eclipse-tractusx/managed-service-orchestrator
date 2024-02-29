@@ -161,7 +161,7 @@ properties:
   portaltokenurl: default
   portalurl: default
   postgres-password: default
-  resourceServerIssuer:  default
+  resourceServerIssuer: default
   sde_bpndiscovery_hostname: default
   sde_connector_discovery_clientId: default
   sde_connector_discovery_clientSecret: default
@@ -194,4 +194,3 @@ properties:
   targetNamesapce: default
   vaultToken: default
   vaultUrl: default
-  
