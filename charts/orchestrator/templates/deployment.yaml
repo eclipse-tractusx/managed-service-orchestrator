@@ -67,6 +67,20 @@ spec:
               value: "3"
             - name: RETRY_BACKOFFDELAY
               value: "500"
+            - name: KEYCLOAKBEARERONLY
+              value: {{ .Values.keycloakBearerOnly }}
+            - name: KEYCLOAKUSERESOURCEROLEMAPPINGS
+              value: {{ .Values.keycloakUseResourceRoleMappings }}
+            - name: KEYCLOAKSSLREQUIRED
+              value: {{ .Values.keycloakSslRequired }}
+            - name: MANUAL-CONNECTOR-REGISTRATION
+              value: {{ .Values.manual_connector_registration }}
+            - name: MANUALUPDATE
+              value: {{ .Values.manualupdate }}
+            - name: SMTP_AUTH
+              value: {{ .Values.smtp_auth }}
+            - name:  SMTP_TLS_ENABLE
+              value: {{ .Values.smtp_tls_enable }}
             - name: SPRING_DATASOURCE_USERNAME
               value: {{ .Values.postgresql.auth.username | required ".Values.sdepostgresql.auth.username is required" | quote }}
             {{- if .Values.postgresql.fullnameOverride }}
