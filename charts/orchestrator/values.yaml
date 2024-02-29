@@ -135,9 +135,6 @@ properties:
   dapsJksUrl: default
   dapsTokenUrl: default
   dapsUrl: default
-  #dbUrl: jdbc:postgresql://postgresql:5432/postgres
-  #dbpassword: default
-  #dbuser: postgres
   dnsname: default
   dnsnameProtocol: default
   edc_miwUrl: default
