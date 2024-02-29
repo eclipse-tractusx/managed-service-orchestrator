@@ -152,7 +152,7 @@ properties:
   kubeappsUrl: default
   mail_from: default
   mail_to: default
-  manual-connector-registration: "false"
+  manual_connector_registration: "false"
   manualupdate: "true"
   password: default
   portalclientid: default
@@ -162,7 +162,7 @@ properties:
   portalurl: default
   postgres-password: default
   resourceServerIssuer:  default
-  sde_bpndiscovery-hostname: default
+  sde_bpndiscovery_hostname: default
   sde_connector_discovery_clientId: default
   sde_connector_discovery_clientSecret: default
   sde_connector_discovery_token_url: default
