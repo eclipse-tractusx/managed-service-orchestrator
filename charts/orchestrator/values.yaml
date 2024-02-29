@@ -126,7 +126,6 @@ postgresql:
     port: 5432
     existingSecret: ""
 
-
 properties:
   connectorTestServiceUrl: default
   connectorregisterUrl: default
