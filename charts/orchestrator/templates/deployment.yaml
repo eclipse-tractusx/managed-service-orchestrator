@@ -67,12 +67,39 @@ spec:
               value: "3"
             - name: RETRY_BACKOFFDELAY
               value: "500"
+            - name: KEYCLOAKBEARERONLY
+              value: "{{ .Values.properties.keycloakBearerOnly }}"
+            - name: KEYCLOAKUSERESOURCEROLEMAPPINGS
+              value: "{{ .Values.properties.keycloakUseResourceRoleMappings }}"
+            - name: KEYCLOAKSSLREQUIRED
+              value: "{{ .Values.properties.keycloakSslRequired }}"
+            - name: MANUAL-CONNECTOR-REGISTRATION
+              value: "{{ .Values.properties.manual_connector_registration }}"
+            - name: MANUALUPDATE
+              value: "{{ .Values.properties.manualupdate }}"
+            - name: SMTP_AUTH
+              value: "{{ .Values.properties.smtp_auth }}"
+            - name:  SMTP_TLS_ENABLE
+              value: "{{ .Values.properties.smtp_tls_enable }}"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: {{ .Values.postgresql.auth.username | required ".Values.sdepostgresql.auth.username is required" | quote }}
+            {{- if .Values.postgresql.fullnameOverride }}
             - name: SPRING_DATASOURCE_URL
               value: "jdbc:postgresql://{{ .Values.postgresql.fullnameOverride }}:{{ .Values.postgresql.auth.port }}/{{ .Values.postgresql.auth.database }}"
-            - name: SPRING_DATASOURCE_USERNAME
-              value: {{ .Values.postgresql.auth.username | required ".Values.postgresql.auth.username is required" | quote }}             
             - name: SPRING_DATASOURCE_PASSWORD
-              value: {{ .Values.postgresql.auth.password | required ".Values.postgresql.auth.password is required" | quote}}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgresql.fullnameOverride }}
+                  key: "password"
+            {{- else }}
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://{{ include "managed-service-orchestrator.fullname" . }}-postgresql:{{ .Values.postgresql.auth.port }}/{{ .Values.postgresql.auth.database }}"
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "sde.fullname" . }}-postgresql
+                  key: "password"
+            {{- end }}   
 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
