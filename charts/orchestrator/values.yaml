@@ -142,18 +142,18 @@ properties:
   emailpassword: default
   emailuser: default
   keycloakAuthserverUrl: default
-  keycloakBearerOnly: "true"
+  keycloakBearerOnly: true
   keycloakClientid: default
   keycloakRealm: default
   keycloakResource: default
   keycloakSslRequired: external
-  keycloakUseResourceRoleMappings: "true"
+  keycloakUseResourceRoleMappings: true
   kubeappsToken: default
   kubeappsUrl: default
   mail_from: default
   mail_to: default
-  manual-connector-registration: "false"
-  manualupdate: "true"
+  manual-connector-registration: false
+  manualupdate: true
   password: default
   portalclientid: default
   portalclientsecret: default
@@ -186,10 +186,10 @@ properties:
   sde_portal-backend-clientSecret: default
   sde_portal-backend-hostname: default
   sde_resource-server-issuer: default
-  smtp_auth: "true"
+  smtp_auth: true
   smtp_host: default
   smtp_port: default
-  smtp_tls_enable: "true"
+  smtp_tls_enable: true
   targetCluster: default
   targetNamesapce: default
   vaultToken: default
