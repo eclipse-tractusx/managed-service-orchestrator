@@ -163,29 +163,29 @@ properties:
   postgres-password: default
   resourceServerIssuer:  default
   sde_bpndiscovery-hostname: default
-  sde_connector-discovery-clientId: default
-  sde_connector-discovery-clientSecret: default
-  sde_connector-discovery-token-url: default
-  sde_digital-twins-authentication-url: default
-  sde_digital-twins-hostname: default
-  sde_discovery-authentication-url: default
-  sde_discovery-clientId: default
-  sde_discovery-clientSecret: default
-  sde_discovery-grantType: default
-  sde_dtregistry-url-prefix: default
-  sde_dtregistryidp-client-id: default
-  sde_dtregistrytenant-id: default
-  sde_keycloak-auth: default
-  sde_keycloak-realm: default
-  sde_keycloak-tokenUrl: default
-  sde_partner-pool-clientId: default
-  sde_partner-pool-clientSecret: default
-  sde_partner-pool-hostname: default
-  sde_portal-backend-authentication-url: default
-  sde_portal-backend-clientId: default
-  sde_portal-backend-clientSecret: default
-  sde_portal-backend-hostname: default
-  sde_resource-server-issuer: default
+  sde_connector_discovery_clientId: default
+  sde_connector_discovery_clientSecret: default
+  sde_connector_discovery_token_url: default
+  sde_digital_twins_authentication_url: default
+  sde_digital_twins_hostname: default
+  sde_discovery_authentication_url: default
+  sde_discovery_clientId: default
+  sde_discovery_clientSecret: default
+  sde_discovery_grantType: default
+  sde_dtregistry_url_prefix: default
+  sde_dtregistryidp_client_id: default
+  sde_dtregistrytenant_id: default
+  sde_keycloak_auth: default
+  sde_keycloak_realm: default
+  sde_keycloak_tokenUrl: default
+  sde_partner_pool_clientId: default
+  sde_partner_pool_clientSecret: default
+  sde_partner_pool_hostname: default
+  sde_portal_backend_authentication_url: default
+  sde_portal_backend_clientId: default
+  sde_portal_backend_clientSecret: default
+  sde_portal_backend_hostname: default
+  sde_resource_server_issuer: default
   smtp_auth: "true"
   smtp_host: default
   smtp_port: default
