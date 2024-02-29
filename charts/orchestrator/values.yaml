@@ -121,6 +121,7 @@ postgresql:
   auth:
     username: "postgres"
     password: "default"
+    postgres-password: "default"
     database: "postgres"
     port: 5432
     existingSecret: ""
