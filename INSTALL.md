@@ -30,4 +30,7 @@ How to install application using helm:  <br />
 
     f. To set your own configuration and secret values in values file
 
-    g. Deploy the application
+    g. Below database details are mandatory to provide, other than that all secrets can be just default:
+       postgresql.auth.username, postgresql.auth.password, postgresql.auth.postgresPassword, postgresql.auth.database
+
+    h. Deploy the application
