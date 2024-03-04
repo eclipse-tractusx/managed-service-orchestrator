@@ -82,7 +82,7 @@ spec:
             - name:  SMTP_TLS_ENABLE
               value: "{{ .Values.properties.smtp_tls_enable }}"
             - name: SPRING_DATASOURCE_USERNAME
-              value: {{ .Values.postgresql.auth.username | required ".Values.sdepostgresql.auth.username is required" | quote }}
+              value: {{ .Values.postgresql.auth.username | required ".Values.postgresql.auth.username is required" | quote }}
             {{- if .Values.postgresql.fullnameOverride }}
             - name: SPRING_DATASOURCE_URL
               value: "jdbc:postgresql://{{ .Values.postgresql.fullnameOverride }}:{{ .Values.postgresql.auth.port }}/{{ .Values.postgresql.auth.database }}"
@@ -97,7 +97,7 @@ spec:
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "sde.fullname" . }}-postgresql
+                  name: {{ include "managed-service-orchestrator.fullname" . }}-postgresql
                   key: "password"
             {{- end }}   
 
