@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - Update Spring Boot to version 3.2.3
 - Update commons-text, commons-io, commons-compres, bcprov, bcpkix, snappy-java, jakarta.activation-api
+- postgresql DB upgrade
 
 ## [1.5.3] - 2024-02-19
 ### Fixed
