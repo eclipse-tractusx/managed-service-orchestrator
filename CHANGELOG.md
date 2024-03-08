@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [1.5.5] - 2024-03-08
+### Fixed
+- Postgresql DB upgrade
+
 ## [1.5.4] - 2024-03-06
 ### Fixed
 - Fixed CVE-2024-22234 and CVE-2024-22243
