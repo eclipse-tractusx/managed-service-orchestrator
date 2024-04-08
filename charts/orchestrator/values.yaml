@@ -120,8 +120,8 @@ postgresql:
   fullnameOverride: "postgresql"
   auth:
     username: "testuser"
-    password: "default"
-    postgresPassword: "default"
+    password: ""
+    postgresPassword: ""
     database: "testdb"
     port: 5432
     existingSecret: ""
