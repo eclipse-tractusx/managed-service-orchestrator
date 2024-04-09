@@ -33,7 +33,7 @@ COPY ./src ./src
 # build for release
 RUN mvn clean install -Dmaven.test.skip=true 
 
-FROM eclipse-temurin:17.0.8.1_1-jdk
+FROM eclipse-temurin:20.0.2_9-jdk
 
 ENV USER=autosetupuser
 ENV UID=1000
