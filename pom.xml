@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
 			<artifactId>eclipselink</artifactId>
-			<version>3.0.3</version>
+			<version>4.0.2</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.eclipse.persistence</groupId>
