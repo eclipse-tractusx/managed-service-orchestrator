@@ -19,7 +19,7 @@
 ################################################################################
  
 # our base build image
-FROM maven:3.8.7-eclipse-temurin-17 AS builder
+FROM maven:3.9.5-eclipse-temurin-21 AS builder
 
 # copy the project files
 COPY ./pom.xml /pom.xml
