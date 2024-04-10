@@ -119,10 +119,10 @@ postgresql:
   enabled: true
   fullnameOverride: "postgresql"
   auth:
-    username: "postgres"
-    password: "default"
-    postgresPassword: "default"
-    database: "postgres"
+    username: "testuser"
+    password: ""
+    postgresPassword: ""
+    database: "testdb"
     port: 5432
     existingSecret: ""
 

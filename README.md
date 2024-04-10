@@ -50,7 +50,7 @@ You can find the standard credentials as well as further database configurations
 
 ### Prerequisites
 - JDK18
-- Postgres 13.2
+- Postgres 15.4
 - Docker
 - kubeapps
 - Helm chart for Package installation
