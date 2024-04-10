@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
+- postgresql DB upgrade
 
 ## [1.5.4] - 2024-03-06
 ### Fixed
@@ -14,7 +15,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - Update Spring Boot to version 3.2.3
 - Update commons-text, commons-io, commons-compres, bcprov, bcpkix, snappy-java, jakarta.activation-api
-- postgresql DB upgrade
 
 ## [1.5.3] - 2024-02-19
 ### Fixed
