@@ -1,6 +1,6 @@
 #################################################################################
-# Copyright (c) 2022,2023 T-Systems International GmbH
-# Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+# Copyright (c) 2022,2024 T-Systems International GmbH
+# Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
 #
 # See the NOTICE file(s) distributed with this work for additional
 # information regarding copyright ownership.
@@ -19,18 +19,15 @@
 ################################################################################
 
 name: "Trivy"
+
 on:
-  push:
-    branches: 
-     - main
   schedule:
-    # Once a day
-    - cron: "0 0 * * *"   
+    - cron: "0 0 * * 0"
   workflow_dispatch:
-  # Trigger manually
 
 jobs:
-  analyze-config:
+  analyze:
+    name: Analyze
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -38,17 +35,18 @@ jobs:
       security-events: write
 
     steps:
- 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.12.0
+        uses: aquasecurity/trivy-action@0.18.0
         with:
-          # Path to Docker image
-          image-ref: "tractusx/managed-service-orchestrator:latest"
+          image-ref: "tractusx/managed-service-orchestrator:latest" # Pull image from Docker Hub and run Trivy vulnerability scanner
           format: "sarif"
           output: "trivy-results.sarif"
-          vuln-type: "os,library"
+          exit-code: "1" # Trivy exits with code 1 if vulnerabilities are found, causing the workflow step to fail.
+          severity: "CRITICAL,HIGH" # While vulnerabilities of all severities are reported in the SARIF output, the exit code and workflow failure are triggered only by these specified severities (CRITICAL or HIGH).
+          hide-progress: false
 
       - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
         with:
           sarif_file: "trivy-results.sarif"

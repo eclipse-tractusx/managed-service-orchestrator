@@ -1,6 +1,6 @@
 # managed-service-orchestrator
 
-![Version: 1.5.6](https://img.shields.io/badge/Version-1.5.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.5.4](https://img.shields.io/badge/AppVersion-1.5.4-informational?style=flat-square)
+![Version: 1.5.7](https://img.shields.io/badge/Version-1.5.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.5.4](https://img.shields.io/badge/AppVersion-1.5.4-informational?style=flat-square)
 
 This service will help service provider to set up DFT/SDE with EDC and EDC as service in service provider environment.
 
@@ -42,9 +42,9 @@ This service will help service provider to set up DFT/SDE with EDC and EDC as se
 | portContainer | int | `9999` |  |
 | postgresql.auth.database | string | `"testdb"` |  |
 | postgresql.auth.existingSecret | string | `""` |  |
-| postgresql.auth.password | string | `"default"` |  |
+| postgresql.auth.password | string | `""` |  |
 | postgresql.auth.port | int | `5432` |  |
-| postgresql.auth.postgresPassword | string | `"default"` |  |
+| postgresql.auth.postgresPassword | string | `""` |  |
 | postgresql.auth.username | string | `"testuser"` |  |
 | postgresql.enabled | bool | `true` |  |
 | postgresql.fullnameOverride | string | `"postgresql"` |  |
