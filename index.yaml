@@ -517,6 +517,24 @@ entries:
   managed-service-orchestrator:
   - apiVersion: v2
     appVersion: 1.5.4
+    created: "2024-04-15T07:30:26.40612882Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.x.x
+    description: This service will help service provider to set up DFT/SDE with EDC
+      and EDC as service in service provider environment.
+    digest: cdc98344df35af35e0d08ef3f366b2d948541349579c26c1796674aae5cd3178
+    name: managed-service-orchestrator
+    sources:
+    - https://github.com/eclipse-tractusx/managed-service-orchestrator
+    type: application
+    urls:
+    - https://github.com/eclipse-tractusx/managed-service-orchestrator/releases/download/managed-service-orchestrator-1.5.7/managed-service-orchestrator-1.5.7.tgz
+    version: 1.5.7
+  - apiVersion: v2
+    appVersion: 1.5.4
     created: "2024-04-09T09:17:43.215430579Z"
     dependencies:
     - condition: postgresql.enabled
@@ -659,4 +677,4 @@ entries:
     urls:
     - https://github.com/eclipse-tractusx/managed-service-orchestrator/releases/download/managed-service-orchestrator-1.4.3/managed-service-orchestrator-1.4.3.tgz
     version: 1.4.3
-generated: "2024-04-09T09:17:43.215503745Z"
+generated: "2024-04-15T07:30:26.406225572Z"
