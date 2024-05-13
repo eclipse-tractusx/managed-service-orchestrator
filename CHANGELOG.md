@@ -5,7 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
+
+
+## [1.5.5] - 2024-05-13
+### Changed
 - postgresql DB upgrade
+
+### Fixed
+- Update base image due to vulnerabilities
 
 ## [1.5.4] - 2024-03-06
 ### Fixed
