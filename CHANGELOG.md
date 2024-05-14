@@ -5,10 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
+
+
+## [1.5.5] - 2024-05-13
 ### Changed
 - postgresql DB upgrade
 
 ### Fixed
+- Update base image due to vulnerabilities
 - Fixed the CVE-2024-22262 springframework URL Parsing with Host Validation security issue
 - Fixed the CVE-2024-22257 spring-security Broken Access Control With Direct Use of AuthenticatedVoter
 - Multiple dependencies updated to maintain latest versions

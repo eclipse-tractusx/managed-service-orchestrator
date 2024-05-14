@@ -12,8 +12,8 @@ This service will help service provider to set up DFT/SDE with EDC and EDC as se
 ### Software Version
 
 ```shell
-Application version: 1.5.4
-Helm release version: 1.5.7
+Application version: 1.5.5
+Helm release version: 1.5.8
 ```
 
 # Container images
@@ -77,5 +77,9 @@ Authentication for the backend is handled via an Keycloak. This can be set in th
 GitHub repository with correct version of the Eclipse DataSpace Connector Project: [repository](https://github.com/catenax-ng/product-edc)
 
 ### Licenses
-Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0)
+Distributed under the Apache 2.0 License. See [LICENSE](LICENSE) for more information.
+
+## Contact
+
+For contacting regarding the project see [CONTACT](CONTACT.md)
 
