@@ -281,7 +281,7 @@
 			<dependency>
 				<groupId>io.minio</groupId>
 				<artifactId>minio-admin</artifactId>
-				<version>8.5.6</version>
+				<version>8.5.10</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
