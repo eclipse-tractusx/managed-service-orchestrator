@@ -183,14 +183,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.minio</groupId>
-			<artifactId>minio</artifactId>
-		</dependency>
-		<dependency>
-		    <groupId>io.minio</groupId>
-		    <artifactId>minio-admin</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk18on</artifactId>
 		</dependency>
@@ -272,16 +264,6 @@
 				<groupId>com.sun.mail</groupId>
 				<artifactId>javax.mail</artifactId>
 				<version>1.6.2</version>
-			</dependency>
-			<dependency>
-				<groupId>io.minio</groupId>
-				<artifactId>minio</artifactId>
-				<version>8.5.10</version>
-			</dependency>
-			<dependency>
-				<groupId>io.minio</groupId>
-				<artifactId>minio-admin</artifactId>
-				<version>8.5.10</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
