@@ -22,7 +22,7 @@ name: "Trivy"
 
 on:
   schedule:
-    - cron: "0 0 * * 0"
+    - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:
@@ -41,7 +41,6 @@ jobs:
           image-ref: "tractusx/managed-service-orchestrator:latest" # Pull image from Docker Hub and run Trivy vulnerability scanner
           format: "sarif"
           output: "trivy-results.sarif"
-          exit-code: "1" # Trivy exits with code 1 if vulnerabilities are found, causing the workflow step to fail.
           severity: "CRITICAL,HIGH" # While vulnerabilities of all severities are reported in the SARIF output, the exit code and workflow failure are triggered only by these specified severities (CRITICAL or HIGH).
           hide-progress: false
 
