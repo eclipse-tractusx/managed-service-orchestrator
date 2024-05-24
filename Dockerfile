@@ -54,11 +54,12 @@ USER $USERNAME
 
 WORKDIR /autosetup
 
-# Copy Legal information for distributions, the star ones are copied by workflow
-COPY LICENSE NOTICE.md DEPENDENCIES SECURITY.md  ./
+# Copy Legal information for distributions
+COPY LICENSE NOTICE.md DEPENDENCIES SECURITY.md /app/legal/
 
 # copy over the built artifact from the maven image
 COPY --from=builder target/*.jar ./app.jar
+COPY --from=builder /app/legal/* /autosetup
 
 EXPOSE 9999
 # set the startup command to run your binary
