@@ -211,7 +211,7 @@ public class PortalIntegrationManager {
 			String appServiceURIPath) {
 
 		ServiceInstanceResultResponse serviceInstanceResultResponse = verifyIsAlreadySubcribedActivatedAndGetDetails(
-				subscriptionId, offerId, header, serviceInstanceResultRequest, appServiceURIPath);
+				subscriptionId, offerId, header, appServiceURIPath);
 
 		if (serviceInstanceResultResponse == null) {
 
@@ -221,7 +221,7 @@ public class PortalIntegrationManager {
 			log.info("Post App/Service instanceURL, going to read credentials asynchronously");
 
 			serviceInstanceResultResponse = verifyIsAlreadySubcribedActivatedAndGetDetails(subscriptionId, offerId,
-					header, serviceInstanceResultRequest, appServiceURIPath);
+					header, appServiceURIPath);
 
 		}
 
@@ -229,15 +229,14 @@ public class PortalIntegrationManager {
 			throw new ServiceException("Unable to read technical user detials from portal auto setup");
 		}
 
-		readTechnicalUserDetails(subscriptionId, header, serviceInstanceResultResponse);
+		readTechnicalUserDetails(header, serviceInstanceResultResponse);
 
 		return serviceInstanceResultResponse;
 	}
 
 	@SneakyThrows
 	private ServiceInstanceResultResponse verifyIsAlreadySubcribedActivatedAndGetDetails(String subscriptionId,
-			String offerId, Map<String, String> header, ServiceInstanceResultRequest serviceInstanceResultRequest,
-			String appServiceURIPath) {
+			String offerId, Map<String, String> header, String appServiceURIPath) {
 
 		int retry = 5;
 		int counter = 1;
@@ -256,28 +255,28 @@ public class PortalIntegrationManager {
 
 				offerSubscriptionStatus = serviceInstanceResultResponse.getOfferSubscriptionStatus();
 
-				log.info("VerifyIsAlreadySubcribedActivatedAndGetDetails: The subscription details found for " + offerId
+				log.info(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails: The subscription details found for " + offerId
 						+ ", " + subscriptionId + ", status is " + offerSubscriptionStatus + ", result is "
-						+ serviceInstanceResultResponse.toJsonString());
+						+ serviceInstanceResultResponse.toJsonString()));
 
 			} catch (FeignException e) {
-				log.error("VerifyIsAlreadySubcribedActivatedAndGetDetails FeignException request: " + e.request());
-				log.error("VerifyIsAlreadySubcribedActivatedAndGetDetails FeignException response Body: "
-						+ e.responseBody());
+				log.error(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails FeignException request: " + e.request()));
+				log.error(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails FeignException response Body: "
+						+ e.responseBody()));
 				String error = e.contentUTF8();
 				error = StringUtils.isAllEmpty(error) ? error : e.getMessage();
 
 				if (e.status() == 404) {
-					log.warn("VerifyIsAlreadySubcribedActivatedAndGetDetails: The no app or subscription found for "
-							+ offerId + ", " + subscriptionId + ", result is " + error);
+					log.warn(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails: The no app or subscription found for "
+							+ offerId + ", " + subscriptionId + ", result is " + error));
 				} else {
-					log.error("VerifyIsAlreadySubcribedActivatedAndGetDetails FeignException Exception response: "
-							+ error);
+					log.error(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails FeignException Exception response: "
+							+ error));
 				}
 
 			} catch (Exception e) {
-				log.error("VerifyIsAlreadySubcribedActivatedAndGetDetails Exception processing portal call "
-						+ e.getMessage());
+				log.error(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails Exception processing portal call "
+						+ e.getMessage()));
 			}
 			counter++;
 
@@ -287,7 +286,7 @@ public class PortalIntegrationManager {
 	}
 
 	@SneakyThrows
-	private void readTechnicalUserDetails(String subscriptionId, Map<String, String> header,
+	private void readTechnicalUserDetails(Map<String, String> header,
 			ServiceInstanceResultResponse serviceInstanceResultResponse) {
 
 		if (serviceInstanceResultResponse.getTechnicalUserData() != null) {

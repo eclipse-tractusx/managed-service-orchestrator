@@ -178,7 +178,7 @@ public class ConnectorRegistrationManager {
 					String remoteSubscriptionId = "";//JsonObjectProcessingUtility.getValueFromJsonNode(jsonNode,
 							//SUBSCRIPTION_ID);
 
-					if (subscriptionId.equalsIgnoreCase(remoteSubscriptionId)) {
+					if (subscriptionId.equalsIgnoreCase(remoteSubscriptionId) && jsonNode!=null) {
 
 						JsonNode connectorIds = null;//JsonObjectProcessingUtility.getArrayNodeFromJsonNode(jsonNode,
 								//"connectorIds");
