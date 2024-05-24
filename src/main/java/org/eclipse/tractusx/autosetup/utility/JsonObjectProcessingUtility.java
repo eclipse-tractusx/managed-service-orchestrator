@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022, 2023 T-Systems International GmbH
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024 T-Systems International GmbH
+ * Copyright (c) 2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,21 +18,33 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.autosetup.testservice.proxy;
+package org.eclipse.tractusx.autosetup.utility;
 
-import lombok.Builder;
-import lombok.Data;
+import com.fasterxml.jackson.databind.JsonNode;
 
-@Data
-@Builder
-public class ConnectorTestRequest {
+import lombok.SneakyThrows;
 
-	private String connectorHost;
 
-	private String apiKeyHeader;
-
-	private String apiKeyValue;
+public class JsonObjectProcessingUtility {
 	
-	private String connectorId;
+	private JsonObjectProcessingUtility() {}
+	
+	@SneakyThrows
+	public static String getValueFromJsonNode(JsonNode jsonNode, String propertyId) {
+		if (jsonNode != null && jsonNode.get(propertyId) != null)
+			return jsonNode.get(propertyId).asText();
+		else
+			return "";
+	}
+	
+
+	@SneakyThrows
+	public static JsonNode getArrayNodeFromJsonNode(JsonNode jsonnode, String propertyId) {
+		if (jsonnode != null && jsonnode.get(propertyId) != null)
+			return jsonnode.get(propertyId);
+		else
+			return null;
+	}
+
 
 }

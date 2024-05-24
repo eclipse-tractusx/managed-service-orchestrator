@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2023 T-Systems International GmbH
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 T-Systems International GmbH
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -23,6 +23,7 @@ package org.eclipse.tractusx.autosetup.manager;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.utility.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -41,8 +42,23 @@ public class ConnectorCommonUtilityManager {
 
 	@Value("${edc.ssi.authorityId:}")
 	private String authorityId;
-
-	public Map<String, String> prepareConnectorInput(String packageName, Map<String, String> inputData) {
+	
+	@Value("${edc.iatp.id}")
+	private String edcIatpId;
+	
+	@Value("${edc.iatp.sts.dim.url}")
+	private String edcIatpStsDimUrl;
+	
+	@Value("${edc.iatp.sts.oauth.token.url}")
+	private String edcIatpStsOauthTokenUrl;
+	
+	@Value("${edc.bdrs.server}")
+	private String edcBdrsServer;
+	
+	@Value("${edc.iam.trusted-issuer}")
+	private String edcIamTrustedIssuer;
+	
+	public Map<String, String> prepareConnectorInput(Customer customerDetails, String packageName, Map<String, String> inputData) {
 
 		String generateRandomPassword = PasswordGenerator.generateRandomPassword(50);
 		String dnsName = inputData.get("dnsName");
@@ -55,6 +71,8 @@ public class ConnectorCommonUtilityManager {
 
 		String localControlplane = dnsNameURLProtocol + "://" + packageName
 				+ "-edccontrolplane-edc-controlplane:8182/validation/token";
+		
+		String dataPlanePublicEndpoint = controlplaneurl + "/api/public";
 
 		inputData.put("controlPlaneValidationEndpoint", localControlplane);
 
@@ -64,7 +82,7 @@ public class ConnectorCommonUtilityManager {
 		inputData.put("edcApiKeyValue", generateRandomPassword);
 		inputData.put("controlPlaneIdsEndpoint", controlplaneurl + "/api/v1/ids/data");
 		inputData.put("dataplaneendpoint", controlplaneurl);
-		inputData.put("dataPlanePublicEndpoint", controlplaneurl + "/public");
+		inputData.put("dataPlanePublicEndpoint", dataPlanePublicEndpoint);
 
 		String dftAddress = dnsNameURLProtocol + "://" + dnsName + "/backend/api";
 		inputData.put("dftAddress", dftAddress);
@@ -83,6 +101,20 @@ public class ConnectorCommonUtilityManager {
 
 		String edcDb = "jdbc:postgresql://" + packageName + "-postgresdb-postgresql:5432/postgres";
 		inputData.put("edcdatabaseurl", edcDb);
+		
+		String bpnNumber = inputData.get("bpnNumber");
+		String lowercaseCompanyFormatedName = customerDetails.getOrganizationName().toLowerCase().replace(" ", "--");
+		String edcIatpStsOauthTokenUrlformated = edcIatpStsOauthTokenUrl.replace("bpnl", bpnNumber.toLowerCase());
+		edcIatpStsOauthTokenUrlformated = edcIatpStsOauthTokenUrlformated.replace("companyname",
+				lowercaseCompanyFormatedName);
+
+		inputData.put("iatp.id", edcIatpId + bpnNumber);
+		inputData.put("iatp.sts.dim.url", edcIatpStsDimUrl);
+		inputData.put("iatp.sts.oauth.client.id", inputData.get("dimClientId"));
+		inputData.put("iatp.sts.oauth.token_url", edcIatpStsOauthTokenUrlformated);
+		inputData.put("bdrs.server", edcBdrsServer);
+		inputData.put("edc.iam.trusted-issuer", edcIamTrustedIssuer);
+		inputData.put("dataplane.token.refresh.refresh_endpoint", dataPlanePublicEndpoint + "/token");
 
 		return inputData;
 	}

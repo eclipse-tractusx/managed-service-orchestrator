@@ -63,8 +63,11 @@ public class TestConnectorServiceManager {
 		try {
 
 			ConnectorTestRequest connectorTestRequest = ConnectorTestRequest.builder()
-					.apiKeyHeader(inputData.get("edcApiKey")).apiKeyValue(inputData.get("edcApiKeyValue"))
-					.connectorHost(inputData.get("controlPlaneEndpoint")).build();
+					.apiKeyHeader(inputData.get("edcApiKey"))
+					.apiKeyValue(inputData.get("edcApiKeyValue"))
+					.connectorId(inputData.get("bpnNumber"))
+					.connectorHost(inputData.get("controlPlaneEndpoint"))
+					.build();
 
 			inputData.put("testServiceURL", connectorTestServiceURL);
 

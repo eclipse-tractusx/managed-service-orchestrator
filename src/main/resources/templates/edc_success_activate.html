@@ -34,15 +34,9 @@
 	<div>
 		<p><strong>Hello ${orgname},</strong></p>
 		<p>The EDC tool successfully activated for your use.</p>
-
-		<p>Please find your connector details below:</p>
-		<p>Control Plane URL : <a href="#">${controlPlaneEndpoint}</a></p>
-		<p>Control Plane Data URL : <a href="#">${controlPlaneDataEndpoint}</a></p>
-		<p>EDC ApiKey : <a href="#">${edcApiKey}</a></p>
-		<p>EDC ApiKeyValue : <a href="#">${edcApiKeyValue}</a></p>
-		<p>Data Plane URL : <a href="#">${dataPlanePublicEndpoint}</a></p>
+		 ${content}
 		<p>Your connector status through connector test service: ${connectorTestResult}, check status again <a href="${testServiceURL}">here</a></p>
-
+		
 		<p>Kind Regards<br />Catina-X</p>
 
 	</div>

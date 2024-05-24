@@ -35,6 +35,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 
 @ControllerAdvice
@@ -62,6 +67,29 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
 	public ResponseEntity<String> handleValidationException(ValidationException ex, WebRequest request) {
 		return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(FeignException.class)
+	public ResponseEntity<Map<String, String>> handleFeignException(FeignException ex, WebRequest request) {
+		log.error("FeignException: " + ex.getMessage());
+		log.error("FeignException RequestBody: " + ex.request());
+		log.error("FeignException ResponseBody: " + ex.contentUTF8());
+		ObjectMapper objmap = new ObjectMapper();
+		Map<String, String> errorResponse = new HashMap<>();
+		errorResponse.put("msg", "Error in remote service execution");
+		try {
+			@SuppressWarnings("unchecked")
+			Map<String, Object> map = objmap.readValue(ex.contentUTF8(), Map.class);
+			Object object = map.get("errors");
+			if (object != null)
+				errorResponse = prepareErrorResponse(object.toString());
+		} catch (JsonMappingException e) {
+			log.error("FeignException JsonMappingException " + e.getMessage());
+		} catch (JsonProcessingException e) {
+			log.error("FeignException JsonProcessingException " + e.getMessage());
+		}
+
+		return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(ex.status()));
+	}
 
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
@@ -82,6 +110,12 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
 		});
 		
 		return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+	}
+
+	private Map<String, String> prepareErrorResponse(String errormsg) {
+		Map<String, String> errorResponse = new HashMap<>();
+		errorResponse.put("msg", errormsg);
+		return errorResponse;
 	}
 	
 }

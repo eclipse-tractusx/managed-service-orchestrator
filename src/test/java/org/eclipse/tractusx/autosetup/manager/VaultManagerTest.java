@@ -90,7 +90,7 @@ class VaultManagerTest {
                 .build();
 
         mockInputMap = vaultManager.uploadKeyandValues(customer, selectedTools,mockInputMap, autoSetupTriggerEntry);
-        assertEquals(15, mockInputMap.size());
+        assertEquals(16, mockInputMap.size());
         assertEquals("test", mockInputMap.get("targetCluster"));
     }
 }

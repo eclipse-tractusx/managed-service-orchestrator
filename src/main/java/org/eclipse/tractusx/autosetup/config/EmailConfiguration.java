@@ -1,6 +1,6 @@
 /********************************************************************************
-#* Copyright (c) 2022, 2023 T-Systems International GmbH
-#* Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+#* Copyright (c) 2022,2024 T-Systems International GmbH
+#* Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
 #*
 #* See the NOTICE file(s) distributed with this work for additional
 #* information regarding copyright ownership.
@@ -20,36 +20,22 @@
 package org.eclipse.tractusx.autosetup.config;
 
 import java.util.Properties;
+
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Value;
+
+import org.eclipse.tractusx.autosetup.constant.EmailConfigurationProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
+@RequiredArgsConstructor
 public class EmailConfiguration {
 
-    @Value("${mail.smtp.host}")
-    private String host;
-
-    @Value("${mail.smtp.port}")
-    private String port;
-
-    @Value("${mail.from.address}")
-    private String fromAddress;
-
-    @Value("${mail.smtp.starttls.enable}")
-    private Boolean startTlsEnable;
-    
-    @Value("${mail.smtp.username}")
-    private String username;
-    
-    @Value("${mail.smtp.password}")
-    private String password;
-
-    @Value("${mail.smtp.auth}")
-    private Boolean auth;
+	private final EmailConfigurationProperty emailConfigurationProperty;
 
     @Bean
     public MimeMessage mimeMessage() {
@@ -57,7 +43,7 @@ public class EmailConfiguration {
     	Session session = Session.getInstance(properties(), new javax.mail.Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
+                return new PasswordAuthentication(emailConfigurationProperty.getUsername(), emailConfigurationProperty.getPassword());
             }
         });
         return new MimeMessage(session);
@@ -66,11 +52,11 @@ public class EmailConfiguration {
     @Bean
     public Properties properties() {
         Properties props = new Properties();
-        props.put("mail.smtp.user", username);
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.port", port);
-        props.put("mail.smtp.starttls.enable", startTlsEnable);
-        props.put("mail.smtp.auth", auth);
+        props.put("mail.smtp.user", emailConfigurationProperty.getUsername());
+        props.put("mail.smtp.host", emailConfigurationProperty.getHost());
+        props.put("mail.smtp.port", emailConfigurationProperty.getPort());
+        props.put("mail.smtp.starttls.enable", emailConfigurationProperty.getStartTlsEnable());
+        props.put("mail.smtp.auth", emailConfigurationProperty.getAuth());
         return props;
     }
 }
