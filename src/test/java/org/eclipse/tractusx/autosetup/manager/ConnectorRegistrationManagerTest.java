@@ -37,7 +37,7 @@ import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.eclipse.tractusx.autosetup.portal.proxy.PortalIntegrationProxy;
 import org.eclipse.tractusx.autosetup.utility.Certutil;
-//import org.eclipse.tractusx.autosetup.utility.KeyCloakTokenProxyUtitlity;
+import org.eclipse.tractusx.autosetup.utility.KeyCloakTokenProxyUtitlity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.InjectMocks;
@@ -67,8 +67,8 @@ class ConnectorRegistrationManagerTest {
 	@InjectMocks
 	private AutoSetupTriggerEntry triger;
 	
-//	@Mock
-//	private KeyCloakTokenProxyUtitlity keyCloakTokenProxyUtitlity;
+	@Mock
+	private KeyCloakTokenProxyUtitlity keyCloakTokenProxyUtitlity;
 
 	@Test
     void createClient() throws IOException {

@@ -25,7 +25,7 @@ import org.eclipse.tractusx.autosetup.kubeapps.proxy.KubeAppManageProxy;
 import org.eclipse.tractusx.autosetup.mapper.AutoSetupRequestMapper;
 import org.eclipse.tractusx.autosetup.model.AutoSetupRequest;
 import org.eclipse.tractusx.autosetup.portal.proxy.PortalIntegrationProxy;
-//import org.eclipse.tractusx.autosetup.utility.KeyCloakTokenProxyUtitlity;
+import org.eclipse.tractusx.autosetup.utility.KeyCloakTokenProxyUtitlity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +56,8 @@ class AutoSetupOrchitestratorServiceTest {
     @MockBean
     private KubeAppManageProxy kubeAppManageProxy;
     
-//    @MockBean
-//    private KeyCloakTokenProxyUtitlity keyCloakTokenProxyUtitlity;
+    @MockBean
+    private KeyCloakTokenProxyUtitlity keyCloakTokenProxyUtitlity;
     
     @Test
     void createPackage() {
