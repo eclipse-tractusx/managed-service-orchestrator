@@ -40,7 +40,7 @@ import org.eclipse.tractusx.autosetup.portal.model.ServiceInstanceResultResponse
 import org.eclipse.tractusx.autosetup.portal.model.TechnicalUserDetails;
 import org.eclipse.tractusx.autosetup.portal.model.TechnicalUsers;
 import org.eclipse.tractusx.autosetup.portal.proxy.PortalIntegrationProxy;
-import org.eclipse.tractusx.autosetup.utility.KeyCloakTokenProxyUtitlity;
+//import org.eclipse.tractusx.autosetup.utility.KeyCloakTokenProxyUtitlity;
 import org.eclipse.tractusx.autosetup.utility.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Backoff;
@@ -68,7 +68,7 @@ public class PortalIntegrationManager {
 
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
 
-	private final KeyCloakTokenProxyUtitlity keyCloakTokenProxyUtitlity;
+	//private final KeyCloakTokenProxyUtitlity keyCloakTokenProxyUtitlity;
 	
 	@Value("${portal.url}")
 	private URI portalUrl;
@@ -115,7 +115,7 @@ public class PortalIntegrationManager {
 
 			Map<String, String> header = new HashMap<>();
 			header.put(AUTHORIZATION,
-					BEARER + keyCloakTokenProxyUtitlity.getKeycloakToken(clientId, clientSecret, tokenURI));
+					BEARER + "");
 
 			ServiceInstanceResultRequest serviceInstanceResultRequest = ServiceInstanceResultRequest.builder()
 					.requestId(subscriptionId).offerUrl(applicationURL).build();
@@ -249,7 +249,7 @@ public class PortalIntegrationManager {
 			try {
 
 				header.put(AUTHORIZATION,
-						BEARER + keyCloakTokenProxyUtitlity.getKeycloakToken(clientId, clientSecret, tokenURI));
+						BEARER + "");
 
 				serviceInstanceResultResponse = portalIntegrationProxy.getAppServiceInstanceSubcriptionDetails(
 						portalUrl, header, appServiceURIPath, offerId, subscriptionId);
@@ -293,7 +293,7 @@ public class PortalIntegrationManager {
 		if (serviceInstanceResultResponse.getTechnicalUserData() != null) {
 
 			header.put(AUTHORIZATION,
-					BEARER + keyCloakTokenProxyUtitlity.getKeycloakToken(clientId, clientSecret, tokenURI));
+					BEARER + "");
 
 			serviceInstanceResultResponse.getTechnicalUserData().forEach(elel -> {
 				try {

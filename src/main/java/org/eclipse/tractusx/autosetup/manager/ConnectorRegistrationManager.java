@@ -36,8 +36,8 @@ import org.eclipse.tractusx.autosetup.exception.ServiceException;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.eclipse.tractusx.autosetup.portal.proxy.PortalIntegrationProxy;
-import org.eclipse.tractusx.autosetup.utility.JsonObjectProcessingUtility;
-import org.eclipse.tractusx.autosetup.utility.KeyCloakTokenProxyUtitlity;
+//import org.eclipse.tractusx.autosetup.utility.JsonObjectProcessingUtility;
+//import org.eclipse.tractusx.autosetup.utility.KeyCloakTokenProxyUtitlity;
 import org.eclipse.tractusx.autosetup.utility.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Backoff;
@@ -77,7 +77,7 @@ public class ConnectorRegistrationManager {
 
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
 	private final PortalIntegrationProxy portalIntegrationProxy;
-	private final KeyCloakTokenProxyUtitlity keyCloakTokenProxyUtitlity;
+	//private final KeyCloakTokenProxyUtitlity keyCloakTokenProxyUtitlity;
 
 	@Retryable(retryFor = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
@@ -106,7 +106,7 @@ public class ConnectorRegistrationManager {
 			body.add(SUBSCRIPTION_ID, subscriptionIdVal);
 			Map<String, String> header = new HashMap<>();
 			header.put("Authorization",
-					"Bearer " + keyCloakTokenProxyUtitlity.getKeycloakToken(clientId, clientSecret, tokenURI));
+					"Bearer " + "");
 
 			String connectorId = checkSubcriptionHaveConnectorRegister(header, subscriptionIdVal);
 
@@ -175,13 +175,13 @@ public class ConnectorRegistrationManager {
 			if (subcriptionWithConnectors != null && subcriptionWithConnectors.isArray()) {
 				for (JsonNode jsonNode : subcriptionWithConnectors) {
 
-					String remoteSubscriptionId = JsonObjectProcessingUtility.getValueFromJsonNode(jsonNode,
-							SUBSCRIPTION_ID);
+					String remoteSubscriptionId = "";//JsonObjectProcessingUtility.getValueFromJsonNode(jsonNode,
+							//SUBSCRIPTION_ID);
 
 					if (subscriptionId.equalsIgnoreCase(remoteSubscriptionId)) {
 
-						JsonNode connectorIds = JsonObjectProcessingUtility.getArrayNodeFromJsonNode(jsonNode,
-								"connectorIds");
+						JsonNode connectorIds = null;//JsonObjectProcessingUtility.getArrayNodeFromJsonNode(jsonNode,
+								//"connectorIds");
 
 						if (connectorIds != null && connectorIds.isArray() && connectorIds.size() > 0)
 							return connectorIds.get(0).asText();
@@ -214,7 +214,7 @@ public class ConnectorRegistrationManager {
 
 				Map<String, String> header = new HashMap<>();
 				header.put("Authorization",
-						"Bearer " + keyCloakTokenProxyUtitlity.getKeycloakToken(clientId, clientSecret, tokenURI));
+						"Bearer " + "");
 
 				autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
 				portalIntegrationProxy.deleteConnector(connectorRegistrationUrl, header, connectorId);
