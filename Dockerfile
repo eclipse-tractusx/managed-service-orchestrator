@@ -54,6 +54,9 @@ USER $USERNAME
 
 WORKDIR /autosetup
 
+# Copy Legal information for distributions, the star ones are copied by workflow
+COPY LICENSE NOTICE.md DEPENDENCIES SECURITY.md  ./
+
 # copy over the built artifact from the maven image
 COPY --from=builder target/*.jar ./app.jar
 
