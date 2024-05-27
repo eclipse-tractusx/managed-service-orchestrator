@@ -72,6 +72,9 @@ Link to flyway documentation: [Documentation](https://flywaydb.org/documentation
 ## API authentication
 Authentication for the backend is handled via an Keycloak. This can be set in the configuration file.
 
+## API health check URL
+We can check the health for Managed Service Orchestrator by using below URL:
+- https://<example.com>/actuator/health
 
 ### EDC
 GitHub repository with correct version of the Eclipse DataSpace Connector Project: [repository](https://github.com/catenax-ng/product-edc)
