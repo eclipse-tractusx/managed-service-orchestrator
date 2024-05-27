@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
-## [Unreleased]
+## [1.5.6] - 2024-05-27
 
 ### Added
 - Support Portal autosetup latest workflow.
@@ -12,6 +12,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 - Dependabot reported security issues fixed.
+
+### Know Know
+- The retrieval and processing of the DIM Technical User credentials for automatic configuration and set-up of the EDC connector could not be fully tested. So the full functionality cannot be guaranteed.
 
 ## [1.5.5] - 2024-05-13
 ### Changed
