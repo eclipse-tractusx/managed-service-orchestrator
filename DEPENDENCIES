@@ -19,6 +19,8 @@ maven/mavencentral/com.nimbusds/nimbus-jose-jwt/9.24.4, Apache-2.0, approved, cl
 maven/mavencentral/com.nimbusds/oauth2-oidc-sdk/9.43.3, Apache-2.0, approved, clearlydefined
 maven/mavencentral/com.sun.istack/istack-commons-runtime/4.1.2, BSD-3-Clause, approved, #2590
 maven/mavencentral/com.sun.mail/javax.mail/1.6.2, CDDL-1.0 AND Apache-2.0, approved, CQ18739
+maven/mavencentral/com.sun.xml.bind/jaxb-core/4.0.5, BSD-3-Clause, approved, ee4j.jaxb-impl
+maven/mavencentral/com.sun.xml.bind/jaxb-xjc/4.0.5, BSD-3-Clause, approved, ee4j.jaxb-impl
 maven/mavencentral/com.vaadin.external.google/android-json/0.0.20131108.vaadin1, Apache-2.0, approved, CQ21310
 maven/mavencentral/com.zaxxer/HikariCP/5.0.1, Apache-2.0, approved, clearlydefined
 maven/mavencentral/commons-codec/commons-codec/1.16.1, Apache-2.0 AND (Apache-2.0 AND BSD-3-Clause), approved, #9157
@@ -58,11 +60,12 @@ maven/mavencentral/org.apiguardian/apiguardian-api/1.1.2, Apache-2.0, approved, 
 maven/mavencentral/org.aspectj/aspectjweaver/1.9.22, Apache-2.0 AND BSD-3-Clause AND EPL-1.0 AND BSD-3-Clause AND Apache-1.1, approved, #7695
 maven/mavencentral/org.assertj/assertj-core/3.24.2, Apache-2.0, approved, #6161
 maven/mavencentral/org.awaitility/awaitility/4.2.1, Apache-2.0, approved, #14178
-maven/mavencentral/org.bouncycastle/bcpkix-jdk18on/1.77, MIT, approved, #11593
-maven/mavencentral/org.bouncycastle/bcprov-jdk18on/1.77, MIT AND CC0-1.0, approved, #11595
-maven/mavencentral/org.bouncycastle/bcutil-jdk18on/1.77, MIT, approved, #11596
+maven/mavencentral/org.bouncycastle/bcpkix-jdk18on/1.78.1, MIT, approved, #14434
+maven/mavencentral/org.bouncycastle/bcprov-jdk18on/1.78.1, MIT AND CC0-1.0, approved, #14433
+maven/mavencentral/org.bouncycastle/bcutil-jdk18on/1.78.1, MIT, approved, #14435
 maven/mavencentral/org.checkerframework/checker-qual/3.42.0, MIT, approved, clearlydefined
-maven/mavencentral/org.eclipse.persistence/eclipselink/3.0.3, EPL-2.0 OR BSD-3-Clause, approved, ee4j.eclipselink
+maven/mavencentral/org.eclipse.angus/angus-activation/2.0.2, EPL-2.0 OR GPL-2.0-only with Classpath-exception-2.0, approved, ee4j.angus
+maven/mavencentral/org.eclipse.persistence/eclipselink/4.0.3, EPL-2.0 OR BSD-3-Clause, approved, ee4j.eclipselink
 maven/mavencentral/org.flywaydb/flyway-core/9.22.3, Apache-2.0, approved, #10349
 maven/mavencentral/org.freemarker/freemarker/2.3.32, Apache-2.0, approved, #6764
 maven/mavencentral/org.glassfish.jaxb/jaxb-core/4.0.5, BSD-3-Clause, approved, ee4j.jaxb-impl
@@ -79,7 +82,7 @@ maven/mavencentral/org.junit.jupiter/junit-jupiter-params/5.10.2, EPL-2.0, appro
 maven/mavencentral/org.junit.jupiter/junit-jupiter/5.10.2, EPL-2.0, approved, #13393
 maven/mavencentral/org.junit.platform/junit-platform-commons/1.10.2, EPL-2.0, approved, #9715
 maven/mavencentral/org.junit.platform/junit-platform-engine/1.10.2, EPL-2.0, approved, #9709
-maven/mavencentral/org.mapstruct/mapstruct/1.4.2.Final, Apache-2.0, approved, #2483
+maven/mavencentral/org.mapstruct/mapstruct/1.5.5.Final, Apache-2.0, approved, #6277
 maven/mavencentral/org.mockito/mockito-core/5.7.0, MIT AND (Apache-2.0 AND MIT) AND Apache-2.0, approved, #11424
 maven/mavencentral/org.mockito/mockito-junit-jupiter/5.7.0, MIT, approved, #11423
 maven/mavencentral/org.objenesis/objenesis/3.3, Apache-2.0, approved, clearlydefined

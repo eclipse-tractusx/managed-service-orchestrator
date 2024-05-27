@@ -38,8 +38,8 @@
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>4.1.1</spring-cloud.version>
-		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
-		<org.mapstruct.processor.version>1.4.2.Final
+		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+		<org.mapstruct.processor.version>1.5.5.Final
 		</org.mapstruct.processor.version>
 		<log4j2.version>2.17.1</log4j2.version>
 	</properties>
@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
 			<artifactId>eclipselink</artifactId>
-			<version>3.0.3</version>
+			<version>4.0.3</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.eclipse.persistence</groupId>
@@ -212,17 +212,17 @@
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcpkix-jdk18on</artifactId>
-				<version>1.77</version>
+				<version>1.78.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcprov-jdk18on</artifactId>
-				<version>1.77</version>
+				<version>1.78.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-compress</artifactId>
-				<version>1.26.1</version>
+				<version>1.26.2</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-io</groupId>
