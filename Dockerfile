@@ -22,16 +22,15 @@
 FROM maven:3.8.7-eclipse-temurin-17 AS builder
 
 # copy the project files
-COPY ./pom.xml /pom.xml
+COPY . /autosetup/
+
+WORKDIR /autosetup
 
 # build all dependencies
 RUN mvn dependency:go-offline -B 
 
-# copy your other files
-COPY ./src ./src
-
 # build for release
-RUN mvn clean install -Dmaven.test.skip=true 
+RUN mvn clean install -Dmaven.test.skip=true
 
 FROM eclipse-temurin:17.0.11_9-jdk
 
@@ -50,12 +49,12 @@ RUN adduser \
     --uid "$UID" \
     "$USER"
 
-USER $USERNAME
+USER $USER
 
-WORKDIR /autosetup
+WORKDIR /
 
 # copy over the built artifact from the maven image
-COPY --from=builder target/*.jar ./app.jar
+COPY --from=builder /autosetup/target/*.jar ./app.jar
 
 EXPOSE 9999
 # set the startup command to run your binary
