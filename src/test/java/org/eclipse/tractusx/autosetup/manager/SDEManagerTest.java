@@ -25,8 +25,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.tractusx.autosetup.constant.AppActions;
+import org.eclipse.tractusx.autosetup.constant.EmailConfigurationProperty;
 import org.eclipse.tractusx.autosetup.constant.SDEConfigurationProperty;
 import org.eclipse.tractusx.autosetup.constant.ToolType;
+import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,17 +55,27 @@ class SDEManagerTest {
 
 	@Mock
 	private SDEConfigurationProperty sDEConfigurationProperty;
-
+	
+	@Mock
+	private EmailConfigurationProperty emailConfigurationProperty;
+	
 	@Test
 	void managePackage() {
+
+		Customer customerDetails = Customer.builder()
+                .organizationName("Test")
+                .contactNumber("Test")
+                .city("DE")
+                .email("test@test.com")
+                .build();
 
 		SelectedTools selectedTools = SelectedTools.builder().tool(ToolType.SDE_WITH_EDC_TRACTUS).label("SDE").build();
 		Map<String, String> mockInputMap = new HashMap<>();
 		mockInputMap.put("dnsName", "test");
 		mockInputMap.put("dnsNameURLProtocol", "https");
-		Map<String, String> resultMap = sdeManager.managePackage(null, AppActions.CREATE, selectedTools,
+		Map<String, String> resultMap = sdeManager.managePackage(customerDetails, AppActions.CREATE, selectedTools,
 				mockInputMap, null);
-		assertEquals(30, resultMap.size());
+		assertEquals(46, resultMap.size());
 		assertEquals("test", mockInputMap.get("dnsName"));
 	}
 }

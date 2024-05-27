@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022, 2023 T-Systems International GmbH
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 T-Systems International GmbH
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -50,6 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class VaultManager {
 
+	private static final String DIM_CLIENT_SECRET = "dim-client-secret";
 	private static final String CLIENT_SECRET = "client-secret";
 	private static final String V1_SECRET_DATA = "/v1/secret/data/";
 	public static final String ENCRYPTIONKEYS = "encryptionkeys";
@@ -58,7 +59,6 @@ public class VaultManager {
 	public static final String CERTIFICATE_PRIVATE_KEY = "certificate-private-key";
 	private final VaultAppManageProxy vaultManagerProxy;
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
-	private final OpenSSLClientManager openSSLClientManager;
 
 	@Value("${vault.url}")
 	private String valutURL;
@@ -94,16 +94,18 @@ public class VaultManager {
 			tenantVaultSecret = new HashMap<>();
 			tenantVaultSecret.put(CONTENT, inputData.get("selfsigncertificateprivatekey"));
 			uploadSecrete(tenantNameNamespace, CERTIFICATE_PRIVATE_KEY, tenantVaultSecret);
-			
+
 			tenantVaultSecret = new HashMap<>();
 			tenantVaultSecret.put(CONTENT, inputData.get("keycloakAuthenticationClientSecret"));
 			uploadSecrete(tenantNameNamespace, CLIENT_SECRET, tenantVaultSecret);
 
-			String encryptionkeysalias = openSSLClientManager.executeCommand("openssl rand -base64 16");
 			tenantVaultSecret = new HashMap<>();
-			encryptionkeysalias = encryptionkeysalias.replace("\n", "");
-			tenantVaultSecret.put(CONTENT, encryptionkeysalias);
+			tenantVaultSecret.put(CONTENT, "c3RhbmRhcmRfZW5jX2tleQo=");
 			uploadSecrete(tenantNameNamespace, ENCRYPTIONKEYS, tenantVaultSecret);
+			
+			tenantVaultSecret = new HashMap<>();
+			tenantVaultSecret.put(CONTENT, inputData.get("dimClientSecret"));
+			uploadSecrete(tenantNameNamespace, DIM_CLIENT_SECRET, tenantVaultSecret);
 
 			inputData.put(DAPS_CERT, DAPS_CERT);
 			inputData.put(CERTIFICATE_PRIVATE_KEY, CERTIFICATE_PRIVATE_KEY);
@@ -115,6 +117,7 @@ public class VaultManager {
 			inputData.put(ENCRYPTIONKEYS, ENCRYPTIONKEYS);
 			inputData.put("certificate-data-plane-private-key", CERTIFICATE_PRIVATE_KEY);
 			inputData.put("certificate-data-plane-public-key", CERTIFICATE_PRIVATE_KEY);
+			inputData.put(DIM_CLIENT_SECRET, DIM_CLIENT_SECRET);
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.SUCCESS.name());
 			log.info(LogUtil.encode(orgName) + "-" + LogUtil.encode(packageName) + "-Vault created");
@@ -164,9 +167,8 @@ public class VaultManager {
 			deleteSecret(tenantNameNamespace, CERTIFICATE_PRIVATE_KEY);
 			deleteSecret(tenantNameNamespace, ENCRYPTIONKEYS);
 			deleteSecret(tenantNameNamespace, CLIENT_SECRET);
-			
-			log.info(LogUtil.encode(orgName) + "-" + LogUtil.encode(packageName) + "-Vault deleted");
 
+			log.info(LogUtil.encode(orgName) + "-" + LogUtil.encode(packageName) + "-Vault deleted");
 		} catch (Exception ex) {
 
 			log.error("VaultManager failed retry attempt: : {}",
@@ -174,7 +176,8 @@ public class VaultManager {
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
 			autoSetupTriggerDetails.setRemark(ex.getMessage());
-			throw new ServiceException("VaultManager Oops! We have an exception - " + ex.getMessage());
+			throw new ServiceException("VaultManager Oops! We have an exception - " + ex.getMessage() + ", Cause: "
+					+ LogUtil.getCause(ex));
 
 		} finally {
 			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
@@ -183,7 +186,7 @@ public class VaultManager {
 
 	public void deleteSecret(String tenantName, String secretePath) throws URISyntaxException {
 
-		String valutURLwithpath = valutURL + V1_SECRET_DATA + tenantName+ "/data/" + secretePath;
+		String valutURLwithpath = valutURL + V1_SECRET_DATA + tenantName + "/data/" + secretePath;
 		URI url = new URI(valutURLwithpath);
 		vaultManagerProxy.deleteKeyandValue(url);
 

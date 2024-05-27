@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2023 T-Systems International GmbH
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 T-Systems International GmbH
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -50,11 +50,6 @@ public class DTAppWorkFlow {
 
 		inputConfiguration.putAll(
 				dtregistryManager.managePackage(customerDetails, workflowAction, tool, inputConfiguration, triger));
-
-		if (!manualUpdate) {
-			dtregistryManager.dtRegistryRegistrationInEDC(customerDetails, tool,
-					inputConfiguration, triger);
-		}
 
 		return inputConfiguration;
 	}

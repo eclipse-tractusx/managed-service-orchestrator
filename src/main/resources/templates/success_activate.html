@@ -32,17 +32,7 @@
 
 		<p><strong>Hello ${orgname},</strong></p>
 		<p>The SDE successfully activated for your use.</p>
-		<p>Please click <a href="${sdeFrontEndUrl}">here</a> to start using it.</p>
-		
-		<p><strong>DT Registry Details</strong></p>
-		<p>DT registry URL : <a href="#">${dtregistryUrl}</a></p>
-		<p>App Id : <a href="#">${idpClientId}</a></p>
-		
-		<p><strong>EDC Connector Details</strong></p>
-		<p>Control Plane URL : <a href="#">${controlPlaneEndpoint}</a></p>
-		<p>Control Plane Data URL : <a href="#">${controlPlaneDataEndpoint}</a></p>
-		<p>EDC ApiKey : <a href="#">${edcApiKey}</a></p>
-		<p>EDC ApiKeyValue : <a href="#">${edcApiKeyValue}</a></p>
+		   ${content}
 		<p>Your connector status through connector test service: ${connectorTestResult}, check status again <a href="${testServiceURL}">here</a></p>
 		
 		<p>Note: You need to use your own organization login credential to login SDE tool.</p>

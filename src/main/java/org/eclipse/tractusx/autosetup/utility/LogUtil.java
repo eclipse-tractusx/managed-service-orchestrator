@@ -30,6 +30,14 @@ public class LogUtil {
 	public static String encode(String message) {
 		return StringEscapeUtils.unescapeHtml4(StringEscapeUtils.escapeJava(message));
 	}
+	
+	public static String getCause(Exception ex) {
+		Throwable cause=ex.getCause();
+		if(cause!=null) {
+			return  cause.toString();
+		}
+		return "";
+	}
 
 }
 

@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022, 2023 T-Systems International GmbH
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024 T-Systems International GmbH
+ * Copyright (c) 2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -20,6 +20,10 @@
 
 package org.eclipse.tractusx.autosetup.portal.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,11 +33,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TechnicalUserInfo {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class TechnicalUsers {
 
-	private String technicalUserId;
+	private String id;
 	
-	private String technicalUserSecret;
+	private String name;
 	
-	private String technicalClientId;
+	private List<String> permissions;
+	
+	private TechnicalUserDetails technicalUserDetails;
 }
