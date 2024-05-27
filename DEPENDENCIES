@@ -61,7 +61,6 @@ maven/mavencentral/org.awaitility/awaitility/4.2.1, Apache-2.0, approved, #14178
 maven/mavencentral/org.bouncycastle/bcpkix-jdk18on/1.77, MIT, approved, #11593
 maven/mavencentral/org.bouncycastle/bcprov-jdk18on/1.77, MIT AND CC0-1.0, approved, #11595
 maven/mavencentral/org.bouncycastle/bcutil-jdk18on/1.77, MIT, approved, #11596
-maven/mavencentral/org.checkerframework/checker-qual/3.42.0, MIT, approved, clearlydefined
 maven/mavencentral/org.eclipse.persistence/eclipselink/3.0.3, EPL-2.0 OR BSD-3-Clause, approved, ee4j.eclipselink
 maven/mavencentral/org.flywaydb/flyway-core/9.22.3, Apache-2.0, approved, #10349
 maven/mavencentral/org.freemarker/freemarker/2.3.32, Apache-2.0, approved, #6764
