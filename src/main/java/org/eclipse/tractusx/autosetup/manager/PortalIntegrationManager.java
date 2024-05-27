@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022, 2023 T-Systems International GmbH
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 T-Systems International GmbH
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -22,28 +22,31 @@ package org.eclipse.tractusx.autosetup.manager;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.tractusx.autosetup.constant.TriggerStatusEnum;
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerDetails;
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
+import org.eclipse.tractusx.autosetup.exception.NoDataFoundException;
 import org.eclipse.tractusx.autosetup.exception.ServiceException;
+import org.eclipse.tractusx.autosetup.exception.ValidationException;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
-import org.eclipse.tractusx.autosetup.portal.model.ClientInfo;
 import org.eclipse.tractusx.autosetup.portal.model.ServiceInstanceResultRequest;
 import org.eclipse.tractusx.autosetup.portal.model.ServiceInstanceResultResponse;
-import org.eclipse.tractusx.autosetup.portal.model.TechnicalUserInfo;
+import org.eclipse.tractusx.autosetup.portal.model.TechnicalUserDetails;
+import org.eclipse.tractusx.autosetup.portal.model.TechnicalUsers;
 import org.eclipse.tractusx.autosetup.portal.proxy.PortalIntegrationProxy;
+import org.eclipse.tractusx.autosetup.utility.KeyCloakTokenProxyUtitlity;
 import org.eclipse.tractusx.autosetup.utility.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.retry.support.RetrySynchronizationManager;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
@@ -55,10 +58,18 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class PortalIntegrationManager {
 
+	private static final String AUTHORIZATION = "Authorization";
+
+	private static final String BEARER = "Bearer ";
+
+	private static final String ACTIVE = "ACTIVE";
+
 	private final PortalIntegrationProxy portalIntegrationProxy;
 
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
 
+	private final KeyCloakTokenProxyUtitlity keyCloakTokenProxyUtitlity;
+	
 	@Value("${portal.url}")
 	private URI portalUrl;
 
@@ -71,6 +82,9 @@ public class PortalIntegrationManager {
 	@Value("${portal.keycloak.tokenURI}")
 	private URI tokenURI;
 
+	@Value("${portal.request.timeout:20000}")
+	private int requestTimeout;
+
 	@Retryable(retryFor = {
 			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
 	public Map<String, String> postServiceInstanceResultAndGetTenantSpecs(Customer customerDetails, SelectedTools tool,
@@ -80,6 +94,11 @@ public class PortalIntegrationManager {
 				.id(UUID.randomUUID().toString()).step("PostServiceInstanceResultAndGetTenantSpecs").build();
 		ServiceInstanceResultResponse serviceInstanceResultResponse = null;
 		try {
+			String appServiceURIPath = "apps";
+
+			if (!"app".equalsIgnoreCase(tool.getType())) {
+				appServiceURIPath = "services";
+			}
 
 			String packageName = tool.getLabel();
 			String tenantName = customerDetails.getOrganizationName();
@@ -89,46 +108,36 @@ public class PortalIntegrationManager {
 			String dnsName = inputData.get("dnsName");
 			String dnsNameURLProtocol = inputData.get("dnsNameURLProtocol");
 			String subscriptionId = inputData.get("subscriptionId");
+			String offerId = inputData.get("serviceId");
 
 			String applicationURL = dnsNameURLProtocol + "://" + dnsName;
 			inputData.put("applicationURL", applicationURL);
 
 			Map<String, String> header = new HashMap<>();
-			header.put("Authorization", "Bearer " + getKeycloakToken());
+			header.put(AUTHORIZATION,
+					BEARER + keyCloakTokenProxyUtitlity.getKeycloakToken(clientId, clientSecret, tokenURI));
 
 			ServiceInstanceResultRequest serviceInstanceResultRequest = ServiceInstanceResultRequest.builder()
 					.requestId(subscriptionId).offerUrl(applicationURL).build();
 
-			if ("app".equalsIgnoreCase(tool.getType()))
-				serviceInstanceResultResponse = portalIntegrationProxy.postAppInstanceResultAndGetTenantSpecs(portalUrl,
-						header, serviceInstanceResultRequest);
-			else
-				serviceInstanceResultResponse = portalIntegrationProxy
-						.postServiceInstanceResultAndGetTenantSpecs(portalUrl, header, serviceInstanceResultRequest);
+			serviceInstanceResultResponse = processAppServiceGetResponse(subscriptionId, offerId, header,
+					serviceInstanceResultRequest, appServiceURIPath);
 
-			if (serviceInstanceResultResponse != null) {
+			handlePortalServiceExcutionResponse(inputData, autoSetupTriggerDetails, serviceInstanceResultResponse);
 
-				TechnicalUserInfo technicalUserInfo = serviceInstanceResultResponse.getTechnicalUserInfo();
-				if (technicalUserInfo != null) {
-					inputData.put("keycloakAuthenticationClientId", technicalUserInfo.getTechnicalClientId());
-					inputData.put("keycloakAuthenticationClientSecret", technicalUserInfo.getTechnicalUserSecret());
-				}
+			log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName)
+					+ "-PostServiceInstanceResultAndGetTenantSpecs created");
 
-				ClientInfo clientInfo = serviceInstanceResultResponse.getClientInfo();
-				if (clientInfo != null) {
-					inputData.put("keycloakResourceClient", clientInfo.getClientId());
-				}
-				log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName)
-						+ "-PostServiceInstanceResultAndGetTenantSpecs created");
-			} else {
-				log.error("Error in request process with portal");
-			}
+		} catch (NoDataFoundException e) {
+			log.error(LogUtil.encode(
+					"PortalIntegrationManager NoDataFoundException failed No retry attempt: : " + e.getMessage()));
+			throw e;
 		} catch (FeignException e) {
 
-			log.error("PortalIntegrationManager FeignException failed retry attempt: : {}",
-					RetrySynchronizationManager.getContext().getRetryCount() + 1);
-			log.error("RequestBody: " + e.request());
-			log.error("ResponseBody: " + e.contentUTF8());
+			log.error(LogUtil.encode("PortalIntegrationManager FeignException failed retry attempt: : "
+					+ RetrySynchronizationManager.getContext().getRetryCount() + 1));
+			log.error(LogUtil.encode("RequestBody: " + e.request()));
+			log.error(LogUtil.encode("ResponseBody: " + e.contentUTF8()));
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
 			autoSetupTriggerDetails.setRemark(e.contentUTF8());
@@ -136,8 +145,8 @@ public class PortalIntegrationManager {
 
 		} catch (Exception ex) {
 
-			log.error("PortalIntegrationManager Exception failed retry attempt: : {}",
-					RetrySynchronizationManager.getContext().getRetryCount() + 1);
+			log.error(LogUtil.encode("PortalIntegrationManager Exception failed retry attempt: : "
+					+ RetrySynchronizationManager.getContext().getRetryCount() + 1));
 
 			if (serviceInstanceResultResponse != null) {
 				String msg = "PortalIntegrationManager failed with details:"
@@ -157,19 +166,155 @@ public class PortalIntegrationManager {
 	}
 
 	@SneakyThrows
-	private String getKeycloakToken() {
+	private void handlePortalServiceExcutionResponse(Map<String, String> inputData,
+			AutoSetupTriggerDetails autoSetupTriggerDetails,
+			ServiceInstanceResultResponse serviceInstanceResultResponse) {
 
-		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-		body.add("grant_type", "client_credentials");
-		body.add("client_id", clientId);
-		body.add("client_secret", clientSecret);
-		var resultBody = portalIntegrationProxy.readAuthToken(tokenURI, body);
+		if (serviceInstanceResultResponse != null) {
 
-		if (resultBody != null) {
-			return resultBody.getAccessToken();
+			inputData.put("keycloakResourceClient", serviceInstanceResultResponse.getAppInstanceId());
+
+			autoSetupTriggerDetails.setRemark(serviceInstanceResultResponse.toJsonString());
+
+			List<TechnicalUsers> technicalUserData = serviceInstanceResultResponse.getTechnicalUserData();
+
+			if (technicalUserData != null && !technicalUserData.isEmpty()) {
+
+				if (technicalUserData.size() > 2) {
+					throw new ValidationException("We have recieved more than two tehcnical users from portal");
+				}
+
+				technicalUserData.forEach(technicalUser -> {
+					TechnicalUserDetails technicalUserDetails = technicalUser.getTechnicalUserDetails();
+					if (technicalUser.getPermissions().contains("Identity Wallet Management")) {
+						inputData.put("dimClientId", technicalUserDetails.getClientId());
+						inputData.put("dimClientSecret", technicalUserDetails.getSecret());
+					} else {
+						inputData.put("keycloakAuthenticationClientId", technicalUserDetails.getClientId());
+						inputData.put("keycloakAuthenticationClientSecret", technicalUserDetails.getSecret());
+					}
+				});
+
+			} else {
+				throw new NoDataFoundException("Technical users is null or empty recieved from Portal");
+			}
+		} else {
+			throw new NoDataFoundException("Error in request process with portal");
 		}
-		return null;
 
+	}
+
+	@SneakyThrows
+	private ServiceInstanceResultResponse processAppServiceGetResponse(String subscriptionId, String offerId,
+			Map<String, String> header, ServiceInstanceResultRequest serviceInstanceResultRequest,
+			String appServiceURIPath) {
+
+		ServiceInstanceResultResponse serviceInstanceResultResponse = verifyIsAlreadySubcribedActivatedAndGetDetails(
+				subscriptionId, offerId, header, appServiceURIPath);
+
+		if (serviceInstanceResultResponse == null) {
+
+			portalIntegrationProxy.postAppServiceStartAutoSetup(portalUrl, header, appServiceURIPath,
+					serviceInstanceResultRequest);
+
+			log.info("Post App/Service instanceURL, going to read credentials asynchronously");
+
+			serviceInstanceResultResponse = verifyIsAlreadySubcribedActivatedAndGetDetails(subscriptionId, offerId,
+					header, appServiceURIPath);
+
+		}
+
+		if (serviceInstanceResultResponse == null) {
+			throw new ServiceException("Unable to read technical user detials from portal auto setup");
+		}
+
+		readTechnicalUserDetails(header, serviceInstanceResultResponse);
+
+		return serviceInstanceResultResponse;
+	}
+
+	@SneakyThrows
+	private ServiceInstanceResultResponse verifyIsAlreadySubcribedActivatedAndGetDetails(String subscriptionId,
+			String offerId, Map<String, String> header, String appServiceURIPath) {
+
+		int retry = 5;
+		int counter = 1;
+		ServiceInstanceResultResponse serviceInstanceResultResponse = null;
+		String offerSubscriptionStatus = null;
+		do {
+			log.info("Waiting '" + requestTimeout + "'sec to portal /provider API call to get subcription status");
+			Thread.sleep(requestTimeout);
+			try {
+
+				header.put(AUTHORIZATION,
+						BEARER + keyCloakTokenProxyUtitlity.getKeycloakToken(clientId, clientSecret, tokenURI));
+
+				serviceInstanceResultResponse = portalIntegrationProxy.getAppServiceInstanceSubcriptionDetails(
+						portalUrl, header, appServiceURIPath, offerId, subscriptionId);
+
+				offerSubscriptionStatus = serviceInstanceResultResponse.getOfferSubscriptionStatus();
+
+				log.info(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails: The subscription details found for " + offerId
+						+ ", " + subscriptionId + ", status is " + offerSubscriptionStatus + ", result is "
+						+ serviceInstanceResultResponse.toJsonString()));
+
+			} catch (FeignException e) {
+				log.error(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails FeignException request: " + e.request()));
+				log.error(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails FeignException response Body: "
+						+ e.responseBody()));
+				String error = e.contentUTF8();
+				error = StringUtils.isAllEmpty(error) ? error : e.getMessage();
+
+				if (e.status() == 404) {
+					log.warn(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails: The no app or subscription found for "
+							+ offerId + ", " + subscriptionId + ", result is " + error));
+				} else {
+					log.error(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails FeignException Exception response: "
+							+ error));
+				}
+
+			} catch (Exception e) {
+				log.error(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails Exception processing portal call "
+						+ e.getMessage()));
+			}
+			counter++;
+
+		} while (!ACTIVE.equalsIgnoreCase(offerSubscriptionStatus) && counter <= retry);
+
+		return serviceInstanceResultResponse;
+	}
+
+	@SneakyThrows
+	private void readTechnicalUserDetails(Map<String, String> header,
+			ServiceInstanceResultResponse serviceInstanceResultResponse) {
+
+		if (serviceInstanceResultResponse.getTechnicalUserData() != null) {
+
+			header.put(AUTHORIZATION,
+					BEARER + keyCloakTokenProxyUtitlity.getKeycloakToken(clientId, clientSecret, tokenURI));
+
+			serviceInstanceResultResponse.getTechnicalUserData().forEach(elel -> {
+				try {
+					TechnicalUserDetails technicalUserDetails = portalIntegrationProxy
+							.getTechnicalUserDetails(portalUrl, header, elel.getId());
+					elel.setTechnicalUserDetails(technicalUserDetails);
+				} catch (FeignException e) {
+					log.error("ReadTechnicalUserDetails FeignException request: " + e.request());
+					log.error("ReadTechnicalUserDetails FeignException response Body: " + e.responseBody());
+					String error = e.contentUTF8();
+					error = StringUtils.isNotBlank(error) ? error : e.getMessage();
+					log.error("ReadTechnicalUserDetails FeignException Exception response: " + error);
+					if (e.status() == 409)
+						throw new NoDataFoundException(error);
+					else
+						throw new ServiceException(error);
+				} catch (Exception e) {
+					String error = "Error in read existing TechnicalUserDetails from portal " + e.getMessage();
+					log.error(error);
+					throw new ServiceException(error);
+				}
+			});
+		}
 	}
 
 }

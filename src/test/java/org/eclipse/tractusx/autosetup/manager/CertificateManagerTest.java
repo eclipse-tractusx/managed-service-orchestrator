@@ -106,7 +106,7 @@ class CertificateManagerTest {
                     "uBm24UVauSGjp3E=\n" +
                     "-----END CERTIFICATE-----\n" +
                     "");
-            //assertEquals(clientId,"A0:BE:B6:A7:BD:E1:AD:06:51:9B:D1:30:11:BD:B0:27:DB:1F:08:44:keyid:A0:BE:B6:A7:BD:E1:AD:06:51:9B:D1:30:11:BD:B0:27:DB:1F:08:44");
+            assertEquals(clientId,"A0:BE:B6:A7:BD:E1:AD:06:51:9B:D1:30:11:BD:B0:27:DB:1F:08:44:keyid:A0:BE:B6:A7:BD:E1:AD:06:51:9B:D1:30:11:BD:B0:27:DB:1F:08:44");
 
         }
     }
