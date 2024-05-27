@@ -186,8 +186,7 @@ public class PortalIntegrationManager {
 
 				technicalUserData.forEach(technicalUser -> {
 					TechnicalUserDetails technicalUserDetails = technicalUser.getTechnicalUserDetails();
-					if (technicalUser.getName().contains("dim")
-							&& technicalUser.getPermissions().contains("Identity Wallet Management")) {
+					if (technicalUser.getPermissions().contains("Identity Wallet Management")) {
 						inputData.put("dimClientId", technicalUserDetails.getClientId());
 						inputData.put("dimClientSecret", technicalUserDetails.getSecret());
 					} else {
