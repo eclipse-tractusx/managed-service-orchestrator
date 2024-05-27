@@ -73,7 +73,7 @@ Link to flyway documentation: [Documentation](https://flywaydb.org/documentation
 Authentication for the backend is handled via an Keycloak. This can be set in the configuration file.
 
 ## API health check URL
-We can check the health check for Managed Service Orchestrator by using below URL:
+We can check the health for Managed Service Orchestrator by using below URL:
 - https://<example.com>/actuator/health
 
 ### EDC
