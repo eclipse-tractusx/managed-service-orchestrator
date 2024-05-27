@@ -58,6 +58,7 @@ maven/mavencentral/org.apache.tomcat.embed/tomcat-embed-el/10.1.20, Apache-2.0, 
 maven/mavencentral/org.apache.tomcat.embed/tomcat-embed-websocket/10.1.20, Apache-2.0, approved, #7920
 maven/mavencentral/org.apiguardian/apiguardian-api/1.1.2, Apache-2.0, approved, clearlydefined
 maven/mavencentral/org.aspectj/aspectjweaver/1.9.22, Apache-2.0 AND BSD-3-Clause AND EPL-1.0 AND BSD-3-Clause AND Apache-1.1, approved, #7695
+
 maven/mavencentral/org.assertj/assertj-core/3.24.2, Apache-2.0, approved, #6161
 maven/mavencentral/org.awaitility/awaitility/4.2.1, Apache-2.0, approved, #14178
 maven/mavencentral/org.bouncycastle/bcpkix-jdk18on/1.78.1, MIT, approved, #14434
