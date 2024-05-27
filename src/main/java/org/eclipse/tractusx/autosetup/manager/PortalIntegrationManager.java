@@ -40,7 +40,7 @@ import org.eclipse.tractusx.autosetup.portal.model.ServiceInstanceResultResponse
 import org.eclipse.tractusx.autosetup.portal.model.TechnicalUserDetails;
 import org.eclipse.tractusx.autosetup.portal.model.TechnicalUsers;
 import org.eclipse.tractusx.autosetup.portal.proxy.PortalIntegrationProxy;
-//import org.eclipse.tractusx.autosetup.utility.KeyCloakTokenProxyUtitlity;
+import org.eclipse.tractusx.autosetup.utility.KeyCloakTokenProxyUtitlity;
 import org.eclipse.tractusx.autosetup.utility.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Backoff;
@@ -68,7 +68,7 @@ public class PortalIntegrationManager {
 
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
 
-	//private final KeyCloakTokenProxyUtitlity keyCloakTokenProxyUtitlity;
+	private final KeyCloakTokenProxyUtitlity keyCloakTokenProxyUtitlity;
 	
 	@Value("${portal.url}")
 	private URI portalUrl;
@@ -115,7 +115,7 @@ public class PortalIntegrationManager {
 
 			Map<String, String> header = new HashMap<>();
 			header.put(AUTHORIZATION,
-					BEARER + "");
+					BEARER + keyCloakTokenProxyUtitlity.getKeycloakToken(clientId, clientSecret, tokenURI));
 
 			ServiceInstanceResultRequest serviceInstanceResultRequest = ServiceInstanceResultRequest.builder()
 					.requestId(subscriptionId).offerUrl(applicationURL).build();
@@ -186,8 +186,7 @@ public class PortalIntegrationManager {
 
 				technicalUserData.forEach(technicalUser -> {
 					TechnicalUserDetails technicalUserDetails = technicalUser.getTechnicalUserDetails();
-					if (technicalUser.getName().contains("dim")
-							&& technicalUser.getPermissions().contains("Identity Wallet Management")) {
+					if (technicalUser.getPermissions().contains("Identity Wallet Management")) {
 						inputData.put("dimClientId", technicalUserDetails.getClientId());
 						inputData.put("dimClientSecret", technicalUserDetails.getSecret());
 					} else {
@@ -248,7 +247,7 @@ public class PortalIntegrationManager {
 			try {
 
 				header.put(AUTHORIZATION,
-						BEARER + "");
+						BEARER + keyCloakTokenProxyUtitlity.getKeycloakToken(clientId, clientSecret, tokenURI));
 
 				serviceInstanceResultResponse = portalIntegrationProxy.getAppServiceInstanceSubcriptionDetails(
 						portalUrl, header, appServiceURIPath, offerId, subscriptionId);
@@ -292,7 +291,7 @@ public class PortalIntegrationManager {
 		if (serviceInstanceResultResponse.getTechnicalUserData() != null) {
 
 			header.put(AUTHORIZATION,
-					BEARER + "");
+					BEARER + keyCloakTokenProxyUtitlity.getKeycloakToken(clientId, clientSecret, tokenURI));
 
 			serviceInstanceResultResponse.getTechnicalUserData().forEach(elel -> {
 				try {
