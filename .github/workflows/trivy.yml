@@ -36,13 +36,15 @@ jobs:
 
     steps:
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.20.0
+        uses: aquasecurity/trivy-action@0.22.0
         with:
           image-ref: "tractusx/managed-service-orchestrator:latest" # Pull image from Docker Hub and run Trivy vulnerability scanner
           format: "sarif"
           output: "trivy-results.sarif"
           severity: "CRITICAL,HIGH" # While vulnerabilities of all severities are reported in the SARIF output, the exit code and workflow failure are triggered only by these specified severities (CRITICAL or HIGH).
           hide-progress: false
+          exit-code: "1"
+          limit-severities-for-sarif: true
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
