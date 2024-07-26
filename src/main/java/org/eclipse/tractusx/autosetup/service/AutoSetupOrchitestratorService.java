@@ -546,7 +546,8 @@ public class AutoSetupOrchitestratorService {
 				dtAppWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
 
 				selectedTool.setLabel("sde-" + label);
-				sdeWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger);
+				AutoSetupRequest orgRequest = customerDetailsMapper.fromStr(trigger.getAutosetupRequest());
+				sdeWorkFlow.deletePackageWorkFlow(selectedTool, inputConfiguration, trigger, orgRequest);
 
 				break;
 
@@ -585,6 +586,10 @@ public class AutoSetupOrchitestratorService {
 		dft.put("name", "SDE");
 		dft.put(SDE_FRONTEND_URL, outputMap.get(SDE_FRONTEND_URL));
 		dft.put(SDE_BACKEND_URL, outputMap.get(SDE_BACKEND_URL));
+		dft.put("storage.media.bucket", findValueInMap(outputMap, "storage.media.bucket"));
+		dft.put("storage.media.endpoint", findValueInMap(outputMap, "storage.media.endpoint"));
+		dft.put("storage.media.accessKey", findValueInMap(outputMap, "storage.media.accessKey"));
+		dft.put("storage.media.secretKey", findValueInMap(outputMap, "storage.media.secretKey"));
 
 		processResult.add(dft);
 

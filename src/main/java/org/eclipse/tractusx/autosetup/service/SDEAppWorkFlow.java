@@ -28,8 +28,10 @@ import org.eclipse.tractusx.autosetup.constant.AppActions;
 import org.eclipse.tractusx.autosetup.entity.AutoSetupTriggerEntry;
 import org.eclipse.tractusx.autosetup.manager.AppDeleteManager;
 import org.eclipse.tractusx.autosetup.manager.SDEManager;
+import org.eclipse.tractusx.autosetup.model.AutoSetupRequest;
 import org.eclipse.tractusx.autosetup.model.Customer;
 import org.eclipse.tractusx.autosetup.model.SelectedTools;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -42,6 +44,9 @@ public class SDEAppWorkFlow {
 
 	private final AppDeleteManager appDeleteManager;
 
+	@Value("${automatic.storage.media:true}")
+	private boolean manualStorageMedia;
+
 	public Map<String, String> getWorkFlow(Customer customerDetails, SelectedTools tool, AppActions workflowAction,
 			Map<String, String> inputConfiguration, AutoSetupTriggerEntry triger) {
 
@@ -52,7 +57,7 @@ public class SDEAppWorkFlow {
 	}
 
 	public void deletePackageWorkFlow(SelectedTools tool, Map<String, String> inputConfiguration,
-			AutoSetupTriggerEntry triger) {
+			AutoSetupTriggerEntry triger, AutoSetupRequest orgRequest) {
 
 		appDeleteManager.deletePackage(SDE, tool, inputConfiguration, triger);
 

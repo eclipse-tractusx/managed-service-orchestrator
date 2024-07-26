@@ -87,6 +87,15 @@ public class EDCConnectorWorkFlow {
 		} catch (ServiceException ex) {
 			log.warn(ex.getMessage());
 		}
+		
+		try {
+			if (!manualUpdate)
+				portalIntegrationManager.activateAppAndServiceInstanceOnPortalEnd(customerDetails, tool, inputConfiguration,
+						triger);
+		} catch (ServiceException ex) {
+			log.warn(ex.getMessage());
+		}
+		
 
 		return inputConfiguration;
 	}

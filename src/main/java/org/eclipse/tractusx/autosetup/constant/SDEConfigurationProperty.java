@@ -34,32 +34,21 @@ public class SDEConfigurationProperty {
 	private String keycloakAuth;
 	private String keycloakRealm;
 	private String keycloakTokenUrl;
+	private String keycloakTechnicalClientid;
+	private String keycloakTechnicalClientsecret;
 	
 	private String digitalTwinsHostname;
-	private String digitalTwinsAuthenticationUrl;
-	
-	private String partnerPoolHostname;
-	private String partnerPoolAuthenticationUrl;
-	private String partnerPoolClientId;
-	private String partnerPoolClientSecret;
-	
-	private String portalBackendHostname;
-	private String portalBackendAuthenticationUrl;
-	private String portalBackendClientId;
-	private String portalBackendClientSecret;
-	
 	private String dtregistryidpClientId;
 	private String dtregistrytenantId;
 	private String dtregistryUrlPrefix;
 	private String dtregistryApiUri;
 	
+	private String partnerPoolHostname;
+	private String portalBackendHostname;
+	private String policyhubHostname;
 	private String bpndiscoveryHostname;
-	private String discoveryAuthenticationUrl;
-	private String discoveryClientId;
-	private String discoveryClientSecret;
 	
-	private String bpdmProviderEdcDataspaceApi;
+	private String bpdmProviderEdcDspApi;
 	private String bpdmProviderBpnl;
-	private String bpdmProviderEdcPublicApi;
 	
 }

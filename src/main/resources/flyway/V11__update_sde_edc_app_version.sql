@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2023 T-Systems International GmbH
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024 T-Systems International GmbH
+ * Copyright (c) 2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -86,18 +86,6 @@ update app_tbl set expected_input_data='{
 							
 							spring.jpa.open-in-view=false
 							
-							digital-twins.hostname=$\{dtregistryUrl\}
-							
-							digital-twins.api=$\{dtregistryURI\}
-							
-							digital-twins.authentication.url=$\{sde.digital-twins.authentication.url\}
-							
-							digital-twins.authentication.clientId=$\{digital-twins.authentication.clientId\}
-								
-							digital-twins.authentication.clientSecret=$\{digital-twins.authentication.clientSecret\}
-							
-							digital-twins.authentication.grantType=client_credentials
-							
 							dft.hostname=$\{sdeBackEndUrl\}
 							
 							dft.apiKeyHeader=$\{sdeBackEndApiKeyHeader\}
@@ -111,6 +99,8 @@ update app_tbl set expected_input_data='{
 							edc.managementpath=/data
 							
 							edc.managementpath.apiversion=/v2
+							
+							edc.managementpath.apiversion.asset=/v3
 							
 							edc.dsp.endpointpath=/api/v1/dsp
 							
@@ -140,36 +130,64 @@ update app_tbl set expected_input_data='{
 							
 							springdoc.swagger-ui.oauth.client-id=$\{sdebackendkeycloakclientid\}
 							
+							digital-twins.hostname=$\{dtregistryUrl\}
+							
+							digital-twins.registry.uri=$\{dtregistryURI\}
+							
+							digital-twins.registry.lookup.uri=$\{dtregistryURI\}
+							
+							digital-twins.authentication.url=$\{sde.keycloak.tokenUrl\}
+							
+							digital-twins.authentication.clientId=$\{sde.keycloak.technical.clientid\}
+								
+							digital-twins.authentication.clientSecret=$\{sde.keycloak.technical.clientsecret\}
+							
+							digital-twins.authentication.grantType=client_credentials
+							
 							partner.pool.hostname=$\{sde.partner.pool.hostname\}
 							
-							partner.pool.authentication.url=$\{sde.partner.pool.authentication.url\}
+							partner.pool.authentication.url=$\{sde.keycloak.tokenUrl\}
 							
-						    partner.pool.clientId=$\{sde.partner.pool.clientId\}
+						    partner.pool.clientId=$\{sde.keycloak.technical.clientid\}
 						    
-						    partner.pool.clientSecret=$\{sde.partner.pool.clientSecret\}
+						    partner.pool.clientSecret=$\{sde.keycloak.technical.clientsecret\}
 						    
 						    partner.pool.grantType=client_credentials
 							
 							portal.backend.hostname=$\{sde.portal.backend.hostname\}
 							
-							portal.backend.authentication.url=$\{sde.portal.backend.authentication.url\}
+							portal.backend.authentication.url=$\{sde.keycloak.tokenUrl\}
  							
- 							portal.backend.clientId=$\{sde.portal.backend.clientId\}
+ 							portal.backend.clientId=$\{sde.keycloak.technical.clientid\}
  							
- 							portal.backend.clientSecret=$\{sde.portal.backend.clientSecret\}
+ 							portal.backend.clientSecret=$\{sde.keycloak.technical.clientsecret\}
  							
  							portal.backend.grantType=client_credentials
 							
 							bpndiscovery.hostname=$\{sde.bpndiscovery.hostname\}
 							
-							discovery.authentication.url=$\{sde.discovery.authentication.url\}
+							discovery.authentication.url=$\{sde.keycloak.tokenUrl\}
 										
-							discovery.clientId=$\{sde.discovery.clientId\}
+							discovery.clientId=$\{sde.keycloak.technical.clientid\}
 							
-							discovery.clientSecret=$\{sde.discovery.clientSecret\}
+							discovery.clientSecret=$\{sde.keycloak.technical.clientsecret\}
 							
 							discovery.grantType=client_credentials
 							
+							policy.hub.hostname=$\{sde.policy.hub.hostname\}
+      						
+							policy.hub.authentication.url=$\{sde.keycloak.tokenUrl\}
+							
+							policy.hub.clientId=$\{sde.keycloak.technical.clientid\}
+							
+							policy.hub.clientSecret=$\{sde.keycloak.technical.clientsecret\}
+							
+							policy.hub.grantType=client_credentials
+							
+							bpdm.provider.edc.dsp.api=$\{bpdm.provider.edc.dsp.api\}
+
+      						bpdm.provider.bpnl=$\{bpdm.provider.bpnl\}
+      						
 							mail.smtp.username=$\{emailUsername\}
 
 					        mail.smtp.password=$\{emailPassword\}
@@ -266,7 +284,7 @@ update app_tbl set expected_input_data='{
 							REACT_APP_FILESIZE=268435456"
 		   }
    }
-}',  package_identifier='tx-sde-charts/sde' ,package_version='1.0.1' where app_name='SDE';
+}',  package_identifier='tx-sde-charts/sde' ,package_version='1.2.5' where app_name='SDE';
 
 
 update app_tbl set expected_input_data= '{
@@ -295,6 +313,8 @@ update app_tbl set expected_input_data= '{
 		"idpIssuerUri": "$\{idpIssuerUri\}",
 		"tenantId" : "$\{bpnNumber\}",
 		"authentication": $\{dtNeedExternalAccess\},
+		"granularAccessControlFetchSize": "500",
+		"useGranularAccessControl": "true",
         "ingress": {
                 "enabled": $\{dtNeedExternalAccess\},
                 "hostname": "$\{dnsName\}",
@@ -311,6 +331,173 @@ update app_tbl set expected_input_data= '{
                 "tls": $\{dtNeedExternalAccess\}
             }
     }
-}', package_version='0.3.27' where app_name='DT_REGISTRY';
+}', package_identifier='tx-all-repo/digital-twin-registry', package_version='0.5.1' where app_name='DT_REGISTRY';
+
+
+update app_tbl set expected_input_data= '{
+    "install": {
+        "postgresql": true,
+  		"vault": false
+  	},
+  	"participant" : { 
+  		"id": "$\{bpnNumber\}" 
+  	},
+    "backendService": {
+        "httpProxyTokenReceiverUrl": "$\{dftAddress\}"
+    },
+    "postgresql": {
+        "enabled": true,
+        "fullnameOverride": "connectorpostgresqlhost",
+        "jdbcUrl":"jdbc:postgresql://connectorpostgresqlhost:5432/edc",
+        "username":"$\{username\}",
+        "password":"$\{appdbpass\}",
+        "database": "edc",
+        "auth":{
+        	"username":"$\{username\}",
+            "password":"$\{appdbpass\}",
+            "postgresPassword":"$\{postgresPassword\}"
+        },
+       "primary":{
+          "persistence":{
+            "enabled": true,
+            "size":"1Gi"
+          }
+        },
+       "persistence":{
+       	 "enabled": true,
+         "size":"1Gi"
+       }
+    },
+    "vault": {
+        "hashicorp": {
+            "enabled": true,
+	        "url": "$\{vaulturl\}",
+	        "token": "$\{vaulttoken\}",
+	        "timeout": 30,
+            "healthCheck": {
+                "enabled": false,
+                "standbyOk": false
+            },
+            "paths": {
+                "health": "/v1/sys/health",
+                "secret": "$\{valuttenantpath\}"
+            }
+        },
+        "secretNames": {
+            "dapsPrivateKey": "$\{certificate-private-key\}",
+            "dapsPublicKey": "$\{daps-cert\}",
+            "transferProxyTokenEncryptionAesKey": "$\{encryptionkeys\}",
+            "transferProxyTokenSignerPrivateKey": "$\{certificate-data-plane-private-key\}",
+            "transferProxyTokenSignerPublicKey": "$\{certificate-data-plane-public-key\}"
+        }
+    },
+    "iatp": {
+  		"id": "$\{iatp.id\}",
+	  	"sts": {
+	  		"dim": {
+	  		   "url": "$\{iatp.sts.dim.url\}" 
+	  		},
+	  		"oauth": {
+	  		 	"client": {
+	  		 		"id": "$\{dimClientId\}",
+	  		 		"secret_alias": "$\{dim-client-secret\}"
+	  		 	},
+	  		 	"token_url": "$\{iatp.sts.oauth.token_url\}"
+	  		}
+	  	}
+	},
+    "controlplane": {
+    	"endpoints": {
+            "management": {
+                "authKey": "$\{edcApiKeyValue\}",
+                "path": "/data",
+                "port": "8081"
+            }
+        },
+        "bdrs": {
+    		"cache_validity_seconds": 600,
+    		"server": {
+    			"url": "$\{bdrs.server\}"
+    		}
+    	},
+    	"env": {
+    		"EDC_IAM_TRUSTED-ISSUER_ISSUER1_ID": "$\{edc.iam.trusted-issuer\}"
+    	},
+		"service": {
+		    "type": "NodePort"
+		},
+		"securityContext": {
+		   "readOnlyRootFilesystem": false
+		},
+        "ssi" : {
+          "miw" :{
+             "authorityId" : "$\{authorityId\}",
+             "url": "$\{edcMiwUrl\}"
+          },
+          "oauth": {
+             "client" :{
+                "id" :"$\{keycloakAuthenticationClientId\}",
+                "secretAlias": "client-secret"
+             },
+             "tokenurl": "$\{keycloakAuthTokenURL\}"
+          }
+        },
+        "ingresses": [
+            {
+                "enabled": true,
+                "hostname": "$\{dnsName\}",
+                "annotations": {},
+                "className": "nginx",
+                "endpoints": [
+                    "protocol",
+                    "management",
+                    "control",
+                    "default"
+                ],
+                "tls": {
+                    "enabled": true,
+                    "secretName": "edctxcontrolplane"
+                },
+                "certManager": {
+                    "clusterIssuer": "letsencrypt-prod"
+                }
+            }
+        ]
+    },
+    "dataplane": {
+    	 "token": {
+    		"refresh": {
+      			"expiry_seconds": 300,
+      			"expiry_tolerance_seconds": 300,
+      			"refresh_endpoint": "$\{dataplane.token.refresh.refresh_endpoint\}"
+      		 },
+    		"signer": {
+    			"privatekey_alias": "$\{certificate-private-key\}"
+    		  },
+    		"verifier": {
+      			"publickey_alias": "$\{daps-cert\}"
+      		  }
+      	  }
+      	},	
+        "ingresses": [
+            {
+                "enabled": true,
+                "hostname": "$\{dnsName\}",
+                "annotations": {},
+                "className": "nginx",
+                "endpoints": [
+                    "public"
+                ],
+                "tls": {
+                    "enabled": true,
+                    "secretName": "edctxdataplane"
+                },
+                "certManager": {
+                    "clusterIssuer": "letsencrypt-prod"
+                }
+            }
+        ]
+    }
+}', package_version='0.7.3', package_identifier='tx-all-repo/tractusx-connector' where app_name='EDC_CONNECTOR';
 
 update app_tbl set expected_input_data= replace(replace(expected_input_data,'\{','{'),'\}','}'), required_yaml_configuration=replace(replace(required_yaml_configuration,'\{','{'),'\}','}');

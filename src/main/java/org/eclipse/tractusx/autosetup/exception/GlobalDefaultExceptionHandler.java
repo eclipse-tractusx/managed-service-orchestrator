@@ -69,7 +69,7 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
 	}
 	
 	@ExceptionHandler(FeignException.class)
-	public ResponseEntity<Map<String, String>> handleFeignException(FeignException ex) {
+	public ResponseEntity<Map<String, String>> handleFeignException(FeignException ex, WebRequest request) {
 		log.error("FeignException: " + ex.getMessage());
 		log.error("FeignException RequestBody: " + ex.request());
 		log.error("FeignException ResponseBody: " + ex.contentUTF8());

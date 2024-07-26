@@ -98,10 +98,12 @@ public class ConnectorRegistrationManager {
 			file = getTestFile(inputData.get("selfsigncertificate"));
 			String subscriptionIdVal = inputData.get(SUBSCRIPTION_ID);
 
+			String connectorUrl = inputData.get("controlPlaneEndpoint");
+
 			MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 			String tenantNameNamespace = triger.getAutosetupTenantName();
 			body.add("name", tenantNameNamespace);
-			body.add("connectorUrl", inputData.get("controlPlaneEndpoint"));
+			body.add("connectorUrl", connectorUrl);
 			body.add("location", customerDetails.getCountry());
 			body.add(SUBSCRIPTION_ID, subscriptionIdVal);
 			Map<String, String> header = new HashMap<>();
@@ -111,9 +113,11 @@ public class ConnectorRegistrationManager {
 			String connectorId = checkSubcriptionHaveConnectorRegister(header, subscriptionIdVal);
 
 			if (StringUtils.isNotBlank(connectorId)) {
+				
 				Map<String, String> updateBody = new HashMap<>();
-				updateBody.put("connectorUrl", inputData.get("controlPlaneEndpoint"));
-				portalIntegrationProxy.updateRegisterConnectorUrl(connectorRegistrationUrl, header, updateBody);
+				updateBody.put("connectorUrl", connectorUrl);
+				portalIntegrationProxy.updateRegisterConnectorUrl(connectorRegistrationUrl, header, connectorId,
+						updateBody);
 			} else {
 				connectorId = portalIntegrationProxy.manageConnector(connectorRegistrationUrl, header, body);
 			}
@@ -133,15 +137,16 @@ public class ConnectorRegistrationManager {
 			log.error("ConnectorregisterManager failed retry attempt: : {}",
 					RetrySynchronizationManager.getContext().getRetryCount() + 1);
 			log.error("RequestBody: " + e.request());
+			log.error("ResponseStatus: " + e.status());
 			log.error("ResponseBody: " + e.contentUTF8());
 
 			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
 			autoSetupTriggerDetails.setRemark(e.contentUTF8());
-			if (e.toString().contains("FeignException$Conflict") || e.toString().contains("409 Conflict")) {
+			if (e.toString().contains("FeignException$Conflict") || e.toString().contains("409 Conflict") || e.status()== 403) {
 				log.warn(
-						"Skipping connector registration process and also continue with remaining steps of autosetup process");
+						"Skipping connector registration process and also continue with remaining steps of autosetup process because status for registration: "+e.status());
 			} else
-				throw new ServiceException("ConnectorregisterManager Oops! We have an exception - " + e.contentUTF8());
+				throw new ServiceException("ConnectorregisterManager Oops! We have an FeignException - " + e.contentUTF8());
 
 		} catch (Exception ex) {
 
@@ -168,9 +173,17 @@ public class ConnectorRegistrationManager {
 	@SneakyThrows
 	private String checkSubcriptionHaveConnectorRegister(Map<String, String> header, String subscriptionId) {
 
+		String foundConnectorId = null;
+
 		try {
 			JsonNode subcriptionWithConnectors = portalIntegrationProxy
 					.getSubcriptionWithConnectors(connectorRegistrationUrl, header, true);
+
+			JsonNode allManageConnectorWithContent = portalIntegrationProxy
+					.getAllManageConnectors(connectorRegistrationUrl, header);
+
+			JsonNode allManageConnectors = JsonObjectProcessingUtility
+					.getArrayNodeFromJsonNode(allManageConnectorWithContent, "content");
 
 			if (subcriptionWithConnectors != null && subcriptionWithConnectors.isArray()) {
 				for (JsonNode jsonNode : subcriptionWithConnectors) {
@@ -182,9 +195,21 @@ public class ConnectorRegistrationManager {
 
 						JsonNode connectorIds = JsonObjectProcessingUtility.getArrayNodeFromJsonNode(jsonNode,
 								"connectorIds");
+						if (connectorIds != null && connectorIds.isArray())
+							for (JsonNode connectorJsonValue : connectorIds) {
+								String connectorId = connectorJsonValue.asText();
 
-						if (connectorIds != null && connectorIds.isArray() && connectorIds.size() > 0)
-							return connectorIds.get(0).asText();
+								if (allManageConnectors != null && allManageConnectors.isArray())
+									for (JsonNode managedConnectorNode : allManageConnectors) {
+
+										String managedConnectorId = JsonObjectProcessingUtility
+												.getValueFromJsonNode(managedConnectorNode, "id");
+										if (managedConnectorId.equalsIgnoreCase(connectorId)) {
+											foundConnectorId = connectorId;
+											break;
+										}
+									}
+							}
 					}
 				}
 			}
@@ -193,7 +218,7 @@ public class ConnectorRegistrationManager {
 			log.error("Error in checkSubcriptionHaveConnectorRegister or not " + e.getMessage());
 		}
 
-		return null;
+		return foundConnectorId;
 	}
 
 	@Retryable(retryFor = {

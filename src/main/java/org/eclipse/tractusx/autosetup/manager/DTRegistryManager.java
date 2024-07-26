@@ -23,12 +23,10 @@ package org.eclipse.tractusx.autosetup.manager;
 
 import static org.eclipse.tractusx.autosetup.constant.AppNameConstant.DT_REGISTRY;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.tractusx.autosetup.apiproxy.EDCProxyService;
 import org.eclipse.tractusx.autosetup.constant.AppActions;
 import org.eclipse.tractusx.autosetup.constant.SDEConfigurationProperty;
 import org.eclipse.tractusx.autosetup.constant.TriggerStatusEnum;
@@ -77,7 +75,7 @@ public class DTRegistryManager {
 			dturi = StringUtils.isBlank(dturi) ? "/api/v3" : dturi;
 			if (managedDTRegistryLocal) {
 				String appName = DT_REGISTRY.name().replace("_", "");
-				String localDTUrl = "http://cx-" + packageName + "-" + appName.toLowerCase() + "-registry-svc:8080";
+				String localDTUrl = "http://" + packageName + "-" + appName.toLowerCase() + "-digital-twin-registry:8080";
 				inputData.put("dtregistryUrl", localDTUrl);
 				inputData.put("dtregistryUrlWithURI", localDTUrl + dturi);
 			} else {

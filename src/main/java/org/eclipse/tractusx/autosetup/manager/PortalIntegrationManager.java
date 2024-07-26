@@ -62,14 +62,12 @@ public class PortalIntegrationManager {
 
 	private static final String BEARER = "Bearer ";
 
-	private static final String ACTIVE = "ACTIVE";
-
 	private final PortalIntegrationProxy portalIntegrationProxy;
 
 	private final AutoSetupTriggerManager autoSetupTriggerManager;
 
 	private final KeyCloakTokenProxyUtitlity keyCloakTokenProxyUtitlity;
-	
+
 	@Value("${portal.url}")
 	private URI portalUrl;
 
@@ -113,14 +111,10 @@ public class PortalIntegrationManager {
 			String applicationURL = dnsNameURLProtocol + "://" + dnsName;
 			inputData.put("applicationURL", applicationURL);
 
-			Map<String, String> header = new HashMap<>();
-			header.put(AUTHORIZATION,
-					BEARER + keyCloakTokenProxyUtitlity.getKeycloakToken(clientId, clientSecret, tokenURI));
-
 			ServiceInstanceResultRequest serviceInstanceResultRequest = ServiceInstanceResultRequest.builder()
 					.requestId(subscriptionId).offerUrl(applicationURL).build();
 
-			serviceInstanceResultResponse = processAppServiceGetResponse(subscriptionId, offerId, header,
+			serviceInstanceResultResponse = processAppServiceGetResponse(subscriptionId, offerId,
 					serviceInstanceResultRequest, appServiceURIPath);
 
 			handlePortalServiceExcutionResponse(inputData, autoSetupTriggerDetails, serviceInstanceResultResponse);
@@ -162,6 +156,62 @@ public class PortalIntegrationManager {
 		} finally {
 			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
 		}
+		return inputData;
+	}
+	
+	
+	@Retryable(retryFor = {
+			ServiceException.class }, maxAttemptsExpression = "${retry.maxAttempts}", backoff = @Backoff(delayExpression = "#{${retry.backOffDelay}}"))
+	public Map<String, String> activateAppAndServiceInstanceOnPortalEnd(Customer customerDetails, SelectedTools tool,
+			Map<String, String> inputData, AutoSetupTriggerEntry triger) {
+
+		AutoSetupTriggerDetails autoSetupTriggerDetails = AutoSetupTriggerDetails.builder()
+				.id(UUID.randomUUID().toString()).step("ActivateAppAndServiceInstanceOnPortalEnd").build();
+		try {
+			String appServiceURIPath = "apps";
+
+			if (!"app".equalsIgnoreCase(tool.getType())) {
+				appServiceURIPath = "services";
+			}
+
+			String packageName = tool.getLabel();
+			String tenantName = customerDetails.getOrganizationName();
+
+			log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName)
+					+ "-ActivateAppAndServiceInstanceOnPortalEnd acivating");
+			String subscriptionId = inputData.get("subscriptionId");
+
+			portalIntegrationProxy.activateAppServiceOnPortalSide(
+					portalUrl, getHeaderWithToken(), appServiceURIPath, subscriptionId);
+			
+			log.info(LogUtil.encode(tenantName) + "-" + LogUtil.encode(packageName)
+					+ "-ActivateAppAndServiceInstanceOnPortalEnd acivated");
+
+		} catch (FeignException e) {
+
+			log.error(LogUtil.encode("PortalIntegrationManager-activateAppAndServiceInstanceOnPortalEnd FeignException failed retry attempt: : "
+					+ RetrySynchronizationManager.getContext().getRetryCount() + 1));
+			log.error(LogUtil.encode("RequestBody: " + e.request()));
+			log.error(LogUtil.encode("ResponseBody: " + e.contentUTF8()));
+
+			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
+			autoSetupTriggerDetails.setRemark(e.contentUTF8());
+			throw new ServiceException("PortalIntegrationManager-activateAppAndServiceInstanceOnPortalEnd Oops! We have an FeignException - " + e.contentUTF8());
+
+		} catch (Exception ex) {
+
+			log.error(LogUtil.encode("PortalIntegrationManager-activateAppAndServiceInstanceOnPortalEnd Exception failed retry attempt: : "
+					+ RetrySynchronizationManager.getContext().getRetryCount() + 1));
+
+			autoSetupTriggerDetails.setStatus(TriggerStatusEnum.FAILED.name());
+
+			ex.getStackTrace();
+			
+			throw new ServiceException("PortalIntegrationManager-activateAppAndServiceInstanceOnPortalEnd Oops! We have an exception - " + ex.getMessage());
+		} finally {
+			autoSetupTriggerManager.saveTriggerDetails(autoSetupTriggerDetails, triger);
+		}
+		
 		return inputData;
 	}
 
@@ -206,115 +256,132 @@ public class PortalIntegrationManager {
 
 	@SneakyThrows
 	private ServiceInstanceResultResponse processAppServiceGetResponse(String subscriptionId, String offerId,
-			Map<String, String> header, ServiceInstanceResultRequest serviceInstanceResultRequest,
-			String appServiceURIPath) {
+			ServiceInstanceResultRequest serviceInstanceResultRequest, String appServiceURIPath) {
 
-		ServiceInstanceResultResponse serviceInstanceResultResponse = verifyIsAlreadySubcribedActivatedAndGetDetails(
-				subscriptionId, offerId, header, appServiceURIPath);
+		ServiceInstanceResultResponse serviceInstanceResultResponse = readStatus(subscriptionId, offerId, appServiceURIPath);
 
-		if (serviceInstanceResultResponse == null) {
-
-			portalIntegrationProxy.postAppServiceStartAutoSetup(portalUrl, header, appServiceURIPath,
+		if (serviceInstanceResultResponse == null || serviceInstanceResultResponse.getTenantUrl() == null) {
+			log.info("Posting app/service instanceURL becasue no tenant url preconfiguration found");
+			portalIntegrationProxy.postAppServiceStartAutoSetup(portalUrl, getHeaderWithToken(), appServiceURIPath,
 					serviceInstanceResultRequest);
-
 			log.info("Post App/Service instanceURL, going to read credentials asynchronously");
+		} 
+		
+		serviceInstanceResultResponse = verifyIsAlreadySubcribedActivatedAndGetDetails(subscriptionId, offerId,
+				appServiceURIPath);
 
-			serviceInstanceResultResponse = verifyIsAlreadySubcribedActivatedAndGetDetails(subscriptionId, offerId,
-					header, appServiceURIPath);
-
-		}
-
-		if (serviceInstanceResultResponse == null) {
+		if (serviceInstanceResultResponse == null || serviceInstanceResultResponse.getTechnicalUserData() == null
+				|| serviceInstanceResultResponse.getTechnicalUserData().isEmpty()) {
 			throw new ServiceException("Unable to read technical user detials from portal auto setup");
 		}
 
-		readTechnicalUserDetails(header, serviceInstanceResultResponse);
+		readTechnicalUserDetails(serviceInstanceResultResponse);
 
 		return serviceInstanceResultResponse;
 	}
 
+
 	@SneakyThrows
 	private ServiceInstanceResultResponse verifyIsAlreadySubcribedActivatedAndGetDetails(String subscriptionId,
-			String offerId, Map<String, String> header, String appServiceURIPath) {
+			String offerId, String appServiceURIPath) {
 
 		int retry = 5;
 		int counter = 1;
 		ServiceInstanceResultResponse serviceInstanceResultResponse = null;
-		String offerSubscriptionStatus = null;
+		boolean continueCheckingifTenantUrlNotConfigureAndNotTechnicalUserCreated= true;
 		do {
-			log.info("Waiting '" + requestTimeout + "'sec to portal /provider API call to get subcription status");
+			log.info("Waiting '" + requestTimeout
+					+ "'sec to portal /provider API call to get subcription status- retry => " + counter);
 			Thread.sleep(requestTimeout);
-			try {
-
-				header.put(AUTHORIZATION,
-						BEARER + keyCloakTokenProxyUtitlity.getKeycloakToken(clientId, clientSecret, tokenURI));
-
-				serviceInstanceResultResponse = portalIntegrationProxy.getAppServiceInstanceSubcriptionDetails(
-						portalUrl, header, appServiceURIPath, offerId, subscriptionId);
-
-				offerSubscriptionStatus = serviceInstanceResultResponse.getOfferSubscriptionStatus();
-
-				log.info(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails: The subscription details found for " + offerId
-						+ ", " + subscriptionId + ", status is " + offerSubscriptionStatus + ", result is "
-						+ serviceInstanceResultResponse.toJsonString()));
-
-			} catch (FeignException e) {
-				log.error(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails FeignException request: " + e.request()));
-				log.error(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails FeignException response Body: "
-						+ e.responseBody()));
-				String error = e.contentUTF8();
-				error = StringUtils.isAllEmpty(error) ? error : e.getMessage();
-
-				if (e.status() == 404) {
-					log.warn(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails: The no app or subscription found for "
-							+ offerId + ", " + subscriptionId + ", result is " + error));
-				} else {
-					log.error(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails FeignException Exception response: "
-							+ error));
-				}
-
-			} catch (Exception e) {
-				log.error(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails Exception processing portal call "
-						+ e.getMessage()));
+			
+			serviceInstanceResultResponse = readStatus(subscriptionId, offerId, appServiceURIPath);
+			
+			if (serviceInstanceResultResponse!=null && serviceInstanceResultResponse.getTenantUrl() != null
+					&& !serviceInstanceResultResponse.getTechnicalUserData().isEmpty()) {
+				continueCheckingifTenantUrlNotConfigureAndNotTechnicalUserCreated = false;
 			}
+			
 			counter++;
 
-		} while (!ACTIVE.equalsIgnoreCase(offerSubscriptionStatus) && counter <= retry);
+		} while (continueCheckingifTenantUrlNotConfigureAndNotTechnicalUserCreated && counter <= retry);
 
 		return serviceInstanceResultResponse;
 	}
 
-	@SneakyThrows
-	private void readTechnicalUserDetails(Map<String, String> header,
-			ServiceInstanceResultResponse serviceInstanceResultResponse) {
+	private ServiceInstanceResultResponse readStatus(String subscriptionId, String offerId, String appServiceURIPath) {
+		
+		ServiceInstanceResultResponse serviceInstanceResultResponse =null;
+		String offerSubscriptionStatus;
+		try {
+			serviceInstanceResultResponse = portalIntegrationProxy.getAppServiceInstanceSubcriptionDetails(
+					portalUrl, getHeaderWithToken(), appServiceURIPath, offerId, subscriptionId);
 
-		if (serviceInstanceResultResponse.getTechnicalUserData() != null) {
+			offerSubscriptionStatus = serviceInstanceResultResponse.getOfferSubscriptionStatus();
+			log.info(LogUtil
+					.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails: The subscription details found for "
+							+ offerId + ", " + subscriptionId + ", status is " + offerSubscriptionStatus
+							+ ", result is " + serviceInstanceResultResponse.toJsonString()));
+			
+		} catch (FeignException e) {
+			log.error(LogUtil.encode(
+					"VerifyIsAlreadySubcribedActivatedAndGetDetails FeignException request: " + e.request()));
+			log.error(LogUtil.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails FeignException response Body: "
+					+ e.responseBody()));
+			String error = e.contentUTF8();
+			error = StringUtils.isAllEmpty(error) ? error : e.getMessage();
 
-			header.put(AUTHORIZATION,
-					BEARER + keyCloakTokenProxyUtitlity.getKeycloakToken(clientId, clientSecret, tokenURI));
+			if (e.status() == 404) {
+				log.warn(LogUtil.encode(
+						"VerifyIsAlreadySubcribedActivatedAndGetDetails: The no app or subscription found for "
+								+ offerId + ", " + subscriptionId + ", result is " + error));
+			} else {
+				log.error(LogUtil
+						.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails FeignException Exception response: "
+								+ error));
+			}
 
-			serviceInstanceResultResponse.getTechnicalUserData().forEach(elel -> {
-				try {
-					TechnicalUserDetails technicalUserDetails = portalIntegrationProxy
-							.getTechnicalUserDetails(portalUrl, header, elel.getId());
-					elel.setTechnicalUserDetails(technicalUserDetails);
-				} catch (FeignException e) {
-					log.error("ReadTechnicalUserDetails FeignException request: " + e.request());
-					log.error("ReadTechnicalUserDetails FeignException response Body: " + e.responseBody());
-					String error = e.contentUTF8();
-					error = StringUtils.isNotBlank(error) ? error : e.getMessage();
-					log.error("ReadTechnicalUserDetails FeignException Exception response: " + error);
-					if (e.status() == 409)
-						throw new NoDataFoundException(error);
-					else
-						throw new ServiceException(error);
-				} catch (Exception e) {
-					String error = "Error in read existing TechnicalUserDetails from portal " + e.getMessage();
-					log.error(error);
-					throw new ServiceException(error);
-				}
-			});
+		} catch (Exception e) {
+			log.error(LogUtil
+					.encode("VerifyIsAlreadySubcribedActivatedAndGetDetails Exception processing portal call "
+							+ e.getMessage()));
 		}
+		return serviceInstanceResultResponse;
+	}
+
+	@SneakyThrows
+	private void readTechnicalUserDetails(ServiceInstanceResultResponse serviceInstanceResultResponse) {
+
+		Map<String, String> header = getHeaderWithToken();
+
+		serviceInstanceResultResponse.getTechnicalUserData().forEach(elel -> {
+			try {
+				TechnicalUserDetails technicalUserDetails = portalIntegrationProxy.getTechnicalUserDetails(portalUrl,
+						header, elel.getId());
+				elel.setTechnicalUserDetails(technicalUserDetails);
+			} catch (FeignException e) {
+				log.error("ReadTechnicalUserDetails FeignException request: " + e.request());
+				log.error("ReadTechnicalUserDetails FeignException response Body: " + e.responseBody());
+				String error = e.contentUTF8();
+				error = StringUtils.isNotBlank(error) ? error : e.getMessage();
+				log.error("ReadTechnicalUserDetails FeignException Exception response: " + error);
+				if (e.status() == 409)
+					throw new NoDataFoundException(error);
+				else
+					throw new ServiceException(error);
+			} catch (Exception e) {
+				String error = "Error in read existing TechnicalUserDetails from portal " + e.getMessage();
+				log.error(error);
+				throw new ServiceException(error);
+			}
+		});
+
+	}
+	
+	private Map<String, String> getHeaderWithToken() {
+		Map<String, String> header = new HashMap<>();
+		header.put(AUTHORIZATION,
+				BEARER + keyCloakTokenProxyUtitlity.getKeycloakToken(clientId, clientSecret, tokenURI));
+		return header;
 	}
 
 }

@@ -85,13 +85,18 @@ public class SDEManager {
 			inputData.put("sdeFrontEndUrl", sdefrontend);
 			inputData.put("database", "sde");
 
-			inputData.put("sde.digital-twins.authentication.url",
-					sDEConfigurationProperty.getDigitalTwinsAuthenticationUrl());
+			String keycloakAuthenticationClientId = sDEConfigurationProperty.getKeycloakTechnicalClientid();
+			String keycloakAuthenticationClientSecret = sDEConfigurationProperty.getKeycloakTechnicalClientsecret();
+
+			inputData.put("sde.digital-twins.authentication.url", sDEConfigurationProperty.getKeycloakTokenUrl());
 
 			if (!manualUpdate) {
-				inputData.put("digital-twins.authentication.clientId", inputData.get("keycloakAuthenticationClientId"));
-				inputData.put("digital-twins.authentication.clientSecret",
-						inputData.get("keycloakAuthenticationClientSecret"));
+				
+				keycloakAuthenticationClientId = inputData.get("keycloakAuthenticationClientId");
+				keycloakAuthenticationClientSecret = inputData.get("keycloakAuthenticationClientSecret");
+
+				inputData.put("digital-twins.authentication.clientId", keycloakAuthenticationClientId);
+				inputData.put("digital-twins.authentication.clientSecret", keycloakAuthenticationClientSecret);
 
 				inputData.put("sdebackendkeycloakclientid", inputData.get("keycloakResourceClient"));
 				inputData.put("sdefrontendkeycloakclientid", inputData.get("keycloakResourceClient"));
@@ -103,27 +108,18 @@ public class SDEManager {
 				inputData.put("sde.digital-twins.hostname", sDEConfigurationProperty.getDigitalTwinsHostname());
 			}
 
+			
 			inputData.put("sde.resourceServerIssuer", sDEConfigurationProperty.getResourceServerIssuer());
 			inputData.put("sde.keycloak.auth", sDEConfigurationProperty.getKeycloakAuth());
 			inputData.put("sde.keycloak.realm", sDEConfigurationProperty.getKeycloakRealm());
 			inputData.put("sde.keycloak.tokenUrl", sDEConfigurationProperty.getKeycloakTokenUrl());
+			inputData.put("sde.keycloak.technical.clientid", keycloakAuthenticationClientId);
+			inputData.put("sde.keycloak.technical.clientsecret", keycloakAuthenticationClientSecret);
 
 			inputData.put("sde.partner.pool.hostname", sDEConfigurationProperty.getPartnerPoolHostname());
-			inputData.put("sde.partner.pool.authentication.url",
-					sDEConfigurationProperty.getPartnerPoolAuthenticationUrl());
-			inputData.put("sde.partner.pool.clientId", sDEConfigurationProperty.getPartnerPoolClientId());
-			inputData.put("sde.partner.pool.clientSecret", sDEConfigurationProperty.getPartnerPoolClientSecret());
-
 			inputData.put("sde.portal.backend.hostname", sDEConfigurationProperty.getPortalBackendHostname());
-			inputData.put("sde.portal.backend.authentication.url",
-					sDEConfigurationProperty.getPortalBackendAuthenticationUrl());
-			inputData.put("sde.portal.backend.clientId", sDEConfigurationProperty.getPortalBackendClientId());
-			inputData.put("sde.portal.backend.clientSecret", sDEConfigurationProperty.getPortalBackendClientSecret());
-
 			inputData.put("sde.bpndiscovery.hostname", sDEConfigurationProperty.getBpndiscoveryHostname());
-			inputData.put("sde.discovery.authentication.url", sDEConfigurationProperty.getDiscoveryAuthenticationUrl());
-			inputData.put("sde.discovery.clientId", sDEConfigurationProperty.getDiscoveryClientId());
-			inputData.put("sde.discovery.clientSecret", sDEConfigurationProperty.getDiscoveryClientSecret());
+			inputData.put("sde.policy.hub.hostname", sDEConfigurationProperty.getPolicyhubHostname());
 
 			inputData.put("sftpHost", "defaulthost");
 			inputData.put("sftpPort", "22");
@@ -137,12 +133,11 @@ public class SDEManager {
 			inputData.put("emailPort", emailConfigurationProperty.getPort());
 			inputData.put("emailTo", customerDetails.getEmail());
 			inputData.put("emailCC", emailConfigurationProperty.getReplytoAddress());
-			inputData.put("emailFrom", customerDetails.getOrganizationName() +" SDE notification<noreply@sde.com>");
+			inputData.put("emailFrom", customerDetails.getOrganizationName() + " SDE notification<noreply@sde.com>");
 			inputData.put("emailReply", emailConfigurationProperty.getReplytoAddress());
-			
-			inputData.put("bpdm.provider.edc.dataspace.api", sDEConfigurationProperty.getBpdmProviderEdcDataspaceApi());
+
+			inputData.put("bpdm.provider.edc.dsp.api", sDEConfigurationProperty.getBpdmProviderEdcDspApi());
 			inputData.put("bpdm.provider.bpnl", sDEConfigurationProperty.getBpdmProviderBpnl());
-			inputData.put("bpdm.provider.edc.public.api", sDEConfigurationProperty.getBpdmProviderEdcPublicApi());
 
 			String packageName = tool.getLabel();
 
