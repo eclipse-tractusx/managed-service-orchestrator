@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Portal auto setup support for multiple credentials for dim and shared services for 24.08
 - Use portal callback url to activate subscription on portal side
 
+### Fixed
+- Dependabot reported security issues fixed for tomcat-embed-core.
+
 ## [1.5.6] - 2024-05-27
 
 ### Added
