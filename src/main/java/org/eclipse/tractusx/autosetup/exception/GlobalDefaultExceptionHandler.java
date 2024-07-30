@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022, 2023 T-Systems International GmbH
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 T-Systems International GmbH
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -69,7 +69,7 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
 	}
 	
 	@ExceptionHandler(FeignException.class)
-	public ResponseEntity<Map<String, String>> handleFeignException(FeignException ex) {
+	public ResponseEntity<Map<String, String>> handleFeignException(FeignException ex, WebRequest request) {
 		log.error("FeignException: " + ex.getMessage());
 		log.error("FeignException RequestBody: " + ex.request());
 		log.error("FeignException ResponseBody: " + ex.contentUTF8());

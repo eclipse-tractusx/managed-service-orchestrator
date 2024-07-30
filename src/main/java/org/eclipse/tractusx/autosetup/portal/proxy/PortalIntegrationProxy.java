@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022, 2023 T-Systems International GmbH
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 T-Systems International GmbH
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -55,6 +55,11 @@ public interface PortalIntegrationProxy {
 	public JsonNode postAppServiceStartAutoSetup(URI url, @RequestHeader Map<String, String> header,
 			@PathVariable("appServiceURIPath") String appServiceURIPath,
 			@RequestBody ServiceInstanceResultRequest serviceInstanceResultRequest);
+	
+	@PutMapping("/api/{appServiceURIPath}/subscription/{subscriptionId}/activate")
+	public JsonNode activateAppServiceOnPortalSide(URI url, @RequestHeader Map<String, String> header,
+			@PathVariable("appServiceURIPath") String appServiceURIPath,
+			@PathVariable("subscriptionId") String subscriptionId);
 
 	@GetMapping("/api/{appServiceURIPath}/{appId}/subscription/{subscriptionId}/provider")
 	public ServiceInstanceResultResponse getAppServiceInstanceSubcriptionDetails(URI url,
@@ -69,13 +74,16 @@ public interface PortalIntegrationProxy {
 	@PostMapping("/api/administration/connectors/managed")
 	public String manageConnector(URI url, @RequestHeader Map<String, String> header,
 			@RequestBody MultiValueMap<String, Object> body);
+	
+	@GetMapping("/api/administration/connectors/managed")
+	public JsonNode getAllManageConnectors(URI url, @RequestHeader Map<String, String> header);
 
 	@GetMapping("/api/administration/connectors/offerSubscriptions")
 	public JsonNode getSubcriptionWithConnectors(URI url, @RequestHeader Map<String, String> header,
 			@RequestParam("connectorIdSet") boolean connectorIdSet);
 
-	@PutMapping("/api/administration/connectors/{offerSubscriptionId}/connectorUrl")
-	public String updateRegisterConnectorUrl(URI url, @RequestHeader Map<String, String> header,
+	@PutMapping("/api/administration/connectors/{connectorId}/connectorUrl")
+	public String updateRegisterConnectorUrl(URI url, @RequestHeader Map<String, String> header, @PathVariable String connectorId,
 			@RequestBody Map<String, String> body);
 
 	@DeleteMapping("/api/administration/connectors/{connectorId}")

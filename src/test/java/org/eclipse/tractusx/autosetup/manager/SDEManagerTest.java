@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022, 2023 T-Systems International GmbH
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 T-Systems International GmbH
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -75,7 +75,7 @@ class SDEManagerTest {
 		mockInputMap.put("dnsNameURLProtocol", "https");
 		Map<String, String> resultMap = sdeManager.managePackage(customerDetails, AppActions.CREATE, selectedTools,
 				mockInputMap, null);
-		assertEquals(46, resultMap.size());
+		assertEquals(39, resultMap.size());
 		assertEquals("test", mockInputMap.get("dnsName"));
 	}
 }
