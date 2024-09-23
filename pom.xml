@@ -38,7 +38,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>4.1.1</spring-cloud.version>
-		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+		<org.mapstruct.version>1.6.2</org.mapstruct.version>
 		<org.mapstruct.processor.version>1.5.5.Final
 		</org.mapstruct.processor.version>
 		<log4j2.version>2.17.1</log4j2.version>
