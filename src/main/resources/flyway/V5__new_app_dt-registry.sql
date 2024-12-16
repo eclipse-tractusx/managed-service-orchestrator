@@ -42,7 +42,7 @@ VALUES('DT_REGISTRY', 'default', 'kubeapps', '{
 		"idpClientId" : "$\{idpClientId\}",
 		"idpIssuerUri": "$\{idpIssuerUri\}",
 		"tenantId" : "$\{tenantId\}",
-		"image" :"ghcr.io/catenax-ng/sldt-digital-twin-registry:0.3.1-M1",
+		"image" :"sldt-digital-twin-registry-image",
         "ingress": {
                 "enabled": true,
                 "hostname": "$\{dnsName\}",

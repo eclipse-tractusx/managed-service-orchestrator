@@ -301,12 +301,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Enable triggering of Autosetup process for SDE application
 - Enable triggering of Autosetup process for EDC application
 - Creation of the certificates for DAPS registration
-- Registration of EDC connector into Catena-X dataspace
+- Registration of EDC connector into CX dataspace
 - Registration of the services in CX-Portal
 - Autosetup process is based on KubeApps
 
 ### Changed
-- Integration to Catena-X Portal
+- Integration to CX Portal
 
 ### Known knowns
 - Cross side scripting (XSS) shall be mitigated (low risk)
