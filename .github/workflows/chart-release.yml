@@ -38,7 +38,7 @@ jobs:
     steps:
       # fetch-depth: 0 is required to determine differences in chart(s)
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
 
@@ -48,7 +48,7 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Install Helm
-        uses: azure/setup-helm@v4
+        uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 # v4.3.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -56,6 +56,6 @@ jobs:
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.6.0
+        uses: helm/chart-releaser-action@a917fd15b20e8b64b94d9158ad54cd6345335584 # v1.6.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
